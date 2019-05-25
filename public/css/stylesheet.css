@@ -2,3 +2,76 @@
 @font-face { font-family: "Montserrat-Light"; src: url('../fonts/Montserrat-Light.otf'); }
 @font-face { font-family: "Montserrat-Regular"; src: url('../fonts/Montserrat-Regular.otf'); }
 @font-face { font-family: "Montserrat-Bold"; src: url('../fonts/Montserrat-Bold.otf'); }
+
+body {
+    font-family: 'Open Sans', sans-serif;
+    background-color: #f3f3f3;
+}
+.text-primary {
+    color: #3bafda !important;
+}
+.btn-primary {
+    background: #3bafda linear-gradient(135deg,#3bafda 0,#727cf5 70%);
+    border-color: #727cf5;
+    letter-spacing: .025em;
+    will-change: transform;
+    transition: all .15s ease;
+    text-shadow: 1px 1px 1px rgba(0,0,0,0.3);
+}
+.btn-primary:hover, .btn-primary:focus, .btn-primary:active, .btn-primary.active, .btn-primary.focus, .btn-primary:active, .btn-primary:focus, .btn-primary:hover, .open > .dropdown-toggle.btn-primary, .btn-primary:not([disabled]):not(.disabled).active, .btn-primary:not([disabled]):not(.disabled):active, .show > .btn-primary.dropdown-toggle {
+    transform: translateY(-1px);
+}
+.circle {
+    margin: auto;
+    width: 100px;
+    height: 100px;
+    background: #3bafda linear-gradient(135deg,#3bafda 0,#727cf5 70%);
+    border-radius: 50%;
+    text-align: center;
+    border: solid 5px #DDD;
+}
+.circle i {
+    line-height:90px;
+}
+.navbar {
+    text-shadow: 1px 1px 1px rgba(0,0,0,0.3);
+}
+.card-header {
+    border-bottom: none;
+    background: #3bafda linear-gradient(135deg,#3bafda 0,#727cf5 70%);
+    color:#FFF;
+    text-shadow: 1px 1px 1px rgba(0,0,0,0.3);
+}
+.bg-gradient {
+    background: #3bafda linear-gradient(135deg,#3bafda 0,#727cf5 70%);
+}
+.alert {
+    color: rgba(0,0,0,0.6);
+}
+.alert-danger {
+    background: #FF7878;
+    border-color: #FF7878;
+}
+.alert-warning {
+    background: #FEBF97;
+    border-color: #FEBF97;
+}
+.bg-warning {
+    background: #FFFFCC !important;
+}
+.alert-info {
+    background: #727cf5;
+    border-color: #727cf5;
+    color:#FFF;
+    text-shadow: 1px 1px 1px rgba(0,0,0,0.3);
+}
+.alert-success {
+    background: #BDECB6;
+    border-color: #BDECB6;
+}
+.navbar-dark .navbar-nav .nav-link {
+    color: rgba(255,255,255,.7);
+}
+.navbar-dark .navbar-nav .nav-link:focus, .navbar-dark .navbar-nav .nav-link:hover {
+    color: rgba(255,255,255,1);
+}

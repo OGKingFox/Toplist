@@ -1,4 +1,4 @@
 RewriteEngine on
-RewriteRule ^(forums|community)($|/) - [L]
+RewriteRule ^(forums|community|api)($|/) - [L]
 RewriteRule  ^$ public/    [L]
 RewriteRule  ((?s).*) public/$1 [L]

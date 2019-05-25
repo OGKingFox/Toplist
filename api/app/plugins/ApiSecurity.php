@@ -1,39 +1,24 @@
 <?php
 
-class Functions {
+class ApiSecurity {
 
-    public static function replace($search, $replace, $string) {
-        return str_replace($search, $replace, $string);
-    }
+    const access_token = "5a0158fe-779e-437d-b0db-cc5017e547cb";
+    const bypass_ips = ['75.117.250.194', '172.20.0.1', '::1'];
 
-    public static function filter($item_list, $key, $value) {
-        foreach ($item_list as $item) {
-            if ($item[$key] == $value) {
-                return $item;
-            }
-        }
-        return null;
-    }
-
-    public static function mapArrayAsString($array, $key) {
-        return implode(',', array_map(function ($item) use ($key) {
-            return $item[$key];
-        }, $array));
-    }
-
-    public static function startsWith($haystack, $needle) {
-        return $needle === "" || strrpos($haystack, $needle, -strlen($haystack)) !== false;
-    }
-
-    public static function endsWith($haystack, $needle) {
-        return $needle === "" || (($temp = strlen($haystack) - strlen($needle)) >= 0 && strpos($haystack, $needle, $temp) !== false);
+    /**
+     * Checks if an accessing user has access via http headers
+     * @return boolean
+     */
+    public function hasAccess() {
+        return $this->getBearerToken() == self::access_token
+            || in_array($_SERVER['REMOTE_ADDR'], self::bypass_ips);
     }
 
     /**
      * get access token from header
      */
-    public static function getBearerToken() {
-        $headers = self::getAuthorizationHeader();
+    public function getBearerToken() {
+        $headers = $this->getAuthorizationHeader();
         if (!empty($headers)) {
             if (preg_match('/Bearer\s(\S+)/', $headers, $matches)) {
                 return $matches[1];
@@ -46,7 +31,7 @@ class Functions {
      * Gets the authorization header.
      * @return string|null
      */
-    public static function getAuthorizationHeader() {
+    public function getAuthorizationHeader() {
         $headers = null;
 
         if (isset($_SERVER['Authorization'])) {
