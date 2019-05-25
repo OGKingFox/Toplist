@@ -81,7 +81,7 @@
 	$di->setShared("dispatcher", function () {
         $eventsManager = new EventsManager();
 
-        //$eventsManager->attach("dispatch:beforeDispatch", new SecurityPlugin);
+        $eventsManager->attach("dispatch:beforeDispatch", new SecurityPlugin);
 		$eventsManager->attach("dispatch:beforeException", new ExceptionsPlugin);
 
         $dispatcher = new MvcDispatcher();
@@ -121,27 +121,6 @@
         $session->start(); // we need to start session
         return $session;
     });
-
-	/*$di->set('session', function() {
-		$connection = new DbAdapter(array(
-			"host"     => host,
-			"username" => username,
-			"password" => password,
-			"dbname"   => dbname,
-		));
-
-		$session = new Database(array(
-			'db' => $connection,
-			'table' => 'session_data'
-		));
-
-		$session->start();
-		return $session;
-	});
-
-	$di->set("flashSession", function () {
-		return new FlashSession();
-	});*/
 
 	$application = new Application($di);
 

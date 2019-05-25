@@ -9,17 +9,17 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<link rel="shortcut icon" type="image/png" href="<?= base_url; ?>public/img/favicon.png"/>
 
-    <?= $this->tag->stylesheetLink('public/css/bootstrap.min.css') ?>
-    <?= $this->tag->stylesheetLink('public/css/bootstrap-custom.css') ?>
-    <?= $this->tag->stylesheetLink('public/css/fontawesome-all.css') ?>
-    <?= $this->tag->stylesheetLink('public/css/stylesheet.css') ?>
-    <?= $this->tag->stylesheetLink('public/css/aos.css') ?>
+    <?= $this->tag->stylesheetLink('css/bootstrap.min.css') ?>
+    <?= $this->tag->stylesheetLink('css/bootstrap-custom.css') ?>
+    <?= $this->tag->stylesheetLink('css/fontawesome-all.css') ?>
+    <?= $this->tag->stylesheetLink('css/stylesheet.css') ?>
+    <?= $this->tag->stylesheetLink('css/aos.css') ?>
 
-    <?= $this->tag->javascriptInclude('public/js/jquery-3.3.1.min.js') ?>
-    <?= $this->tag->javascriptInclude('public/js/popper.min.js') ?>
-    <?= $this->tag->javascriptInclude('public/js/bootstrap.min.js') ?>
-    <?= $this->tag->javascriptInclude('public/js/aos.js') ?>
-    <?= $this->tag->javascriptInclude('public/js/javascript.js') ?>
+    <?= $this->tag->javascriptInclude('js/jquery-3.3.1.min.js') ?>
+    <?= $this->tag->javascriptInclude('js/popper.min.js') ?>
+    <?= $this->tag->javascriptInclude('js/bootstrap.min.js') ?>
+    <?= $this->tag->javascriptInclude('js/aos.js') ?>
+    <?= $this->tag->javascriptInclude('js/javascript.js') ?>
 </head>
 <body class="py-0 my-0">
 
