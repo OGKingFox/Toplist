@@ -1,3 +1,4 @@
 **/config.php
 **/*.cache
 **/*.compiled
+**/error_logs.txt
