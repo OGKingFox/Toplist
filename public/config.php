@@ -6,7 +6,7 @@
 define("timezone", "America/Chicago");
 date_default_timezone_set(timezone);
 
-define("server_name", "Gaming Toplist");
+define("server_name", "Gaming Toplist v1");
 
 /**
  * Database credentials...self explanatory.

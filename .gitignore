@@ -4,3 +4,4 @@
 public/img/store/items/id/*.png
 config.php
 error_logs.txt
+public/config.php
