@@ -29,6 +29,7 @@ $loader->registerFiles([
     __DIR__ . '/app/plugins/ApiSecurity.php',
     __DIR__ . '../Library/Functions.php',
     __DIR__ . '/app/Router.php',
+    '../public/config.php'
 ]);
 
 $loader->register();

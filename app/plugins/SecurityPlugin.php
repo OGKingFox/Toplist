@@ -35,7 +35,7 @@ class SecurityPlugin extends Plugin {
 
             $publicResources = array(
                 'index'      => array('index', 'logout'),
-                'login'      => array('index'),
+                'login'      => array('index', 'auth'),
                 'register'   => array('index'),
                 'recover'    => array('index'),
                 'errors'     => array('show401', 'show404', 'show500'),
@@ -108,11 +108,13 @@ class SecurityPlugin extends Plugin {
         $role       = "Guest";
 
         if ($this->session->has('auth')) {
-            if ($this->dispatcher->getControllerName() == "login"
+            /*if ($this->dispatcher->getControllerName() == "login"
                     || $this->dispatcher->getControllerName() == "register") {
                 $this->response->redirect("");
                 return false;
-            }
+            }*/
+
+            $userInfo = $this->apiRequest("https://discordapp.com/api/users/@me");
 
             $userinfo = $this->session->get("auth");
         }
@@ -130,11 +132,11 @@ class SecurityPlugin extends Plugin {
         $allowed = $acl->isAllowed($role, $controller, $action);
 
         if (!$allowed) {
-            $this->dispatcher->forward([
+            /*$this->dispatcher->forward([
                 'controller' => 'errors',
                 'action'     => 'show401'
             ]);
-            return false;
+            return false;*/
         }
     }
 

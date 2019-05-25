@@ -25,7 +25,19 @@ class Router {
                     'function' => 'find'
                 ],
             ]
-        ]
+        ],
+        [
+            'class'    => 'AuthController',
+            'prefix'   => '/',
+            'patterns' => [
+                [
+                    'pattern' => '/',
+                    'type' => 'get',
+                    'function' => 'index'
+                ]
+            ]
+        ],
+
     ];
 
     /**

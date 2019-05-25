@@ -20,7 +20,10 @@
     <?= $this->tag->javascriptInclude('js/bootstrap.min.js') ?>
     <?= $this->tag->javascriptInclude('js/aos.js') ?>
     <?= $this->tag->javascriptInclude('js/javascript.js') ?>
+
+
 </head>
+
 <body class="py-0 my-0">
 
     <nav class="navbar navbar-expand-lg navbar-dark bg-gradient shadow">
@@ -38,13 +41,15 @@
                     <li class="nav-item">
                         <a class="nav-link" href="#">Documentation</a>
                     </li>
-
+                </ul>
+                <ul class="navbar-nav ml-auto">
+                    <li><?= $this->tag->linkTo(['login', 'Login', 'class' => 'nav-link']) ?></li>
                 </ul>
             </div>
         </div>
     </nav>
 
     <?= $this->getContent() ?>
-    
+
 </body>
 </html>
