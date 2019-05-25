@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+	<meta charset="utf-8" />
+	<title>Runecore</title>
+	<meta name="keywords" content="">
+	<meta name="description" content="">
+	<meta name="author" content="King Fox">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="shortcut icon" type="image/png" href="<?= base_url; ?>public/img/favicon.png"/>
+
+    {{ stylesheet_link("public/css/bootstrap.min.css") }}
+    {{ stylesheet_link("public/css/bootstrap-custom.css") }}
+    {{ stylesheet_link("public/css/fontawesome-all.css") }}
+    {{ stylesheet_link("public/css/stylesheet.css") }}
+    {{ stylesheet_link("public/css/aos.css") }}
+
+    {{ javascript_include("public/js/jquery-3.3.1.min.js") }}
+    {{ javascript_include("public/js/popper.min.js") }}
+    {{ javascript_include("public/js/bootstrap.min.js") }}
+    {{ javascript_include("public/js/aos.js") }}
+    {{ javascript_include("public/js/javascript.js") }}
+</head>
+<body class="py-0 my-0">
+
+{% if router.getControllerName() is not 'login' and router.getControllerName() is not 'register' %}
+    <div class="top-bar bg-darker">
+        <div class="container">
+            <ul class="custom-nav float-right">
+                {% if user is defined %}
+                <li class="nav-item">Welcome, {{ user.username }}</li>
+                <li class="nav-item">{{ link_to('account', 'My Account') }}</li>
+                <li class="nav-item">{{ link_to('index/logout', 'Sign Out') }}</li>
+                {% else %}
+                <li class="nav-item">Welcome, Guest</li>
+                <li class="nav-item">{{ link_to('login', 'Login') }} or {{ link_to('register', 'Create Account') }}</li>
+                {% endif %}
+            </ul>
+            <ul class="custom-nav">
+                <li class="nav-item"><a href="#" target="_blank"><i class="fab fa-facebook"></i></a></li>
+                <li class="nav-item"><a href="#" target="_blank"><i class="fab fa-twitter"></i></a></li>
+                <li class="nav-item"><a href="#" target="_blank"><i class="fab fa-discord"></i></a></li>
+            </ul>
+        </div>
+    </div>
+
+    <nav class="navbar navbar-expand-md navbar-dark bg-dark shadow-sm sticky-top" style="top:40px;">
+        <div class="container">
+            <a class="navbar-brand" href="#"><i class="fal fa-chart-bar"></i> RuneList</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item">{{ link_to('', 'Home', 'class' : 'nav-link') }}</li>
+                    <li class="nav-item">{{ link_to('forum', 'Forums', 'class' : 'nav-link') }}</li>
+                    <li class="nav-item">{{ link_to('advertise', 'Advertise', 'class' : 'nav-link') }}</li>
+                    <li class="nav-item">{{ link_to('support', 'Support', 'class' : 'nav-link') }}</li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <header class="text-left">
+        <div class="container">
+            <h3 class="mb-0">Runescape Top List</h3>
+        </div>
+    </header>
+{% endif %}
+
+    {{ content() }}
+    
+</body>
+</html>
