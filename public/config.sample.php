@@ -15,6 +15,12 @@
 	define("password", 	"");
 	define("dbname", 	"");
 
+    /**
+     * Discord OAuth Tokens
+     * https://discordapp.com/developers/applications/
+     */
+    define('OAUTH2_CLIENT_ID', '');
+    define('OAUTH2_CLIENT_SECRET', '');
 
     /**
      * this is the folder you have it in. Should include starting and trailing slash.
