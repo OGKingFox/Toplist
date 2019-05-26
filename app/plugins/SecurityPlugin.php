@@ -24,9 +24,9 @@ class SecurityPlugin extends Plugin {
             $acl->setDefaultAction(Acl::DENY);
 
             $roles = [
-                'admins'  => new Role('Admin'),
-                'members' => new Role('Member'),
-                'guests'  => new Role('Guest')
+                'admins'  => new Role('admin'),
+                'members' => new Role('member'),
+                'guests'  => new Role('guest')
             ];
 
             foreach ($roles as $role) {
@@ -76,15 +76,15 @@ class SecurityPlugin extends Plugin {
             //Grant access to private area to role Users
             foreach ($privateResources as $resource => $actions) {
                 foreach ($actions as $action) {
-                    $acl->allow('Member', $resource, $action);
-                    $acl->allow('Admin', $resource, $action);
+                    $acl->allow('member', $resource, $action);
+                    $acl->allow('admin', $resource, $action);
                 }
             }
 
             //Grant access to admin area to role Admins
             foreach ($adminResources as $resource => $actions) {
                 foreach ($actions as $action) {
-                    $acl->allow('Admin', $resource, $action);
+                    $acl->allow('admin', $resource, $action);
                 }
             }
 
@@ -107,16 +107,33 @@ class SecurityPlugin extends Plugin {
         $action     = $dispatcher->getActionName();
         $role       = "Guest";
 
-        if ($this->session->has('auth')) {
-            /*if ($this->dispatcher->getControllerName() == "login"
-                    || $this->dispatcher->getControllerName() == "register") {
+        if ($this->session->has('access_token')) {
+            if ($this->dispatcher->getControllerName() == "login") {
                 $this->response->redirect("");
                 return false;
-            }*/
+            }
 
-            $userInfo = $this->apiRequest("https://discordapp.com/api/users/@me");
+            $userInfo = (new RestClient())
+                ->setEndpoint("users/@me")
+                ->setAccessToken($this->session->get("access_token"))
+                ->setUseKey(true)
+                ->submit();
 
-            $userinfo = $this->session->get("auth");
+            if (!$userInfo || $userInfo->code == 0) {
+                $this->session->destroy();
+            }
+
+            $user = Users::getUser($userInfo->id);
+
+            //echo "<pre>".json_encode($userInfo, JSON_PRETTY_PRINT)."</pre>";
+
+            if (!$user) {
+                $user = Users::createUser($userInfo);
+                $user->save();
+            }
+
+            $role = $user->getRole();
+            $this->view->user = $user;
         }
 
         $acl = $this->getAcl();
@@ -138,6 +155,8 @@ class SecurityPlugin extends Plugin {
             ]);
             return false;*/
         }
+
+        return true;
     }
 
 }

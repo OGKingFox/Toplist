@@ -17,7 +17,30 @@ class Users extends \Phalcon\Mvc\Model {
     private $flags;
     private $avatar;
     private $discriminator;
+    private $email;
+    private $role;
 
+    public static function getUser($id) {
+        return self::query()
+            ->conditions("user_id = :id:")
+            ->bind(['id' => $id])
+            ->execute()->getFirst();
+    }
+
+    public static function createUser($userInfo) {
+        $user = new Users;
+        $user->setUsername($userInfo->username);
+        $user->setVerified($userInfo->verified ? 1 : 0);
+        $user->setLocale($userInfo->locale);
+        $user->setPremiumType($userInfo->premium_type);
+        $user->setMfaEnabled($userInfo->mfa_enabled ? 1 : 0);
+        $user->setUserId($userInfo->id);
+        $user->setFlags($userInfo->flags);
+        $user->setAvatar($userInfo->avatar);
+        $user->setDiscriminator($userInfo->discriminator);
+        $user->setEmail($userInfo->email);
+        return $user;
+    }
     /**
      * @return mixed
      */
@@ -161,6 +184,42 @@ class Users extends \Phalcon\Mvc\Model {
     {
         $this->discriminator = $discriminator;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getEmail()
+    {
+        return $this->email;
+    }
+
+    /**
+     * @param mixed $email
+     */
+    public function setEmail($email)
+    {
+        $this->email = $email;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getRole()
+    {
+        return $this->role;
+    }
+
+    /**
+     * @param mixed $role
+     */
+    public function setRole($role)
+    {
+        $this->role = $role;
+    }
+
+
+
+
 
 
 

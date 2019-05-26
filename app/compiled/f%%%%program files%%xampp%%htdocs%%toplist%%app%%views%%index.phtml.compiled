@@ -10,18 +10,11 @@
 	<link rel="shortcut icon" type="image/png" href="<?= base_url; ?>public/img/favicon.png"/>
 
     <?= $this->tag->stylesheetLink('css/bootstrap.min.css') ?>
-    <?= $this->tag->stylesheetLink('css/bootstrap-custom.css') ?>
-    <?= $this->tag->stylesheetLink('css/fontawesome-all.css') ?>
     <?= $this->tag->stylesheetLink('css/stylesheet.css') ?>
-    <?= $this->tag->stylesheetLink('css/aos.css') ?>
 
     <?= $this->tag->javascriptInclude('js/jquery-3.3.1.min.js') ?>
-    <?= $this->tag->javascriptInclude('js/popper.min.js') ?>
-    <?= $this->tag->javascriptInclude('js/bootstrap.min.js') ?>
-    <?= $this->tag->javascriptInclude('js/aos.js') ?>
+    <?= $this->tag->javascriptInclude('js/bootstrap.bundle.min.js') ?>
     <?= $this->tag->javascriptInclude('js/javascript.js') ?>
-
-
 </head>
 
 <body class="py-0 my-0">
@@ -35,15 +28,19 @@
 
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav mr-auto">
-                    <li class="nav-item active">
-                        <a class="nav-link" href="#">Home</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Documentation</a>
-                    </li>
+                    <li class="nav-item active"><a class="nav-link" href="#">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#">Documentation</a></li>
                 </ul>
+
                 <ul class="navbar-nav ml-auto">
-                    <li><?= $this->tag->linkTo(['login', 'Login', 'class' => 'nav-link']) ?></li>
+                    <?php if (isset($user)) { ?>
+                    <li class="nav-item"><?= $this->tag->linkTo(['profile', $user->username, 'class' => 'nav-link']) ?></li>
+                    <li class="nav-item">
+                       <?= $this->tag->linkTo(['logout', 'Logout', 'class' => 'nav-link']) ?>
+                    </li>
+                    <?php } else { ?>
+                    <li class="nav-item"><?= $this->tag->linkTo(['login', 'Login', 'class' => 'nav-link']) ?></li>
+                    <?php } ?>
                 </ul>
             </div>
         </div>

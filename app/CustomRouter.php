@@ -7,10 +7,10 @@ class CustomRouter extends RouterGroup {
 	public function initialize() {
 		$routes = array(
             array(
-                "route" => "/admin/{type:[A-Za-z0-9\-]+}",
+                "route" => "/logout",
                 "params" => [
-                    "controller" 	=> "admin",
-                    "action"     	=> "view"
+                    "controller" 	=> "index",
+                    "action"     	=> "logout"
                 ]
             )
 		);
