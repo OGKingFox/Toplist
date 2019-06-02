@@ -30,8 +30,11 @@ class LoginController extends BaseController {
             ])
             ->submit();
 
+        echo "<pre>".json_encode($response, JSON_PRETTY_PRINT)."</pre>";
+
         if ($response->access_token) {
-            $this->session->set("access_token", $response->access_token);
+            $token = $response->access_token;
+            $this->session->set("access_token", $token);
             return $this->response->redirect("");
         }
 

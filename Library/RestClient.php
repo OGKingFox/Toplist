@@ -30,7 +30,7 @@ class RestClient
     private $use_key = true;
     private $verify_peer = false;
     private $access_token = "";
-
+    private $content_type = "application/json";
     /**
      * @return string
      */
@@ -174,9 +174,28 @@ class RestClient
     }
 
     /**
-     * @return array|mixed
+     * @return string
      */
-    public function submit() {
+    public function getContentType()
+    {
+        return $this->content_type;
+    }
+
+    /**
+     * @param string $content_type
+     * @return RestClient
+     */
+    public function setContentType($content_type)
+    {
+        $this->content_type = $content_type;
+        return $this;
+    }
+
+    /**
+     * @param bool $asArray
+     * @return mixed
+     */
+    public function submit($asArray = false) {
         $ch  = curl_init();
         $url = $this->getFullUrl();
 
@@ -186,6 +205,10 @@ class RestClient
                 curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($this->getData()));
             } else if ($this->getType() == 'get') {
                 $url =  $url.'?'.http_build_query($this->getData());
+            } else if ($this->getType() == 'delete') {
+                curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "DELETE");
+                curl_setopt($ch, CURLOPT_POST, 1);
+                curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($this->getData()));
             } else {
                 return ['error' => 'Type must be either get or post.'];
             }
@@ -193,8 +216,12 @@ class RestClient
 
         if ($this->isUseKey()) {
             curl_setopt($ch, CURLOPT_HTTPHEADER, [
-                'Accept: application/json',
+                'Accept: '.$this->getContentType(),
                 "Authorization: Bearer " . $this->getAccessToken()
+            ]);
+        } else {
+            curl_setopt($ch, CURLOPT_HTTPHEADER, [
+                'Accept: '.$this->getContentType()
             ]);
         }
 
@@ -209,7 +236,7 @@ class RestClient
 
         $response = curl_exec($ch);
         curl_close($ch);
-        return json_decode($response);
+        return json_decode($response, $asArray);
     }
 
 

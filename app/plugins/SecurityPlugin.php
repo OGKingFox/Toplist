@@ -35,7 +35,7 @@ class SecurityPlugin extends Plugin {
 
             $publicResources = array(
                 'index'      => array('index', 'logout'),
-                'login'      => array('index', 'auth'),
+                'login'      => array('index', 'auth', 'logout'),
                 'register'   => array('index'),
                 'recover'    => array('index'),
                 'errors'     => array('show401', 'show404', 'show500'),
@@ -117,15 +117,15 @@ class SecurityPlugin extends Plugin {
                 ->setEndpoint("users/@me")
                 ->setAccessToken($this->session->get("access_token"))
                 ->setUseKey(true)
-                ->submit();
+                ->submit(false);
 
-            if (!$userInfo || $userInfo->code == 0) {
+            if (!$userInfo || $userInfo->code) {
                 $this->session->destroy();
+                $this->response->redirect("");
+                return false;
             }
 
             $user = Users::getUser($userInfo->id);
-
-            //echo "<pre>".json_encode($userInfo, JSON_PRETTY_PRINT)."</pre>";
 
             if (!$user) {
                 $user = Users::createUser($userInfo);
