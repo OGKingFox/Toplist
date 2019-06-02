@@ -41,8 +41,8 @@ class SecurityPlugin extends Plugin {
         ];
 
         $privateResources = [
-            'logout' => ['index'],
-            'create' => ['index', 'post']
+            'logout'  => ['index'],
+            'profile' => ['index', 'add', 'edit']
         ];
 
         $adminResources = [

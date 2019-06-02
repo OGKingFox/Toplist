@@ -125,6 +125,16 @@ class Servers extends \Phalcon\Mvc\Model {
         return $this->title;
     }
 
+    public function getSeoTitle() {
+        $reps = [
+            ' - ' => '-',
+            ' ' => '-'
+        ];
+        return $this->getId().'-'.str_replace(
+            array_keys($reps),
+            array_values($reps),
+            strtolower($this->getTitle()));
+    }
     /**
      * @param mixed $title
      * @return Servers
@@ -262,12 +272,25 @@ class Servers extends \Phalcon\Mvc\Model {
             "message" => "Invalid game."
         ]));
 
-        $validator->add("summary", new Callback([
+        $validator->add("title", new Callback([
             "callback" => function() {
-                return strlen($this->summary) >= 10 && strlen($this->summary) <= 200
-                    && preg_match('/^[A-Za-z0-9 \-_.]+$/i', $this->summary);
+                return strlen($this->title) >= 4 && strlen($this->title) <= 50;
             },
-            "message" => "Invalid description. Must be between 20 and 200 characters."
+            "message" => "Invalid title. Must be between 4 and 50 characters"
+        ]));
+
+        $validator->add("title", new Callback([
+            "callback" => function() {
+                return preg_match('/^[A-Za-z0-9 \-]+$/i', $this->title) !== false;
+            },
+            "message" => "Invalid title. May only contain letters, numbers, spaces, and dashes."
+        ]));
+
+        /*$validator->add("summary", new Callback([
+            "callback" => function() {
+                return strlen($this->summary) >= 5 && strlen($this->summary) <= 75;
+            },
+            "message" => "Invalid summary. Must be between 5 and 75 characters."
         ]));
 
         $validator->add("summary", new Callback([
@@ -275,7 +298,7 @@ class Servers extends \Phalcon\Mvc\Model {
                 return preg_match('/^[A-Za-z0-9 \-_.]+$/i', $this->summary) !== false;
             },
             "message" => "Invalid description. Contains invalid characters."
-        ]));
+        ]));*/
 
         return $this->validate($validator) == true;
     }

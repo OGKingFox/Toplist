@@ -4,7 +4,7 @@
 
         <div class="card border-0 shadow-sm mb-3">
             <div class="card-body">
-                {{ form('create', 'method' : 'post', 'autocomplete' : 'off', 'id' : 'postform') }}
+                {{ form('profile/add', 'method' : 'post', 'autocomplete' : 'off', 'id' : 'postform') }}
                 <div class="form-group">
                     <label for="title" class="mb-0">Server Title</label>
                     <p class="small text-muted">This will be displayed on the front page.</p>
@@ -17,12 +17,12 @@
                     {{ select("game", games, 'using': ['id', 'title'], 'class' : 'form-control') }}
                 </div>
 
-                <div class="form-group">
+                {#<div class="form-group">
                     <label for="summary" class="mb-0">Description</label>
                     <p class="small text-muted">Displayed under your title. Keep it short and sweet. Must be between 20 and 200 chars.
-                    Can contain only basic characters such as A-Z, 0-9, spaces, periods, and underscores..</p>
+                        Can contain only basic characters such as A-Z, 0-9, spaces, periods, and underscores..</p>
                     {{ text_field('summary', 'class' : 'form-control') }}
-                </div>
+                </div>#}
 
                 <div class="form-group">
                     <label for="website" class="mb-0">Website URL</label>
@@ -33,7 +33,7 @@
                 <div class="form-group">
                     <label for="callback" class="mb-0">Callback URL</label>
                     <p class="small text-muted">Optional. Used for voting systems like MotiVote or FoxVote to send data
-                    when a user makes a vote.</p>
+                        when a user makes a vote.</p>
                     {{ text_field('callback', 'class' : 'form-control') }}
                 </div>
 
@@ -51,7 +51,7 @@
                     <label for="editor-form" class="mb-0">Information</label>
                     <p class="small text-muted">A more detailed overview of your server.</p>
                     <div id="editor" class="mb-3"></div>
-                    <textarea name='description' id='editor-form' style='display:none'></textarea>
+                    <textarea name='info' id='editor-form' style='display:none'></textarea>
                 </div>
 
                 <div class="form-group">

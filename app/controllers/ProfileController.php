@@ -3,28 +3,35 @@
  * Created by PhpStorm.
  * User: foxtr
  * Date: 6/2/19
- * Time: 12:46 AM
+ * Time: 4:42 AM
  */
 
-class CreateController extends BaseController {
+class ProfileController extends \Phalcon\Mvc\Controller {
 
     public function indexAction() {
+
+    }
+
+    public function addAction() {
         if ($this->request->isPost() && $this->security->checkToken()) {
             $owner  = $this->session->get("user_info");
             $server = new Servers($this->request->getPost());
 
             $server->setOwnerId($owner->id);
             $server->setOwnerTag($owner->username.'#'.$owner->discriminator);
+            $server->setInfo(Functions::getPurifier()->purify($server->getInfo()));
 
             if (!$server->save()) {
                 $this->flash->error($server->getMessages());
             } else {
-                return $this->response->redirect("server/".$server->getId());
-
-                $this->flash->success("Your server has been created!");
+                return $this->response->redirect("view/".$server->getSeoTitle());
             }
         }
 
         $this->view->games = Games::find();
+    }
+
+    public function editAction() {
+
     }
 }

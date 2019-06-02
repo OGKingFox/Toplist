@@ -2,6 +2,26 @@
 
 class Functions {
 
+    private static $purifier;
+
+    public static function getPurifier() {
+        $allowed_html = [
+            'div[class]','span[style]','a[href|class|target]','img[src|class]','h1','h2','h3','p[class]','strong','em','ul',
+            'u','ol','li','table[class]','tr','td','th','thead','tbody'
+        ];
+
+        if (!self::$purifier) {
+            $config = HTMLPurifier_Config::createDefault();
+            $config->set("Core.Encoding", 'utf-8');
+            $config->set('AutoFormat.RemoveEmpty', true);
+            $config->set("HTML.Allowed", implode(',', $allowed_html));
+            $config->set('HTML.AllowedAttributes', 'src, height, width, alt, href, class, style');
+            self::$purifier = new HTMLPurifier($config);
+        }
+
+        return self::$purifier;
+    }
+
     public static function replace($search, $replace, $string) {
         return str_replace($search, $replace, $string);
     }
