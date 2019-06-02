@@ -1,0 +1,98 @@
+<div class="row">
+    <div class="col-sm-12 col-xl-8">
+        {{ content() }}
+
+        <div class="card border-0 shadow-sm mb-3">
+            <div class="card-body">
+                {{ form('profile/edit', 'method' : 'post', 'autocomplete' : 'off', 'id' : 'postform') }}
+                <div class="form-group">
+                    <label for="title" class="mb-0">Server Title</label>
+                    <p class="small text-muted">This will be displayed on the front page.</p>
+                    {{ text_field('title', 'class' : 'form-control', 'value' : server.title) }}
+                </div>
+
+                <div class="form-group">
+                    <label for="title" class="mb-0">Category</label>
+                    <p class="small text-muted">The game that your listing relates to.</p>
+                    {{ select("game", games, 'using': ['id', 'title'], 'class' : 'form-control', 'value' : server.game) }}
+                </div>
+
+                {#<div class="form-group">
+                    <label for="summary" class="mb-0">Description</label>
+                    <p class="small text-muted">Displayed under your title. Keep it short and sweet. Must be between 20 and 200 chars.
+                        Can contain only basic characters such as A-Z, 0-9, spaces, periods, and underscores..</p>
+                    {{ text_field('summary', 'class' : 'form-control', 'value' : server.summary) }}
+                </div>#}
+
+                <div class="form-group">
+                    <label for="website" class="mb-0">Website URL</label>
+                    <p class="small text-muted">A link to your server's homepage. Leaving this blank will hide your listing.</p>
+                    {{ text_field('website', 'class' : 'form-control', 'value' : server.website) }}
+                </div>
+
+                <div class="form-group">
+                    <label for="callback" class="mb-0">Callback URL</label>
+                    <p class="small text-muted">Optional. Used for voting systems like MotiVote or FoxVote to send data
+                        when a user makes a vote.</p>
+                    {{ text_field('callback', 'class' : 'form-control', 'value' : server.callback) }}
+                </div>
+
+                <div class="form-group">
+                    <label for="server_id" class="mb-0">Discord Server ID</label>
+                    <p class="small text-muted">
+                        Optional. Your discord server id. Click
+                        <a target="_blank" href="https://support.discordapp.com/hc/en-us/articles/206346498-Where-can-I-find-my-User-Server-Message-ID-">here</a> for more info.
+                        This will enable a discord block on your listing showing members and a join link automatically. It's basically sorcery.
+                    </p>
+                    {{ numeric_field('discord_id', 'class' : 'form-control', 'value' : server.discord_id) }}
+                </div>
+
+                <div class="form-group">
+                    <label for="editor-form" class="mb-0">Information</label>
+                    <p class="small text-muted">A more detailed overview of your server.</p>
+                    <?php $desc = Functions::getPurifier()->purify($server->info); ?>
+
+                    <div id="editor" class="mb-3">{{ desc }}</div>
+
+                    <textarea name='info' id='editor-form' style='display:none'></textarea>
+                </div>
+
+                <div class="form-group">
+                    {{ submit_button('Create Listing', 'class' : 'btn btn-primary') }}
+                    {{ submit_button('Cancel', 'class' : 'btn btn-outline-danger float-right') }}
+                </div>
+                {{ hidden_field(security.getTokenKey(), 'value' : security.getToken()) }}
+                {{ end_form() }}
+            </div>
+        </div>
+    </div>
+
+    <div class="col-sm-12 col-xl-4">
+        <div class="card border-0 shadow-sm mb-0">
+            <div class="card-body">
+                <h5>Rules:</h5>
+                <p class="small text-muted">These must be followed to avoid your server being removed from our website. </p>
+                <ul>
+                    <li>Names must be clear. Remember, simplicity is key. clearer titles means more professional.</li>
+                    <li>False advertising will not be tolerated.</li>
+                    <li>Vulgar, hateful, or discriminatory remarks are not allowed.</li>
+                    <li>
+                        Images must be related to the listing, depicting clearly what the server has to offer. Images
+                        containing any kind of pornography is strictly not allowed, and will result in a permanent ban.
+                    </li>
+                    <li>
+                        Website links not related to the server listed will result in a permanent ban. (ie. listing is
+                        linked to another unrelated website.)
+                    </li>
+                    <li>Affiliate links are not allowed.</li>
+                    <li>
+                        Server can not already be listed, by either title or by website url. Duplicates will be removed,
+                        excessive duplicates will result in a ban.
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+{{ partial('partials/quilljs') }}
