@@ -32,7 +32,7 @@ class SecurityPlugin extends Plugin {
             $acl->addRole($role);
         }
 
-        $publicResources = [
+        $public = [
             'index'      => ['index', 'logout'],
             'login'      => ['index', 'auth', 'logout'],
             'register'   => ['index'],
@@ -40,33 +40,33 @@ class SecurityPlugin extends Plugin {
             'errors'     => ['show401', 'show404', 'show500'],
         ];
 
-        $privateResources = [
+        $private = [
             'logout'  => ['index'],
             'profile' => ['index', 'add', 'edit']
         ];
 
-        $adminResources = [
+        $admin = [
             'admin'     => [
                 'index', 'payments', 'users', 'products', 'categories', 'convert',
                 'add', 'edit', 'delete', 'view', 'user', 'banlist'
             ]
         ];
 
-        foreach ($publicResources as $resource => $actions) {
+        foreach ($public as $resource => $actions) {
             $acl->addResource(new Resource($resource), $actions);
         }
 
-        foreach ($privateResources as $resource => $actions) {
+        foreach ($private as $resource => $actions) {
             $acl->addResource(new Resource($resource), $actions);
         }
 
-        foreach ($adminResources as $resource => $actions) {
+        foreach ($admin as $resource => $actions) {
             $acl->addResource(new Resource($resource), $actions);
         }
 
         // grants all roles access to public areas
         foreach ($roles as $role) {
-            foreach ($publicResources as $resource => $actions) {
+            foreach ($public as $resource => $actions) {
                 foreach ($actions as $action){
                     $acl->allow($role->getName(), $resource, $action);
                 }
@@ -74,7 +74,7 @@ class SecurityPlugin extends Plugin {
         }
 
         //Grant access to private area to role Users
-        foreach ($privateResources as $resource => $actions) {
+        foreach ($private as $resource => $actions) {
             foreach ($actions as $action) {
                 $acl->allow('member', $resource, $action);
                 $acl->allow('admin', $resource, $action);
@@ -82,13 +82,13 @@ class SecurityPlugin extends Plugin {
         }
 
         //Grant access to admin area to role Admins
-        foreach ($adminResources as $resource => $actions) {
+        foreach ($admin as $resource => $actions) {
             foreach ($actions as $action) {
                 $acl->allow('admin', $resource, $action);
             }
         }
 
-        return $this->persistent->acl = $acl;
+        return $acl;
     }
 
     /**
@@ -135,12 +135,11 @@ class SecurityPlugin extends Plugin {
         $allowed = $acl->isAllowed($role, $controller, $action);
 
         if (!$allowed) {
-            echo $role;
-            /*$this->dispatcher->forward([
+            $this->dispatcher->forward([
                 'controller' => 'errors',
                 'action'     => 'show401'
             ]);
-            return false;*/
+            return false;
         }
 
         return true;

@@ -20,6 +20,10 @@ class Users extends \Phalcon\Mvc\Model {
     private $email;
     private $role;
 
+    /**
+     * @param $id
+     * @return bool|\Phalcon\Mvc\ModelInterface|Users
+     */
     public static function getUser($id) {
         return self::query()
             ->conditions("user_id = :id:")

@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: foxtr
- * Date: 6/2/19
- * Time: 4:42 AM
- */
 
 class ProfileController extends \Phalcon\Mvc\Controller {
 

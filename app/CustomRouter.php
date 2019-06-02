@@ -4,21 +4,28 @@ use Phalcon\Mvc\Router\Group as RouterGroup;
 
 class CustomRouter extends RouterGroup {
 
-	public function initialize() {
-		$routes = array(
-            array(
-                "route" => "/logout",
-                "params" => [
-                    "controller" 	=> "index",
-                    "action"     	=> "logout"
-                ]
-            )
-		);
+	public static $routes = [
+		[
+			"route" => "/logout",
+			"params" => [
+				"controller" 	=> "index",
+				"action"     	=> "logout"
+			]
+		],
+		[
+			"route" => "/game/{game}",
+			"params" => [
+				"controller" 	=> "index",
+				"action"     	=> "index"
+			]
+		]
+	];
 
-		foreach ($routes as $route) {
+	public function initialize() {
+		foreach (self::$routes as $route) {
 			$this->add($route['route'], $route['params']);
 		}
 	}
 
 }
-?>
+

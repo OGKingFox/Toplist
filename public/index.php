@@ -42,7 +42,7 @@
 
 	$di = new FactoryDefault();
 
-	$di->set("url",	function () {
+	$di->set("url", function () {
 		$url = new UrlProvider();
 		$url->setBaseUri(base_url);
 		return $url;
@@ -89,13 +89,15 @@
         return $dispatcher;
     });
 
-    $di->set('router', function() {
-        $router = new Router();
-        $router->removeExtraSlashes(true);
-        $router->mount(new CustomRouter());
-        $router->handle();
-        return $router;
-    });
+    if (count(CustomRouter::$routes) != 0) {
+        $di->set('router', function () {
+            $router = new Router();
+            $router->removeExtraSlashes(true);
+            $router->mount(new CustomRouter());
+            $router->handle();
+            return $router;
+        });
+    }
 
 	$di->set("flash", function () {
         $flash = new FlashDirect([
