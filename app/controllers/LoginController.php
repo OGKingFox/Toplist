@@ -34,7 +34,22 @@ class LoginController extends BaseController {
 
         if ($response->access_token) {
             $token = $response->access_token;
+
+            $userInfo = (new RestClient())
+                ->setEndpoint("users/@me")
+                ->setAccessToken($token)
+                ->setUseKey(true)
+                ->submit();
+
+            if (!$userInfo || $userInfo->code) {
+                $this->logout();
+                $this->response->redirect("");
+                return false;
+            }
+
             $this->session->set("access_token", $token);
+            $this->session->set("user_info", $userInfo);
+
             return $this->response->redirect("");
         }
 

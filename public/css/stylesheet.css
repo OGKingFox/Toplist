@@ -18,9 +18,7 @@ body {
     transition: all .15s ease;
     text-shadow: 1px 1px 1px rgba(0,0,0,0.3);
 }
-.btn-primary:hover, .btn-primary:focus, .btn-primary:active, .btn-primary.active, .btn-primary.focus, .btn-primary:active, .btn-primary:focus, .btn-primary:hover, .open > .dropdown-toggle.btn-primary, .btn-primary:not([disabled]):not(.disabled).active, .btn-primary:not([disabled]):not(.disabled):active, .show > .btn-primary.dropdown-toggle {
-    transform: translateY(-1px);
-}
+
 .circle {
     margin: auto;
     width: 100px;

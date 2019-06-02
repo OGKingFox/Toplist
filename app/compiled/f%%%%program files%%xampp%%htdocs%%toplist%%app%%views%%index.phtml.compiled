@@ -46,7 +46,11 @@
         </div>
     </nav>
 
-    <?= $this->getContent() ?>
+    <section class="content py-5">
+        <div class="container">
+            <?= $this->getContent() ?>
+        </div>
+    </section>
 
 </body>
 </html>
