@@ -16,6 +16,7 @@ class Servers extends \Phalcon\Mvc\Model {
     private $info;
 
     /**
+     * Grabs a server by info, and joins in the game id and title.
      * @param $id
      * @return bool|\Phalcon\Mvc\ModelInterface|Servers
      */
