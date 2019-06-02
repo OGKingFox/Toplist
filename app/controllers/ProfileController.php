@@ -50,7 +50,7 @@ class ProfileController extends \Phalcon\Mvc\Controller {
             }
         }
 
-        $this->view->games = Games::find();
+        $this->view->games  = Games::find();
         $this->view->server = $server;
         return true;
     }

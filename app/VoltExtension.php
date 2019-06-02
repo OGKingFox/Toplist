@@ -21,8 +21,7 @@ class VoltExtension extends Volt {
     ];
 
     private static $functions = [
-        'replace'       => 'replace',
-        'endsWith'      => 'endsWith'
+        'str_replace' => 'str_replace',
     ];
 
     public function __construct(ViewBaseInterface $view, DiInterface $injector = null) {
@@ -38,13 +37,10 @@ class VoltExtension extends Volt {
 
     public function addFunctions() {
         $compiler = $this->getCompiler();
+
         foreach (self::$functions as $key => $value) {
-            $compiler->addFunction($key, function($key) use ($value) {
-                return "Functions::{$value}({$key})";
-            });
+            $compiler->addFunction($key, $value);
         }
     }
-
-
 
 }

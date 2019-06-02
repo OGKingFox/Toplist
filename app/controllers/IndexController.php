@@ -2,7 +2,7 @@
 class IndexController extends BaseController {
 
     public function indexAction() {
-        
+        $this->view->games = Games::find();
     }
 
     public function logoutAction() {
