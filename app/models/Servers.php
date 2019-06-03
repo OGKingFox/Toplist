@@ -189,14 +189,7 @@ class Servers extends \Phalcon\Mvc\Model {
      * @return string
      */
     public function getSeoTitle() {
-        $reps = [
-            ' - ' => '-',
-            ' ' => '-'
-        ];
-        return $this->getId().'-'.str_replace(
-            array_keys($reps),
-            array_values($reps),
-            strtolower($this->getTitle()));
+        return self::genSeoTitle($this);
     }
 
     /**
