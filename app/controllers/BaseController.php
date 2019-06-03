@@ -32,4 +32,8 @@ class BaseController extends Controller {
         $this->session->destroy();
         return true;
     }
+
+    public function getUser() {
+        return $this->session->get("user_info");
+    }
 }

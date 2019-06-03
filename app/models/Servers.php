@@ -16,6 +16,53 @@ class Servers extends \Phalcon\Mvc\Model {
     private $info;
 
     /**
+     * @param $gameId
+     * @return \Phalcon\Mvc\Model\ResultsetInterface
+     */
+    public static function getServers($gameId = null) {
+        $query = self::query();
+
+        $start  = strtotime(date("Y-m-1 00:00:00"));
+        $end    = strtotime(date("Y-m-t 23:59:59"));
+
+        $query->columns([
+            'Servers.id',
+            'Servers.owner_id',
+            'Servers.owner_tag',
+            'Servers.game',
+            'Servers.title',
+            'Servers.website',
+            'Servers.callback',
+            'Servers.discord_id',
+            'Servers.banner_url',
+            'Servers.summary',
+            'Servers.info',
+            'g.id AS game_id',
+            'g.title AS game_title',
+            '(SELECT COUNT(*) FROM Votes WHERE Votes.server_id = Servers.id AND voted_on >= :start: AND voted_on < :end:) AS votes'
+        ]);
+
+        if ($gameId != null) {
+            $query->conditions('Servers.game = :gid: AND Servers.website != \'\'');
+            $query->bind([
+                'gid' => $gameId,
+                'start' => $start,
+                'end' => $end
+            ]);
+        } else {
+            $query->conditions('Servers.website != \'\'');
+            $query->bind([
+                'start' => $start,
+                'end' => $end
+            ]);
+        }
+
+        $query->leftJoin("Games", 'g.id = Servers.game', 'g');
+
+        return $query->execute();
+    }
+
+    /**
      * Grabs a server by info, and joins in the game id and title.
      * @param $id
      * @return bool|\Phalcon\Mvc\ModelInterface|Servers
@@ -23,16 +70,16 @@ class Servers extends \Phalcon\Mvc\Model {
     public static function getServer($id) {
         return self::query()
             ->columns([
-                'Server.id',
-                'Server.owner_id',
-                'Server.owner_tag',
-                'Server.game',
-                'Server.title',
-                'Server.website',
-                'Server.callback',
-                'Server.discord_id',
-                'Server.summary',
-                'Server.info',
+                'Servers.id',
+                'Servers.owner_id',
+                'Servers.owner_tag',
+                'Servers.game',
+                'Servers.title',
+                'Servers.website',
+                'Servers.callback',
+                'Servers.discord_id',
+                'Servers.summary',
+                'Servers.info',
                 'g.id AS game_id',
                 'g.title AS game_title'
             ])
@@ -138,6 +185,9 @@ class Servers extends \Phalcon\Mvc\Model {
         return $this->title;
     }
 
+    /**
+     * @return string
+     */
     public function getSeoTitle() {
         $reps = [
             ' - ' => '-',
@@ -147,6 +197,25 @@ class Servers extends \Phalcon\Mvc\Model {
             array_keys($reps),
             array_values($reps),
             strtolower($this->getTitle()));
+    }
+
+    /**
+     * Generates an SEO friendly title
+     * @param $server
+     * @return string
+     */
+    public static function genSeoTitle($server) {
+        $reps = [
+            ' - ' => '-',
+            ' ' => '-'
+        ];
+
+        $seo_title = $server->id.'-'.str_replace(
+                array_keys($reps), array_values($reps),
+                strtolower($server->title));
+
+        return $seo_title;
+
     }
     /**
      * @param mixed $title
