@@ -2,8 +2,8 @@
 
 class ApiSecurity {
 
-    const access_token = "5a0158fe-779e-437d-b0db-cc5017e547cb";
-    const bypass_ips = ['75.117.250.194', '172.20.0.1', '::1'];
+    const access_token = "";
+    const bypass_ips = ['::1'];
 
     /**
      * Checks if an accessing user has access via http headers
