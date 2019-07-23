@@ -18,10 +18,16 @@ class CustomRouter extends RouterGroup {
 				"controller" 	=> "index",
 				"action"     	=> "index"
 			]
-		]
-        ,
+		],
         [
             "route" => "/view/{id:[0-9]+}-{server:[A-Za-z0-9\-]+}",
+            "params" => [
+                "controller" 	=> "index",
+                "action"     	=> "view"
+            ]
+        ],
+        [
+            "route" => "/view/{id:[0-9]+}",
             "params" => [
                 "controller" 	=> "index",
                 "action"     	=> "view"

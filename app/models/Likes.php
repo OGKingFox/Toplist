@@ -26,6 +26,19 @@ class Likes extends \Phalcon\Mvc\Model {
     }
 
     /**
+     * @param $server_id
+     * @return bool|\Phalcon\Mvc\ModelInterface|Likes
+     */
+    public static function getLikes($server_id) {
+        return self::query()
+            ->columns("COUNT(*) AS amount")
+            ->conditions("server_id = :sid:")
+            ->bind([
+                'sid' => $server_id
+            ])->execute()->getFirst();
+    }
+
+    /**
      * @return mixed
      */
     public function getServerId()

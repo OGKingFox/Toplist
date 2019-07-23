@@ -61,13 +61,17 @@
                     Total Votes <span class="float-right">{{ votes }}</span>
                 </div>
                 <div class="list-group-item">
-                    Likes <span class="float-right">10</span>
+                    Likes <span class="float-right">{{ likes }}</span>
                 </div>
                 <div class="list-group-item">
                     Date Created <span class="float-right">{{ date('M. j, Y', server.date_created) }}</span>
                 </div>
             </div>
         </div>
+
+        <p class="small text-muted text-center">
+            All server data is cached for up to 15 seconds, so updates may not appear instantly.
+        </p>
     </div>
 </div>
 

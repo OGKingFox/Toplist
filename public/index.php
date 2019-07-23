@@ -51,7 +51,7 @@
 	$di->set('voltService', function ($view, $di) {
         $volt = new VoltExtension($view, $di);
         $volt->setOptions([
-            'compiledPath'      => '../app/compiled/',
+            'compiledPath'      => '../app/compiled/templates/',
             'compiledExtension' => '.compiled',
         ]);
         $volt->addFilters();

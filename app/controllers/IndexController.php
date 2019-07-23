@@ -1,4 +1,7 @@
 <?php
+use Phalcon\Cache\Backend\File as BackFile;
+use Phalcon\Cache\Frontend\Data as FrontData;
+
 class IndexController extends BaseController {
 
     public function indexAction($gameId = null) {
@@ -28,7 +31,7 @@ class IndexController extends BaseController {
         return true;
     }
 
-    public function viewAction($id, $title) {
+    public function viewAction($id) {
         $id = $this->filter->sanitize($id, "int");
 
         $server = Servers::getServer($id);
@@ -41,15 +44,26 @@ class IndexController extends BaseController {
             return true;
         }
 
-        $votes    = Votes::getVoteTotalForMonth($server->id)->total;
-        $voteData = Votes::getVotesForMonth($server->id);
+        $seo    = Servers::genSeoTitle($server);
+        $fCache = new FrontData(['lifetime' => '15']);
+        $cache  = new BackFile($fCache, ['cacheDir' => "../app/compiled/servers/"]);
+        $data   = $cache->get($seo.".cache");
 
-        $this->view->votes     = $votes;
+        if (!$data) {
+            $data = [
+                'votes' => Votes::getVoteTotalForMonth($server->id)->total,
+                'voteData' => Votes::getVotesForMonth($server->id),
+                'likes' => Likes::getLikes($server->id)->amount
+            ];
+            $cache->save($seo.".cache", $data);
+        }
+
+        $this->view->votes     = $data['votes'];
         $this->view->server    = $server;
-        $this->view->voteData  = $voteData;
+        $this->view->voteData  = $data['voteData'];
         $this->view->days      = range(1, date('t'));
-        $this->view->seo_title = Servers::genSeoTitle($server);
-
+        $this->view->seo_title = $seo;
+        $this->view->likes     = $data['likes'];
 
         $resetsOn = date("Y-m-t 23:59:59");
         $future = new DateTime($resetsOn);
