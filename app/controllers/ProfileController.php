@@ -14,6 +14,7 @@ class ProfileController extends \Phalcon\Mvc\Controller {
             $server->setOwnerId($owner->id);
             $server->setOwnerTag($owner->username.'#'.$owner->discriminator);
             $server->setInfo(Functions::getPurifier()->purify($server->getInfo()));
+            $server->setDateCreated(time());
 
             if (!$server->save()) {
                 $this->flash->error($server->getMessages());

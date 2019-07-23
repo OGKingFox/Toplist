@@ -41,9 +41,7 @@ class IndexController extends BaseController {
             return true;
         }
 
-        //echo time();
-
-        $votes = Votes::getVoteTotalForMonth($server->id)->total;
+        $votes    = Votes::getVoteTotalForMonth($server->id)->total;
         $voteData = Votes::getVotesForMonth($server->id);
 
         $this->view->votes     = $votes;
@@ -58,7 +56,6 @@ class IndexController extends BaseController {
         $differ = $future->diff(new DateTime());
 
         $this->view->resetIn = $differ->format("%dd %hh %im %ss");
-        //$this->debug($days);
         return true;
     }
 

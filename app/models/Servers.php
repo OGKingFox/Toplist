@@ -14,6 +14,8 @@ class Servers extends \Phalcon\Mvc\Model {
     private $discord_id;
     private $summary;
     private $info;
+    private $likes;
+    private $date_created;
 
     /**
      * @param $gameId
@@ -58,7 +60,7 @@ class Servers extends \Phalcon\Mvc\Model {
         }
 
         $query->leftJoin("Games", 'g.id = Servers.game', 'g');
-
+        $query->orderBy("votes DESC, Servers.title DESC");
         return $query->execute();
     }
 
@@ -80,6 +82,8 @@ class Servers extends \Phalcon\Mvc\Model {
                 'Servers.discord_id',
                 'Servers.summary',
                 'Servers.info',
+                'Servers.date_created',
+                'Servers.likes',
                 'g.id AS game_id',
                 'g.title AS game_title'
             ])
@@ -308,6 +312,42 @@ class Servers extends \Phalcon\Mvc\Model {
     {
         $this->info = $info;
         return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getDateCreated()
+    {
+        return $this->date_created;
+    }
+
+    /**
+     * @param mixed $date_created
+     */
+    public function setDateCreated($date_created)
+    {
+        $this->date_created = $date_created;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getLikes()
+    {
+        return $this->likes;
+    }
+
+    /**
+     * @param mixed $likes
+     */
+    public function setLikes($likes)
+    {
+        $this->likes = $likes;
+    }
+
+    public static function getLike($serverId, $user_id) {
+
     }
 
     public function validation() {

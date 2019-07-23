@@ -31,8 +31,6 @@
                 <h5>Comments</h5>
                 <hr>
 
-
-
                 <hr>
                 {{ form('view/'~seo_title, 'method' : 'post') }}
                 <div class="form-group">
@@ -43,12 +41,33 @@
                 <div class="form-group">
                     {{ submit_button('Create Reply', 'class' : 'btn btn-dark') }}
                 </div>
-
                 {{ end_form() }}
 
             </div>
         </div>
         {{ content() }}
+    </div>
+
+    <div class="col-sm-12 col-xl-4">
+        <div class="card border-0 shadow-sm mb-3">
+            <div class="list-group list-group-flush">
+                <div class="list-group-item">
+                    Added By <span class="float-right text-right">{{ server.owner_tag }}<br><small>ID: {{ server.owner_id }}</small></span>
+                </div>
+                <div class="list-group-item">
+                    Rank <span class="float-right">1</span>
+                </div>
+                <div class="list-group-item">
+                    Total Votes <span class="float-right">{{ votes }}</span>
+                </div>
+                <div class="list-group-item">
+                    Likes <span class="float-right">10</span>
+                </div>
+                <div class="list-group-item">
+                    Date Created <span class="float-right">{{ date('M. j, Y', server.date_created) }}</span>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 
