@@ -46,10 +46,12 @@ class IndexController extends BaseController {
         $votes = Votes::getVoteTotalForMonth($server->id)->total;
         $voteData = Votes::getVotesForMonth($server->id);
 
-        $this->view->votes    = $votes;
-        $this->view->server   = $server;
-        $this->view->voteData = $voteData;
-        $this->view->days     = range(1, date('t'));
+        $this->view->votes     = $votes;
+        $this->view->server    = $server;
+        $this->view->voteData  = $voteData;
+        $this->view->days      = range(1, date('t'));
+        $this->view->seo_title = Servers::genSeoTitle($server);
+
 
         $resetsOn = date("Y-m-t 23:59:59");
         $future = new DateTime($resetsOn);

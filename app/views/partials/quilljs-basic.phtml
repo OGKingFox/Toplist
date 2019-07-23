@@ -1,0 +1,81 @@
+{{ javascript_include('https://cdn.quilljs.com/1.3.6/quill.min.js') }}
+{{ stylesheet_link("css/quill.snow.css") }}
+
+<script>
+    var apiUrl = 'https://api.imgur.com/3/image';
+    var apiKey = '{{ constant("IMGUR_KEY") }}';
+
+    var toolbarOptions = [
+        ['bold', 'italic', 'underline', { 'color': [] }],
+        ['blockquote', 'code-block'],
+        [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+        [{ 'align': [] }],
+        ['clean']
+    ];
+
+    var quill = new Quill('#editor', {
+        theme: 'snow',
+        modules: {
+            toolbar: toolbarOptions
+        }
+    });
+
+    quill.getModule("toolbar").addHandler("image", function (a) {
+        var input = document.createElement('input');
+        input.setAttribute('type', 'file');
+        input.click();
+
+        input.onchange = (s) => {
+            var file = input.files[0];
+
+            if (/^image\//.test(file.type)) {
+                var settings = {
+                    async: true,
+                    crossDomain: true,
+                    processData: false,
+                    contentType: false,
+                    type: 'POST',
+                    url: apiUrl,
+                    headers: {
+                        Authorization: 'Client-ID ' + apiKey,
+                        Accept: 'application/json'
+                    },
+                    mimeType: 'multipart/form-data'
+                };
+
+                var formData = new FormData();
+                formData.append("image", file);
+                settings.data = formData;
+
+                quill.enable(false);   // Disables user input
+
+                var range = quill.getSelection();
+
+                if (range) {
+                    $.ajax(settings).done(function(response) {
+                        var json = JSON.parse(response);
+                        var index = range.index;
+
+                        quill.insertEmbed(index, 'image', json.data.link);
+                        quill.enable();
+                    });
+                } else {
+                    alert("Please select a spot in your post where you wish the image to be placed.")
+                }
+
+            } else {
+                console.warn('You could only upload images.');
+            }
+        }
+    });
+
+    $("#postform").on("submit", function (event) {
+        event.preventDefault();
+        var body  = $(this).find(".ql-editor").html();
+
+        $(this).find("#editor-form").html(body);
+
+        $(this)[0].submit();
+    });
+
+</script>

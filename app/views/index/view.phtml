@@ -11,19 +11,48 @@
 
         <div class="card border-0 shadow-sm mb-3">
             <div class="card-body">
+                <div class="float-right">
+                    {{ link_to(server.website, '<i class="fal fa-globe fa-fw"></i>', false, 'target' : '_blank',
+                        'class' : 'btn btn-primary btn-sm border-0',
+                        'data-toggle' : 'tooltip', 'title' : 'Visit Website') }}
+
+                    {{ link_to(server.website, '<i class="fal fa-thumbs-up fa-fw"></i> +1', false, 'target' : '_blank',
+                        'class' : 'btn btn-primary btn-sm border-0',
+                        'data-toggle' : 'tooltip', 'title' : 'Like this Server') }}
+                </div>
                 <h5>{{ server.title }}</h5>
                 <hr>
-
-                <div class="float-right">
-                    <i class="fad fa-globe"></i>
-                </div>
                 {{ server.info }}
+            </div>
+        </div>
+
+        <div class="card border-0 shadow-sm mb-3">
+            <div class="card-body">
+                <h5>Comments</h5>
+                <hr>
+
+
+
+                <hr>
+                {{ form('view/'~seo_title, 'method' : 'post') }}
+                <div class="form-group">
+                    <p class="small text-muted">Leave a comment below!</p>
+                    <div id="editor" class="mb-3"></div>
+                    <textarea name='info' id='editor-form' style='display:none'></textarea>
+                </div>
+                <div class="form-group">
+                    {{ submit_button('Create Reply', 'class' : 'btn btn-dark') }}
+                </div>
+
+                {{ end_form() }}
+
             </div>
         </div>
         {{ content() }}
     </div>
 </div>
 
+{{ partial('partials/quilljs-basic') }}
 {{ javascript_include("js/chart.min.js") }}
 
 <script>
