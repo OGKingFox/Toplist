@@ -1,0 +1,81 @@
+<div class="row">
+    <div class="col-sm-12 col-xl-8">
+        <div class="card border-0 shadow-sm mb-3">
+            <div class="card-body pb-0">
+                <canvas id="donateChart" height="200px"></canvas>
+            </div>
+            <div class="card-body pb-2 pt-0 text-center small text-muted">
+                Votes reset at the end of the month in <strong>{{ resetIn }}</strong>
+            </div>
+        </div>
+
+        <div class="card border-0 shadow-sm mb-3">
+            <div class="card-body">
+                <h5>{{ server.title }}</h5>
+                <hr>
+
+                <div class="float-right">
+                    <i class="fad fa-globe"></i>
+                </div>
+                {{ server.info }}
+            </div>
+        </div>
+        {{ content() }}
+    </div>
+</div>
+
+{{ javascript_include("js/chart.min.js") }}
+
+<script>
+    var ctx2 = document.getElementById("donateChart").getContext('2d');
+
+    window.chartColors = {
+        red:    'rgb(255, 99, 132)',
+        orange: 'rgb(255, 159, 64)',
+        yellow: 'rgb(255, 205, 86)',
+        green:  'rgb(75, 192, 192)',
+        blue:   'rgb(54, 162, 235)',
+        purple: 'rgb(153, 102, 255)',
+        grey:   'rgb(201, 203, 207)'
+    };
+
+    var options = {};
+
+    options.maintainAspectRatio = false;
+    options.response = true;
+    options.elements = {};
+    options.elements.line = {};
+    options.elements.point = {};
+    options.scales = {};
+    options.title = {};
+    options.tooltips = {};
+    options.tooltips.callbacks = {};
+    options.legend = {};
+    options.legend.labels = {};
+    options.elements.line.borderWidth = 1;
+    options.elements.line.fill = true;
+    options.elements.line.tension = 0.3;
+    options.elements.point.radius = 2;
+    options.title.display = true;
+    options.title.text = 'Votes for {{ date("F") }}';
+    options.legend.display = false;
+    options.legend.position = "top";
+    options.animation = false;
+
+    new Chart(ctx2, {
+        type: 'line',
+        data: {
+            title: 'test',
+            labels: [<?= implode(',', $days) ?>],
+            datasets: [
+                {
+                    label: 'Votes',
+                    data: <?= json_encode(array_values($voteData)) ?>,
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                    backgroundColor: 'rgba(54, 162, 235, 0.03)'
+                }
+            ]
+        },
+        options: options
+    });
+</script>

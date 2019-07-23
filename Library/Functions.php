@@ -4,6 +4,17 @@ class Functions {
 
     private static $purifier;
 
+    public static function getDaysOfMonth() {
+        $daysArr = [];
+        $daysInMonth = date('t');
+
+        for ($i = 1; $i < $daysInMonth + 1; $i++) {
+            $day = date("Y-m-".$i);
+            $daysArr[$day] = 0;
+        }
+        return $daysArr;
+    }
+
     public static function getPurifier() {
         $allowed_html = [
             'div[class]','span[style]','a[href|class|target]','img[src|class]','h1','h2','h3','p[class]','strong','em','ul',

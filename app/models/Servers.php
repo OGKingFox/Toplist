@@ -84,7 +84,7 @@ class Servers extends \Phalcon\Mvc\Model {
                 'g.title AS game_title'
             ])
             ->conditions('Servers.id = :id:')
-            ->leftJoin("Games", 'g.title = Servers.game', 'g')
+            ->leftJoin("Games", 'g.id = Servers.game', 'g')
             ->bind([
                 'id' => $id
             ])->execute()->getFirst();

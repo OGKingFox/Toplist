@@ -28,6 +28,38 @@ class IndexController extends BaseController {
         return true;
     }
 
+    public function viewAction($id, $title) {
+        $id = $this->filter->sanitize($id, "int");
+
+        $server = Servers::getServer($id);
+
+        if (!$server) {
+            $this->dispatcher->forward([
+                'controller' => 'errors',
+                'action' => 'show404'
+            ]);
+            return true;
+        }
+
+        //echo time();
+
+        $votes = Votes::getVoteTotalForMonth($server->id)->total;
+        $voteData = Votes::getVotesForMonth($server->id);
+
+        $this->view->votes    = $votes;
+        $this->view->server   = $server;
+        $this->view->voteData = $voteData;
+        $this->view->days     = range(1, date('t'));
+
+        $resetsOn = date("Y-m-t 23:59:59");
+        $future = new DateTime($resetsOn);
+        $differ = $future->diff(new DateTime());
+
+        $this->view->resetIn = $differ->format("%dd %hh %im %ss");
+        //$this->debug($days);
+        return true;
+    }
+
     public function logoutAction() {
         $this->logout();
         return $this->response->redirect("");

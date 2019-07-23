@@ -19,6 +19,14 @@ class CustomRouter extends RouterGroup {
 				"action"     	=> "index"
 			]
 		]
+        ,
+        [
+            "route" => "/view/{id:[0-9]+}-{server:[A-Za-z0-9\-]+}",
+            "params" => [
+                "controller" 	=> "index",
+                "action"     	=> "view"
+            ]
+        ]
 	];
 
 	public function initialize() {

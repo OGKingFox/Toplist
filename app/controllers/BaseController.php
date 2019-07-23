@@ -36,4 +36,18 @@ class BaseController extends Controller {
     public function getUser() {
         return $this->session->get("user_info");
     }
+
+    /**
+     * @param $msg array
+     */
+    public function println($msg) {
+        echo json_encode($msg);
+    }
+
+    /**
+     * @param $msg array
+     */
+    public function debug($msg) {
+        echo "<pre>".json_encode($msg, JSON_PRETTY_PRINT|JSON_UNESCAPED_SLASHES)."</pre>";
+    }
 }

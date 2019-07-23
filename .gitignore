@@ -3,3 +3,5 @@
 **/*.compiled
 **/error_logs.txt
 .idea/*
+**/css/fontawesome.min.css
+**/webfonts/*
