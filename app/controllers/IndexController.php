@@ -51,9 +51,9 @@ class IndexController extends BaseController {
 
         if (!$data) {
             $data = [
-                'votes' => Votes::getVoteTotalForMonth($server->id)->total,
+                'votes'    => Votes::getVoteTotalForMonth($server->id)->total,
                 'voteData' => Votes::getVotesForMonth($server->id),
-                'likes' => Likes::getLikes($server->id)->amount
+                'likes'    => Likes::getLikes($server->id)->amount
             ];
             $cache->save($seo.".cache", $data);
         }
@@ -70,6 +70,59 @@ class IndexController extends BaseController {
         $differ = $future->diff(new DateTime());
 
         $this->view->resetIn = $differ->format("%dd %hh %im %ss");
+        return true;
+    }
+
+    public function likeAction() {
+        $this->view->setRenderLevel(\Phalcon\Mvc\View::LEVEL_NO_RENDER);
+
+        if (!$this->request->isAjax()) {
+            $this->println([
+                'success' => false,
+                'message' => 'This page is available via ajax only.'
+            ]);
+            return false;
+        }
+
+        $serverId = $this->request->getPost("id", "int");
+        $server   = Servers::getServer($serverId);
+
+        if (!$server) {
+            $this->println([
+                'success' => false,
+                'message' => 'This server does not exist.'
+            ]);
+            return false;
+        }
+
+        $user_id = $this->getUser()->id;
+        $like    = Likes::getLike($server->id, $user_id);
+
+        if ($like) {
+            $this->println([
+                'success' => false,
+                'message' => 'You have already liked this server!'
+            ]);
+            return false;
+        }
+
+        $like = new Likes;
+        $like->setServerId($server->id);
+        $like->setUserId($user_id);
+
+        if (!$like->save()) {
+            $this->println([
+                'success' => false,
+                'message' => 'An error occurred: '.$like->getMessages()[0]
+            ]);
+            return true;
+        }
+
+        $this->println([
+            'success' => true,
+            'message' => 'Your like has been recorded. Thank you!',
+            'count' => Likes::getLikes($server->id)
+        ]);
         return true;
     }
 

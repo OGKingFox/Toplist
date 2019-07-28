@@ -32,8 +32,15 @@ class CustomRouter extends RouterGroup {
                 "controller" 	=> "index",
                 "action"     	=> "view"
             ]
-        ]
-	];
+        ],
+        [
+            "route" => "/like",
+            "params" => [
+                "controller" 	=> "index",
+                "action"     	=> "like"
+            ]
+        ],
+    ];
 
 	public function initialize() {
 		foreach (self::$routes as $route) {
