@@ -79,7 +79,7 @@ class IndexController extends BaseController {
         if (!$this->request->isAjax()) {
             $this->println([
                 'success' => false,
-                'message' => 'This page is available via ajax only.'
+                'message' => 'This page is available via ajax only!'
             ]);
             return false;
         }
