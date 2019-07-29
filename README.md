@@ -1,5 +1,5 @@
 # Toplist
-A gaming toplist built using Phalcon PHP Framework. 
+A gaming oriented toplist built using Phalcon PHP Framework. Some features include a chart for each server displaying incomming votes for every day of the month, Discord OAuth for login, discord widgets, and more. 
 
 Required:
 Phalcon PHP Framework - https://phalconphp.com/en/
