@@ -45,8 +45,19 @@ class LoginController extends BaseController {
                 return false;
             }
 
+            $user = Users::getUser($userInfo->id);
+
+            if ($user) {
+                $user->updateUser($userInfo);
+                $user->update();
+            } else {
+                $user = Users::createUser($userInfo);
+                $user->save();
+            }
+
             $this->session->set("access_token", $token);
             $this->session->set("user_info", $userInfo);
+
 
             return $this->response->redirect("");
         }

@@ -1,30 +1,26 @@
 <?php
 use Phalcon\Cache\Backend\File as BackFile;
 use Phalcon\Cache\Frontend\Data as FrontData;
+use Phalcon\Paginator\Adapter\Model as PaginatorModel;
 
 class IndexController extends BaseController {
 
-    public function indexAction($gameId = null) {
-        $game = null;
+    public function indexAction($gameId = 1) {
+        $gameId = $this->filter->sanitize($gameId, is_numeric($gameId) ? 'int' : 'string');
+        $game = Games::getGameByIdOrName($gameId);
 
-        if ($gameId != null) {
-            $parts = explode('-', $gameId);
-
-            if (count($parts) > 0) {
-                $gameId = $this->filter->sanitize($parts[0], "int");
-                $game   = Games::getGameById($gameId);
-
-                if (!$game) {
-                    return $this->dispatcher->forward([
-                        'controller' => 'errors',
-                        'action' => 'show404'
-                    ]);
-                }
-
-                $this->view->game = $game;
-            }
+        if (!$game) {
+            return $this->dispatcher->forward([
+                'controller' => 'errors',
+                'action' => 'show404'
+            ]);
         }
 
+        $servers = Servers::getServers($game ? $game->getId() : null);
+
+        //$this->debug($servers);
+
+        $this->view->game     = $game;
         $this->view->games    = Games::find();
         $this->view->servers  = Servers::getServers($game ? $game->getId() : null);
         $this->view->myServer = Servers::getServerByOwner($this->getUser()->id);
@@ -44,6 +40,26 @@ class IndexController extends BaseController {
             return true;
         }
 
+        if ($this->request->isPost() && $this->security->checkToken()) {
+            $user_id    = $this->getUser()->id;
+            $username   = $this->getUser()->username;
+
+            $body = $this->request->getPost("comment", ['string', 'trim']);
+
+            $comment = (new Comments)
+                ->setServerId($server->id)
+                ->setUserId($user_id)
+                ->setUsername($username)
+                ->setComment($body)
+                ->setDatePosted(time());
+
+            if (!$comment->save()) {
+                $this->flash->error("Could not save comment: ".$comment->getMessages()[0]);
+            } else {
+                return $this->response->redirect('view/'.Servers::genSeoTitle($server));
+            }
+        }
+
         $seo    = Servers::genSeoTitle($server);
         $fCache = new FrontData(['lifetime' => '15']);
         $cache  = new BackFile($fCache, ['cacheDir' => "../app/compiled/servers/"]);
@@ -53,10 +69,17 @@ class IndexController extends BaseController {
             $data = [
                 'votes'    => Votes::getVoteTotalForMonth($server->id)->total,
                 'voteData' => Votes::getVotesForMonth($server->id),
-                'likes'    => Likes::getLikes($server->id)->amount
+                'likes'    => Likes::getLikes($server->id)->amount,
             ];
+
             $cache->save($seo.".cache", $data);
         }
+
+        $paginator = new PaginatorModel([
+            'data'  => Comments::getComments($server->id),
+            'limit' => 10,
+            'page'  => $this->request->getQuery("page", "int", 1)
+        ]);
 
         $this->view->votes     = $data['votes'];
         $this->view->server    = $server;
@@ -64,12 +87,8 @@ class IndexController extends BaseController {
         $this->view->days      = range(1, date('t'));
         $this->view->seo_title = $seo;
         $this->view->likes     = $data['likes'];
-
-        $resetsOn = date("Y-m-t 23:59:59");
-        $future = new DateTime($resetsOn);
-        $differ = $future->diff(new DateTime());
-
-        $this->view->resetIn = $differ->format("%dd %hh %im %ss");
+        $this->view->comments  = $paginator->getPaginate();
+        $this->view->resetIn   = Functions::timeLeft('Y-m-t 23:59:59', '%dd %hh %im %ss');
         return true;
     }
 

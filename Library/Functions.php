@@ -15,6 +15,18 @@ class Functions {
         return $daysArr;
     }
 
+    /**
+     * @param $user_id
+     * @param $avatar_hash
+     * @return string
+     */
+    public static function getAvatarUrl($user_id, $avatar_hash) {
+        $isGif = substr($avatar_hash, 0, 2) == "a_";
+
+        $base_url   = "https://cdn.discordapp.com/avatars/";
+        return $base_url.$user_id.'/'.$avatar_hash.'.'.($isGif ? 'gif' : 'png').'';
+    }
+
     public static function getPurifier() {
         $allowed_html = [
             'div[class]','span[style]','a[href|class|target]','img[src|class]','h1','h2','h3','p[class]','strong','em','ul',
@@ -27,6 +39,33 @@ class Functions {
             $config->set('AutoFormat.RemoveEmpty', true);
             $config->set("HTML.Allowed", implode(',', $allowed_html));
             $config->set('HTML.AllowedAttributes', 'src, height, width, alt, href, class, style');
+            self::$purifier = new HTMLPurifier($config);
+        }
+
+        return self::$purifier;
+    }
+
+    /**
+     * @param $futureDate
+     * @param $format
+     * @return string
+     * @throws Exception
+     */
+    public static function timeLeft($futureDate, $format) {
+        $future = new DateTime(date($futureDate));
+        $differ = $future->diff(new DateTime());
+        return $differ->format($format);
+    }
+
+    public static function getBasicPurifier() {
+        $allowed_html = [];
+
+        if (!self::$purifier) {
+            $config = HTMLPurifier_Config::createDefault();
+            $config->set("Core.Encoding", 'utf-8');
+            $config->set('AutoFormat.RemoveEmpty', true);
+            $config->set("HTML.Allowed", implode(',', $allowed_html));
+            $config->set('HTML.AllowedAttributes', '');
             self::$purifier = new HTMLPurifier($config);
         }
 

@@ -8,6 +8,20 @@ class BaseController extends Controller {
         echo "<pre>".json_encode($data, JSON_PRETTY_PRINT, JSON_UNESCAPED_SLASHES)."</pre>";
     }
 
+    public function tidyText($text) {
+        $tidyConfig = [
+            'clean'          => true,
+            'output-xhtml'   => true,
+            'show-body-only' => true,
+            'wrap'           => 0,
+        ];
+
+        $tidy = new Tidy;
+        $tidy->parseString($text, $tidyConfig, 'utf8');
+        $tidy->cleanRepair();
+
+        return $tidy;
+    }
     public function logout() {
         if (!$this->session->has("access_token")) {
             return false;
@@ -35,6 +49,16 @@ class BaseController extends Controller {
 
     public function getUser() {
         return $this->session->get("user_info");
+    }
+
+    public function getUserAvatar() {
+        $user    = $this->getUser();
+        $user_id = $user->id;
+        $hash    = $user->avatar;
+        $isGif    = substr($hash, 0, 2) == "a_";
+
+        $base_url   = "https://cdn.discordapp.com/avatars/";
+        return $base_url.$user_id.'/'.$hash.'.'.($isGif ? 'gif' : 'png').'';
     }
 
     /**

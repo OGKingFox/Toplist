@@ -103,6 +103,11 @@ class SecurityPlugin extends Plugin {
         $action     = $dispatcher->getActionName();
         $role       = "guest";
 
+        if ($controller == 'api') {
+            $this->view->setRenderLevel(\Phalcon\Mvc\View::LEVEL_NO_RENDER);
+            return true;
+        }
+
         if ($this->session->has('access_token')) {
             if ($this->dispatcher->getControllerName() == "login") {
                 $this->response->redirect("");
@@ -114,8 +119,8 @@ class SecurityPlugin extends Plugin {
             $user = Users::getUser($userInfo->id);
 
             if (!$user) {
-                $user = Users::createUser($userInfo);
-                $user->save();
+                $this->session->destroy();
+                return $this->response->redirect("");
             }
 
             $role = $user->getRole();

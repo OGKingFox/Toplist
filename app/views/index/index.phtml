@@ -4,9 +4,9 @@
     <div class="col-sm-12">
         <div class="text-right mb-3">
             {% if myServer is not null %}
-            {{ link_to('profile/edit', '<i class="fal fa-plus-circle fa-fw"></i> Manage Server', 'class' : 'btn btn-info') }}
+                {{ link_to('profile/edit', '<i class="fal fa-plus-circle fa-fw"></i> Manage Server', 'class' : 'btn btn-info') }}
             {% else %}
-            {{ link_to('profile/add', '<i class="fal fa-plus-circle fa-fw"></i> Add Server', 'class' : 'btn btn-info') }}
+                {{ link_to('profile/add', '<i class="fal fa-plus-circle fa-fw"></i> Add Server', 'class' : 'btn btn-info') }}
             {% endif %}
 
             <div class="btn-group" role="group">
@@ -27,7 +27,7 @@
 <div class="row">
     <div class="col-sm-12">
         <div class="card shadow-sm mb-3 border-0 text-secondary">
-            <table class="table table-striped table-borderless mb-0 tab" style="line-height: 1.2em">
+            <table class="table mb-0 tab" style="line-height: 1.2em">
                 {% for server in servers %}
                 <?php $seo_title = Servers::genSeoTitle($server); ?>
                 <tr>

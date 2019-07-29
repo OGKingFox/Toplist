@@ -12,8 +12,22 @@ class CustomRouter extends RouterGroup {
 				"action"     	=> "logout"
 			]
 		],
+        [
+            "route" => "/game/{id:[0-9]+}",
+            "params" => [
+                "controller" 	=> "index",
+                "action"     	=> "index"
+            ]
+        ],
+        [
+            "route" => "/game/{game:[A-Za-z0-9\-]+}",
+            "params" => [
+                "controller" 	=> "index",
+                "action"     	=> "index"
+            ]
+        ],
 		[
-			"route" => "/game/{game}",
+			"route" => "/game/{id:[0-9]+}-{game:[A-Za-z0-9\-]+}",
 			"params" => [
 				"controller" 	=> "index",
 				"action"     	=> "index"

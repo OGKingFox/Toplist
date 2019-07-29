@@ -36,12 +36,12 @@ a:hover {
 .navbar {
     text-shadow: 1px 1px 1px rgba(0,0,0,0.3);
 }
-.card-header {
+/*.card-header {
     border-bottom: none;
     background: #3bafda linear-gradient(135deg,#3bafda 0,#727cf5 70%);
     color:#FFF;
     text-shadow: 1px 1px 1px rgba(0,0,0,0.3);
-}
+}*/
 .bg-gradient {
     background: #3bafda linear-gradient(135deg,#3bafda 0,#727cf5 70%);
 }

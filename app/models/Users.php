@@ -31,6 +31,24 @@ class Users extends \Phalcon\Mvc\Model {
             ->execute()->getFirst();
     }
 
+    /**
+     * @param $userInfo mixed
+     * @return Users
+     */
+    public function updateUser($userInfo) {
+        $this->setUsername($userInfo->username);
+        $this->setVerified($userInfo->verified ? 1 : 0);
+        $this->setLocale($userInfo->locale);
+        $this->setPremiumType($userInfo->premium_type);
+        $this->setMfaEnabled($userInfo->mfa_enabled ? 1 : 0);
+        $this->setUserId($userInfo->id);
+        $this->setFlags($userInfo->flags);
+        $this->setAvatar($userInfo->avatar);
+        $this->setDiscriminator($userInfo->discriminator);
+        $this->setEmail($userInfo->email);
+        return $this;
+    }
+
     public static function createUser($userInfo) {
         $user = new Users;
         $user->setUsername($userInfo->username);

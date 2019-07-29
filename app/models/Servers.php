@@ -41,6 +41,7 @@ class Servers extends \Phalcon\Mvc\Model {
             'Servers.info',
             'g.id AS game_id',
             'g.title AS game_title',
+            'user.*',
             '(SELECT COUNT(*) FROM Votes WHERE Votes.server_id = Servers.id AND voted_on >= :start: AND voted_on < :end:) AS votes'
         ]);
 
@@ -60,6 +61,7 @@ class Servers extends \Phalcon\Mvc\Model {
         }
 
         $query->leftJoin("Games", 'g.id = Servers.game', 'g');
+        $query->leftJoin("Users", 'user.user_id = Servers.owner_id', 'user');
         $query->orderBy("votes DESC, Servers.title DESC");
         return $query->execute();
     }
@@ -85,10 +87,12 @@ class Servers extends \Phalcon\Mvc\Model {
                 'Servers.date_created',
                 'Servers.likes',
                 'g.id AS game_id',
-                'g.title AS game_title'
+                'g.title AS game_title',
+                'user.*',
             ])
             ->conditions('Servers.id = :id:')
             ->leftJoin("Games", 'g.id = Servers.game', 'g')
+            ->leftJoin("Users", 'user.user_id = Servers.owner_id', 'user')
             ->bind([
                 'id' => $id
             ])->execute()->getFirst();

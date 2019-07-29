@@ -24,14 +24,27 @@ class Games extends \Phalcon\Mvc\Model {
     }
 
     /**
-     * @param $id
-     * @return bool|\Phalcon\Mvc\ModelInterface|Games
-     */
+ * @param $id
+ * @return bool|\Phalcon\Mvc\ModelInterface|Games
+ */
     public static function getGameById($id) {
         return self::query()
             ->conditions("id = :id:")
             ->bind([
                 'id' => $id
+            ])->execute()->getFirst();
+    }
+
+    /**
+     * @param $id
+     * @return bool|\Phalcon\Mvc\ModelInterface|Games
+     */
+    public static function getGameByIdOrName($id) {
+        return self::query()
+            ->conditions("id = :id: OR title = :title:")
+            ->bind([
+                'id' => $id,
+                'title' => str_replace("-", " ", $id)
             ])->execute()->getFirst();
     }
 
