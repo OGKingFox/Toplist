@@ -3,6 +3,7 @@
  * Author: King Fox (https://www.foxtrot-studios.co/)
  */
 class Discord {
+
     public $serverId;
     public $data;
     public $channels;

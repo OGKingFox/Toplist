@@ -18,4 +18,19 @@ $(document).ready(function() {
         }
     });
 
+    var windowTop = $(window).scrollTop();
+    var windowBottom = ($(window).height() - windowTop);
+    var navbar = $('.navbar');
+
+    $(window).scroll(function() {
+        windowTop = $(window).scrollTop();
+        if (windowTop > 250) {
+            navbar.addClass("bg-light shadow navbar-light");
+            navbar.removeClass("bg-transparent navbar-dark");
+        } else {
+            navbar.removeClass("bg-light shadow navbar-light");
+            navbar.addClass("bg-transparent navbar-dark");
+        }
+    });
+
 });

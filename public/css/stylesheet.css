@@ -7,8 +7,51 @@ body {
     font-family: 'Open Sans', sans-serif;
     background-color: #f1f1f1;
 }
+header {
+    height: 300px;
+    position: relative;
+    width: 100%;
+    overflow:hidden;
+}
+header:before {
+    content: ' ';
+    background-image: url(../img/header.jpg);
+    background-position: top -80px center;
+    position: absolute;
+    left: -10px;
+    right: -10px;
+    top: -10px;
+    bottom: -10px;
+    overflow: hidden;
+    height: 400px;
+    z-index: -1;
+    padding-top: 125px;
+    -webkit-filter: blur(4px) brightness(50%);
+}
+header .overlay h1 {
+    font-family: "Montserrat-Bold", sans-serif;
+    padding-top: 125px;
+    font-size: 50px;
+    color: white;
+    text-shadow: 1px 1px 2px #000;
+    z-index: 1001;
+}
+.search-form {
+    position: absolute;
+}
+.search-form .form-control {
+    min-width: 300px;
+}
+.search-form .btn {
+    position: absolute;
+    right: 0;
+}
 .text-primary {
     color: #3bafda !important;
+}
+.navbar {
+    transition: all .2s ease-in-out;
+    text-shadow: none;
 }
 .btn-primary {
     background: #3bafda linear-gradient(135deg,#3bafda 0,#727cf5 70%);
@@ -32,9 +75,6 @@ a:hover {
 }
 .circle i {
     line-height:90px;
-}
-.navbar {
-    text-shadow: 1px 1px 1px rgba(0,0,0,0.3);
 }
 /*.card-header {
     border-bottom: none;
@@ -77,4 +117,9 @@ a:hover {
 }
 .table td, .table th {
     vertical-align: middle !important;
+}
+@media(max-width:991.98px) {
+    .server-banner {
+        display: none;
+    }
 }

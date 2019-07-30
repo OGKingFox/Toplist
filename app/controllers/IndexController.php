@@ -7,7 +7,7 @@ class IndexController extends BaseController {
 
     public function indexAction($gameId = 1) {
         $gameId = $this->filter->sanitize($gameId, is_numeric($gameId) ? 'int' : 'string');
-        $game = Games::getGameByIdOrName($gameId);
+        $game   = Games::getGameByIdOrName($gameId);
 
         if (!$game) {
             return $this->dispatcher->forward([
@@ -16,13 +16,15 @@ class IndexController extends BaseController {
             ]);
         }
 
-        $servers = Servers::getServers($game ? $game->getId() : null);
-
-        //$this->debug($servers);
+        $serverList = (new PaginatorModel([
+            'data'  => Servers::getServers($game ? $game->getId() : null),
+            'limit' => 10,
+            'page'  => $this->dispatcher->getParam("page", "int", 1)
+        ]))->getPaginate();
 
         $this->view->game     = $game;
         $this->view->games    = Games::find();
-        $this->view->servers  = Servers::getServers($game ? $game->getId() : null);
+        $this->view->servers  = $serverList;
         $this->view->myServer = Servers::getServerByOwner($this->getUser()->id);
         return true;
     }

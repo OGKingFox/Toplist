@@ -393,9 +393,9 @@ class Servers extends \Phalcon\Mvc\Model {
 
         $validator->add("title", new Callback([
             "callback" => function() {
-                return strlen($this->title) >= 4 && strlen($this->title) <= 50;
+                return strlen($this->title) >= 4 && strlen($this->title) <= 35;
             },
-            "message" => "Invalid title. Must be between 4 and 50 characters"
+            "message" => "Invalid title. Must be between 4 and 35 characters"
         ]));
 
         $validator->add("title", new Callback([

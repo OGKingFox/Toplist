@@ -41,6 +41,27 @@ class CustomRouter extends RouterGroup {
 			]
 		],
         [
+            "route" => "/game/{id:[0-9]+}/{page:[0-9]+}",
+            "params" => [
+                "controller" 	=> "index",
+                "action"     	=> "index"
+            ]
+        ],
+        [
+            "route" => "/game/{game:[A-Za-z0-9\-]+}/{page:[0-9]+}",
+            "params" => [
+                "controller" 	=> "index",
+                "action"     	=> "index"
+            ]
+        ],
+        [
+            "route" => "/game/{id:[0-9]+}-{game:[A-Za-z0-9\-]+}/{page:[0-9]+}",
+            "params" => [
+                "controller" 	=> "index",
+                "action"     	=> "index"
+            ]
+        ],
+        [
             "route" => "/view/{id:[0-9]+}-{server:[A-Za-z0-9\-]+}",
             "params" => [
                 "controller" 	=> "index",
