@@ -6,7 +6,9 @@
             {% if myServer is not null %}
                 {{ link_to('profile/edit', '<i class="fal fa-plus-circle fa-fw"></i> Manage Server', 'class' : 'btn btn-info') }}
             {% else %}
-                {{ link_to('profile/add', '<i class="fal fa-plus-circle fa-fw"></i> Add Server', 'class' : 'btn btn-info') }}
+                {% if user is defined %}
+                    {{ link_to('profile/add', '<i class="fal fa-plus-circle fa-fw"></i> Add Server', 'class' : 'btn btn-info') }}
+                {% endif %}
             {% endif %}
 
             <div class="btn-group" role="group">

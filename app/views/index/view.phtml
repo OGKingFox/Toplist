@@ -23,6 +23,10 @@
                         'class' : 'btn btn-primary btn-sm border-0',
                         'id' : 'like', 'data-id' : server.id,
                         'data-toggle' : 'tooltip', 'title' : 'Like this Server') }}
+
+                    {{ link_to(server.website, '<i class="fal fa-flag fa-fw"></i>', false, 'target' : '_blank',
+                        'class' : 'btn btn-danger btn-sm border-0',
+                        'data-toggle' : 'modal', 'data-target' : '#reportModal') }}
                 </div>
                 <h4 class="mb-0">{{ server.title }}</h4>
             </div>
@@ -33,6 +37,8 @@
 
         <div class="card border-0 shadow-sm mb-3">
             <div class="card-header bg-white">Comments</div>
+
+            {% if user is defined %}
             <div class="card-body">
                 <div class="comment-form"></div>
                 {{ form('view/'~seo_title, 'method' : 'post', 'class' : 'form-inline', 'id' : 'comment-form') }}
@@ -40,12 +46,14 @@
                     {{ text_field('comment', 'class' : 'form-control mr-2', 'placeholder' : 'Type a comment!',
                         'style' : 'min-width: 350px;') }}
                 </div>
+                {{ hidden_field('type', 'value' : 'comment') }}
                 {{ hidden_field(security.getTokenKey(), 'value' : security.getToken()) }}
                 <div class="form-group">
                     <button class="btn btn-dark" type="submit"><i class="fal fa-paper-plane"></i></button>
                 </div>
                 {{ end_form() }}
             </div>
+            {% endif %}
 
             <div class="list-group list-group-flush">
                 {% for comment in comments.items %}
@@ -110,6 +118,34 @@
             All server data is cached for up to 15 seconds, so updates may not appear instantly.
         </p>
 
+    </div>
+</div>
+
+<div class="modal fade" id="reportModal" tabindex="-1" role="dialog" aria-labelledby="reportModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Report {{ server.title }}</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                {{ form('report', 'method' : 'post') }}
+                <div class="form-group">
+                    <label for="comment">Type a reason below as  to why you're reporting this server.</label>
+                    {{ text_area('comment', 'class' : 'form-control mr-2', 'style' : 'min-width: 350px;max-height:300px;') }}
+                </div>
+                {{ hidden_field('type', 'value' : 'report') }}
+                {{ hidden_field('serverId', 'value' : server.id) }}
+                {{ hidden_field(security.getTokenKey(), 'value' : security.getToken()) }}
+                <div class="form-group">
+                    <button type="button" class="btn btn-secondary border-0" data-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-primary border-0">Submit Report</button>
+                </div>
+                {{ end_form() }}
+            </div>
+        </div>
     </div>
 </div>
 

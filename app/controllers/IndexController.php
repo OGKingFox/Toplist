@@ -41,22 +41,27 @@ class IndexController extends BaseController {
         }
 
         if ($this->request->isPost() && $this->security->checkToken()) {
-            $user_id    = $this->getUser()->id;
-            $username   = $this->getUser()->username;
+            $user_id  = $this->getUser()->id;
+            $username = $this->getUser()->username;
+            $type     = $this->request->getPost("type", 'string');
 
-            $body = $this->request->getPost("comment", ['string', 'trim']);
+            if ($type == "report") {
+                echo 'report';
+            } else if ($type == "comment") {
+                $body = $this->request->getPost("comment", ['string', 'trim']);
 
-            $comment = (new Comments)
-                ->setServerId($server->id)
-                ->setUserId($user_id)
-                ->setUsername($username)
-                ->setComment($body)
-                ->setDatePosted(time());
+                $comment = (new Comments)
+                    ->setServerId($server->id)
+                    ->setUserId($user_id)
+                    ->setUsername($username)
+                    ->setComment($body)
+                    ->setDatePosted(time());
 
-            if (!$comment->save()) {
-                $this->flash->error("Could not save comment: ".$comment->getMessages()[0]);
-            } else {
-                return $this->response->redirect('view/'.Servers::genSeoTitle($server));
+                if (!$comment->save()) {
+                    $this->flash->error("Could not save comment: ".$comment->getMessages()[0]);
+                } else {
+                    return $this->response->redirect('view/'.Servers::genSeoTitle($server));
+                }
             }
         }
 
@@ -90,6 +95,52 @@ class IndexController extends BaseController {
         $this->view->comments  = $paginator->getPaginate();
         $this->view->resetIn   = Functions::timeLeft('Y-m-t 23:59:59', '%dd %hh %im %ss');
         return true;
+    }
+
+    public function reportAction() {
+        if (!$this->request->isPost() /*|| !$this->security->checkToken()*/) {
+            return $this->response->redirect("");
+        }
+
+        $user_id  = $this->getUser() ? $this->getUser()->id : null;
+        $username = $this->getUser() ? $this->getUser()->username : null;
+        $serverId = $this->request->getPost("serverId", "int");
+        $comment  = nl2br($this->request->getPost("comment", 'string'));
+
+        $server = Servers::getServer($serverId);
+
+        if (!$server) {
+            $this->dispatcher->forward([
+                'controller' => 'errors',
+                'action' => 'show404'
+            ]);
+            return true;
+        }
+
+        $this->view->seo_title = Servers::genSeoTitle($server);
+        $this->view->server = $server;
+
+        $lastReport = Reports::getRecentReport($user_id, $serverId);
+
+        if ($lastReport) {
+            $this->view->saved = false;
+            $this->view->error = "You have already submitted a report on this server within the last 5 minutes. Take a chill pill.";
+            return true;
+        }
+
+        $report = new Reports;
+        $report->setUserId($user_id);
+        $report->setUsername($username);
+        $report->setServerId($server->id);
+        $report->setReason($comment);
+        $report->setDateSubmitted(time());
+
+        if ($report->save()) {
+            $this->view->saved = true;
+        } else {
+            $this->view->saved = false;
+            $this->view->error = $report->getMessages()[0];
+        }
     }
 
     public function likeAction() {

@@ -13,6 +13,13 @@ class CustomRouter extends RouterGroup {
 			]
 		],
         [
+            "route" => "/report",
+            "params" => [
+                "controller" 	=> "index",
+                "action"     	=> "report"
+            ]
+        ],
+        [
             "route" => "/game/{id:[0-9]+}",
             "params" => [
                 "controller" 	=> "index",

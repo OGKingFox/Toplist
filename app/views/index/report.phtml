@@ -1,0 +1,18 @@
+<div class="row my-5">
+    <div class="col-sm-12 text-center">
+        {% if saved %}
+        <h1 class="text-success"><i class="fal fa-duck fa-2x"></i></h1>
+        <h1 class="text-success">Report Sent!</h1>
+        <p>Your report has been sent to be reviewed by our staff team! Unfortunately, we won't tell you the results directly,
+            but feel free to bookmark the page to see if anything's been updated!</p>
+        {% else %}
+        <h1 class="text-danger"><i class="fal fa-duck fa-2x"></i></h1>
+        <h1 class="text-danger">Report Failed!</h1>
+        <p>{{ error }}</p>
+        {% endif %}
+
+        <p>
+            {{ link_to('view/'~seo_title, 'Return to '~server.title, 'class' : 'btn btn-dark') }}
+        </p>
+    </div>
+</div>
