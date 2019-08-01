@@ -1,14 +1,14 @@
 <?php
 use \Phalcon\Text;
 
-class ProfileController extends \Phalcon\Mvc\Controller {
+class ProfileController extends BaseController {
 
     public function indexAction() {
 
     }
 
     public function addAction() {
-        if ($this->request->isPost() && $this->security->checkToken()) {
+        if ($this->request->isPost() /*&& $this->security->checkToken()*/) {
             $owner  = $this->session->get("user_info");
             $server = new Servers($this->request->getPost());
 
