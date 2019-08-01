@@ -53,6 +53,7 @@
                     incentive: form.find('#incentive').val(),
                     token: token
                 }, function(data) {
+                    console.log(data);
                     try {
                         let json = JSON.parse(data);
                         let success = json.success;

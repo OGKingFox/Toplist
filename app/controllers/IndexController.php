@@ -168,6 +168,15 @@ class IndexController extends BaseController {
         }
 
         $user_id = $this->getUser() ? $this->getUser()->id : -1;
+
+        if ($user_id == -1) {
+            $this->println([
+                'success' => false,
+                'message' => 'You must be logged in to like a server!'
+            ]);
+            return false;
+        }
+
         $like    = Likes::getLike($server->id, $user_id);
 
         if ($like) {
