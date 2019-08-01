@@ -1,9 +1,0 @@
-<IfModule mod_rewrite.c>
-    RewriteEngine On
-    RewriteCond %{REQUEST_FILENAME} !-f
-    RewriteRule ^((?s).*)$ index.php?_url=/$1 [QSA,L]
-</IfModule>
-<Limit PUT DELETE>
-    Allow from all
-    #Deny from all
-</Limit>
