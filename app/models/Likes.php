@@ -25,6 +25,19 @@ class Likes extends \Phalcon\Mvc\Model {
             ])->execute()->getFirst();
     }
 
+    public static function getMostLiked() {
+        return Likes::query()
+            ->columns([
+                'Likes.server_id',
+                'COUNT(*) AS likes',
+                'server.*'
+            ])
+            ->leftJoin("Servers", "server.id = Likes.server_id", 'server')
+            ->groupBy("Likes.server_id")
+            ->orderBy("likes DESC")
+            ->limit(5)
+            ->execute();
+    }
     /**
      * @param $server_id
      * @return bool|\Phalcon\Mvc\ModelInterface|Likes

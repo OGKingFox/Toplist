@@ -1,4 +1,6 @@
 <?php
+
+use Phalcon\Mvc\Model\ResultsetInterface;
 use Phalcon\Validation;
 use \Phalcon\Validation\Validator\Callback;
 use Phalcon\Validation\Validator\Uniqueness;
@@ -18,9 +20,32 @@ class Servers extends \Phalcon\Mvc\Model {
     private $likes;
     private $date_created;
 
+    public static function getNewestServers() {
+        return self::query()
+            ->orderBy("date_created DESC")
+            ->limit(5)
+            ->execute();
+    }
+
+    /**
+     * @return ResultsetInterface|Servers
+     */
+    public static function getMostVotedOn() {
+        $query = self::query()
+            ->columns([
+                'Servers.id',
+                'Servers.title',
+                '(SELECT COUNT(*) FROM Votes WHERE Votes.server_id = Servers.id) AS votes'
+            ])
+            ->orderBy("votes DESC")
+            ->limit(5)
+            ->execute();
+        return $query;
+    }
+
     /**
      * @param $gameId
-     * @return \Phalcon\Mvc\Model\ResultsetInterface
+     * @return ResultsetInterface
      */
     public static function getServers($gameId = null) {
         $query = self::query();
@@ -212,11 +237,13 @@ class Servers extends \Phalcon\Mvc\Model {
             ' ' => '-'
         ];
 
-        $seo_title = $server->id.'-'.str_replace(
-                array_keys($reps), array_values($reps),
-                strtolower($server->title));
+        $title = preg_replace('/[^ \w]+/', '', $server->title);
+        $title = preg_replace(array('/\s{2,}/', '/[\t\n]/'), ' ', $title);
+        $title = str_replace(
+            array_keys($reps), array_values($reps),
+            strtolower($title));
 
-        return $seo_title;
+        return $server->id.'-'.$title;
 
     }
     /**

@@ -5,7 +5,7 @@ class LoginController extends BaseController {
     public function indexAction() {
         $params = array(
             'client_id'     => OAUTH2_CLIENT_ID,
-            'redirect_uri'  => 'http://localhost/toplist/login/auth',
+            'redirect_uri'  => redirect_uri,
             'response_type' => 'code',
             'scope'         => 'identify guilds email'
         );
@@ -25,7 +25,7 @@ class LoginController extends BaseController {
                 "grant_type"    => "authorization_code",
                 'client_id'     => OAUTH2_CLIENT_ID,
                 'client_secret' => OAUTH2_CLIENT_SECRET,
-                'redirect_uri'  => 'http://localhost/toplist/login/auth',
+                'redirect_uri'  => redirect_uri,
                 'code'          => $this->request->getQuery("code")
             ])
             ->submit();

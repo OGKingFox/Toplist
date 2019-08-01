@@ -6,11 +6,11 @@
             <div class="card-body">
                 <div class="float-right">
                     {% if myServer is not null %}
-                    {{ link_to('profile/edit', '<i class="fal fa-plus-circle fa-fw"></i> Manage Server', 'class' : 'btn btn-info') }}
+                        {{ link_to('profile/edit', '<i class="fal fa-plus-circle fa-fw"></i> Manage Server', 'class' : 'btn btn-info') }}
                     {% else %}
-                    {% if user is defined %}
-                    {{ link_to('profile/add', '<i class="fal fa-plus-circle fa-fw"></i> Add Server', 'class' : 'btn btn-info') }}
-                    {% endif %}
+                        {% if user is defined %}
+                            {{ link_to('profile/add', '<i class="fal fa-plus-circle fa-fw"></i> Add Server', 'class' : 'btn btn-info') }}
+                        {% endif %}
                     {% endif %}
 
                     <div class="btn-group" role="group">
@@ -26,17 +26,17 @@
                     </div>
                 </div>
 
-                {{ form('', 'class' : 'form-inline search-form', 'method' : 'post') }}
+                {#{{ form('', 'class' : 'form-inline search-form', 'method' : 'post') }}
                 {{ text_field('', 'class' : 'form-control rounded-pill', 'placeholder' : 'Search...') }}
                 <button type="submit" class="btn btn-info rounded-pill">Search</button>
-                {{ end_form() }}
+                {{ end_form() }}#}
             </div>
         </div>
     </div>
 </div>
 
 <div class="row">
-    <div class="col-sm-12 col-lg-9">
+    <div class="col-sm-12 col-lg-12">
         <div class="card shadow-sm mb-3 border-0 text-secondary">
             <table class="table mb-0 tab" style="line-height: 1.2em">
                 {% set rank = servers.current == 1 ? 1 : (servers.current * 30)-29 %}
@@ -53,7 +53,7 @@
                             {{ link_to('view/'~seo_title, server.title, 'class' : 'text-info') }}
                         </h6>
                     </td>
-                    <td class="d-md-none d-lg-table-cell">
+                    <td class="d-md-none d-lg-table-cell text-center">
                         {{ image(server.banner_url, 'class' : 'img-fluid server-banner') }}
                     </td>
                     <td class="text-center px-4" style="width:100px;">
@@ -69,11 +69,11 @@
     </div>
 </div>
 
-<div class="mb-3">
+<div class="mb-5">
     {% set game_seo = game.id~'-'~str_replace(" ", "-", game.title|lowercase) %}
 
     {% if servers.total_pages > 0 %}
-    <div class="row my-4">
+    <div class="row">
         <div class="btn-group" role="group" aria-label="Basic example" style="margin:auto;">
             {% set link = username is defined ? '/'~username : '' %}
             {{ link_to('game/'~game_seo~'/'~servers.first, '<i class="fal fa-angle-double-left"></i>', 'class' : 'btn btn-info') }}
@@ -87,3 +87,20 @@
     </div>
     {% endif %}
 </div>
+
+<hr>
+
+<div id="stats">
+    <div class="text-center">
+        <p><i class="fal fa-spinner fa-spin fa-pulse fa-4x"></i></p>
+        <h4>Loading Statistics</h4>
+    </div>
+</div>
+
+<script>
+    setTimeout(function() {
+        $.post("{{ url('index/stats') }}", function(data) {
+            $('#stats').html(data);
+        })
+    }, 1000);
+</script>

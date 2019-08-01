@@ -22,10 +22,24 @@ class IndexController extends BaseController {
             'page'  => $this->dispatcher->getParam("page", "int", 1)
         ]))->getPaginate();
 
-        $this->view->game     = $game;
-        $this->view->games    = Games::find();
-        $this->view->servers  = $serverList;
-        $this->view->myServer = Servers::getServerByOwner($this->getUser()->id);
+        $this->view->game      = $game;
+        $this->view->games     = Games::find();
+        $this->view->servers   = $serverList;
+
+        $this->view->myServer  = $this->getUser() ? Servers::getServerByOwner($this->getUser()->id) : null;
+        return true;
+    }
+
+    public function statsAction() {
+        $this->view->setRenderLevel(\Phalcon\Mvc\View::LEVEL_ACTION_VIEW);
+
+        if (!$this->request->isAjax()) {
+            return false;
+        }
+
+        $this->view->mostLiked = Likes::getMostLiked();
+        $this->view->newest    = Servers::getNewestServers();
+        $this->view->mostVotes = Servers::getMostVotedOn();
         return true;
     }
 

@@ -22,6 +22,26 @@ class BaseController extends Controller {
 
         return $tidy;
     }
+
+    /**
+     * Generates an SEO friendly title
+     * @param $server
+     * @return string
+     */
+    public function genSeoTitle($server) {
+        $reps = [
+            ' - ' => '-',
+            ' ' => '-'
+        ];
+
+        $seo_title = $server->id.'-'.str_replace(
+                array_keys($reps), array_values($reps),
+                strtolower($this->filter->sanitize($server->title, "string")));
+
+        return $seo_title;
+
+    }
+
     public function logout() {
         if (!$this->session->has("access_token")) {
             return false;

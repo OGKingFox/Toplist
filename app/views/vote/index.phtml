@@ -1,7 +1,7 @@
-<div class="row">
+<div class="row my-5">
     <div class="col-sm-12 text-center">
-        <h4 class="mb-0">Voting for</h4>
-        <h3 class="mb-4">{{ server.title }}</h3>
+        <h5 class="mb-0 text-uppercase">Voting for</h5>
+        <h2 class="mb-4 bold-font">{{ server.title|uppercase }}</h2>
 
         <?php $seo_link = Servers::genSeoTitle($server); ?>
 
@@ -39,6 +39,12 @@
     $('#voteform').submit(function(event) {
         event.preventDefault();
 
+        if (locked) {
+            return;
+        }
+
+        locked = true;
+
         let form = $(this);
 
         content.removeClass("text-danger").removeClass("text-success");
@@ -53,7 +59,7 @@
                     incentive: form.find('#incentive').val(),
                     token: token
                 }, function(data) {
-                    console.log(data);
+                    locked = false;
                     try {
                         let json = JSON.parse(data);
                         let success = json.success;
@@ -64,6 +70,7 @@
                     } catch (err) {
                         content.removeClass("text-success");
                         content.addClass("text-danger").html("An error occured! Check the browser console and report the error to a site admin.");
+                        console.log(data);
                     }
                 });
             });
@@ -81,7 +88,7 @@
 
         var id = $(this).data("id");
 
-        $.post('/toplist/like', {
+        $.post('{{ url("like") }}', {
             id: id
         }, function(data) {
             locked = false;

@@ -144,3 +144,6 @@ a:hover {
     background: #7A90DC;
     border-color: #7A90DC;
 }
+.bold-font {
+    font-family: "Montserrat-Bold", sans-serif;
+}
