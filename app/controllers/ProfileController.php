@@ -33,6 +33,12 @@ class ProfileController extends \Phalcon\Mvc\Controller {
         $owner  = $this->session->get("user_info");
         $server = Servers::getServerByOwner($owner->id);
 
+        if ($this->session->has("notice")) {
+            $notice = $this->session->get("notice");
+            $this->flash->message($notice['type'], $notice['message']);
+            $this->session->remove('notice');
+        }
+
         if ($this->request->isPost() && $this->security->checkToken()) {
             $owner  = $this->session->get("user_info");
 
@@ -43,7 +49,11 @@ class ProfileController extends \Phalcon\Mvc\Controller {
             if (!$server->update()) {
                 $this->flash->error($server->getMessages());
             } else {
-                $this->flash->success("Your listing has been updated!");
+                $this->session->set("notice", [
+                    'type' => 'success',
+                    'message' => 'Your changes have been saved.'
+                ]);
+                return $this->response->redirect("profile/edit");
             }
         }
 
