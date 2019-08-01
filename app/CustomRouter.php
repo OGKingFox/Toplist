@@ -13,6 +13,13 @@ class CustomRouter extends RouterGroup {
 			]
 		],
         [
+            "route" => "/vote/{server:[A-Za-z0-9\-]+}/{incentive:[A-Za-z0-9\-\s]+}",
+            "params" => [
+                "controller" 	=> "vote",
+                "action"     	=> "index"
+            ]
+        ],
+        [
             "route" => "/report",
             "params" => [
                 "controller" 	=> "index",

@@ -37,6 +37,7 @@ class SecurityPlugin extends Plugin {
             'login'      => ['index', 'auth', 'logout'],
             'register'   => ['index'],
             'recover'    => ['index'],
+            'vote'       => ['index', 'verify'],
             'errors'     => ['show401', 'show404', 'show500'],
         ];
 

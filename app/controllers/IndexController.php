@@ -18,7 +18,7 @@ class IndexController extends BaseController {
 
         $serverList = (new PaginatorModel([
             'data'  => Servers::getServers($game ? $game->getId() : null),
-            'limit' => 10,
+            'limit' => 30,
             'page'  => $this->dispatcher->getParam("page", "int", 1)
         ]))->getPaginate();
 
@@ -167,7 +167,7 @@ class IndexController extends BaseController {
             return false;
         }
 
-        $user_id = $this->getUser()->id;
+        $user_id = $this->getUser() ? $this->getUser()->id : -1;
         $like    = Likes::getLike($server->id, $user_id);
 
         if ($like) {

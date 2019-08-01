@@ -31,6 +31,7 @@ class RestClient
     private $verify_peer = false;
     private $access_token = "";
     private $content_type = "application/json";
+
     /**
      * @return string
      */

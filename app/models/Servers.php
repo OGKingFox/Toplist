@@ -9,6 +9,7 @@ class Servers extends \Phalcon\Mvc\Model {
     private $owner_tag;
     private $game;
     private $title;
+    private $api_key;
     private $website;
     private $callback;
     private $discord_id;
@@ -353,6 +354,26 @@ class Servers extends \Phalcon\Mvc\Model {
     public static function getLike($serverId, $user_id) {
 
     }
+
+    /**
+     * @return mixed
+     */
+    public function getApiKey()
+    {
+        return $this->api_key;
+    }
+
+    /**
+     * @param mixed $api_key
+     * @return Servers
+     */
+    public function setApiKey($api_key)
+    {
+        $this->api_key = $api_key;
+        return $this;
+    }
+
+
 
     public function validation() {
         $validator = new Validation();

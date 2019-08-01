@@ -1,4 +1,5 @@
 <?php
+use \Phalcon\Text;
 
 class ProfileController extends \Phalcon\Mvc\Controller {
 
@@ -15,6 +16,7 @@ class ProfileController extends \Phalcon\Mvc\Controller {
             $server->setOwnerTag($owner->username.'#'.$owner->discriminator);
             $server->setInfo(Functions::getPurifier()->purify($server->getInfo()));
             $server->setDateCreated(time());
+            $server->setApiKey(Text::random(Text::RANDOM_ALNUM, 15));
 
             if (!$server->save()) {
                 $this->flash->error($server->getMessages());

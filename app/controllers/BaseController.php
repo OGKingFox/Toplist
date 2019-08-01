@@ -61,11 +61,24 @@ class BaseController extends Controller {
         return $base_url.$user_id.'/'.$hash.'.'.($isGif ? 'gif' : 'png').'';
     }
 
+    function getRealIp(){
+        if (!empty($_SERVER['HTTP_X_REAL_IP'])) {
+            return $_SERVER['HTTP_X_REAL_IP'];
+        }
+        if (!empty($_SERVER['HTTP_CLIENT_IP'])) {
+            return $_SERVER['HTTP_CLIENT_IP'];
+        }
+        if (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
+            return $_SERVER['HTTP_X_FORWARDED_FOR'];
+        }
+        return $_SERVER['REMOTE_ADDR'];
+    }
+
     /**
      * @param $msg array
      */
     public function println($msg) {
-        echo json_encode($msg);
+        echo json_encode($msg, JSON_UNESCAPED_SLASHES);
     }
 
     /**
@@ -73,5 +86,43 @@ class BaseController extends Controller {
      */
     public function debug($msg) {
         echo "<pre>".json_encode($msg, JSON_PRETTY_PRINT|JSON_UNESCAPED_SLASHES)."</pre>";
+    }
+
+
+    /**
+     * get access token from header
+     */
+    public function getBearerToken() {
+        $headers = $this->getAuthorizationHeader();
+        if (!empty($headers)) {
+            if (preg_match('/Bearer\s(\S+)/', $headers, $matches)) {
+                return $matches[1];
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Gets the authorization header.
+     * @return string|null
+     */
+    public function getAuthorizationHeader() {
+        $headers = null;
+
+        if (isset($_SERVER['Authorization'])) {
+            $headers = trim($_SERVER["Authorization"]);
+        } else if (isset($_SERVER['HTTP_AUTHORIZATION'])) {
+            $headers = trim($_SERVER["HTTP_AUTHORIZATION"]);
+        } elseif (function_exists('apache_request_headers')) {
+            $requestHeaders = apache_request_headers();
+            $requestHeaders = array_combine(
+                array_map('ucwords', array_keys($requestHeaders)),
+                array_values($requestHeaders)
+            );
+            if (isset($requestHeaders['Authorization'])) {
+                $headers = trim($requestHeaders['Authorization']);
+            }
+        }
+        return $headers;
     }
 }

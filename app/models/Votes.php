@@ -11,6 +11,7 @@ class Votes extends \Phalcon\Mvc\Model {
     private $server_id;
     private $ip_address;
     private $voted_on;
+    private $incentive;
 
     public static function getVoteTotalForMonth($serverId) {
         $start = strtotime(date("Y-m-1 00:00:00"));
@@ -103,6 +104,26 @@ class Votes extends \Phalcon\Mvc\Model {
         $this->voted_on = $voted_on;
         return $this;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getIncentive()
+    {
+        return $this->incentive;
+    }
+
+    /**
+     * @param mixed $incentive
+     * @return Votes
+     */
+    public function setIncentive($incentive)
+    {
+        $this->incentive = $incentive;
+        return $this;
+    }
+
+
 
 
 }

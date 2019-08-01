@@ -19,23 +19,23 @@
 </head>
 
 <body>
+
     <header>
         <div class="overlay text-center text-white">
             <h1>Rune-Nexus</h1>
-            <p>The most modern, not shit toplist, ever built.</p>
         </div>
     </header>
 
-    <nav class="navbar navbar-expand-lg navbar-dark bg-transparent fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark sticky-top" style="margin-top:-56px;">
         <div class="container">
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
+                <span class="navbar-toggler-icon custom-toggler"></span>
             </button>
 
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav mr-auto" style="line-height:1.2em;">
-                    <li class="nav-item active text-lg-center">
-                        <a href="" class="nav-link">Home</a>
+            <div class="collapse navbar-collapse justify-content-md-center" id="navbarSupportedContent">
+                <ul class="navbar-nav" style="line-height:1.2em;">
+                    <li class="nav-item text-lg-center">
+                        {{ link_to('', 'Home', 'class' : 'nav-link') }}
                     </li>
                     <li class="nav-item text-lg-center">
                         <a href="" class="nav-link">Premium</a>
@@ -55,16 +55,20 @@
                     {% if user is defined %}
                     <li class="nav-item">{{ link_to('profile', user.username, 'class' : 'nav-link') }}</li>
                     <li class="nav-item">
-                       {{ link_to('logout', 'Logout', 'class' : 'nav-link') }}
+                        {{ link_to('logout', 'Logout', 'class' : 'nav-link') }}
                     </li>
                     {% else %}
-                    <li class="nav-item">{{ link_to('login', 'Login / Register', 'class' : 'nav-link') }}</li>
+                    <li class="nav-item" style="width:200px;">
+                        {{ link_to('login', ''~image('img/discord-white.svg',
+                            'class' : 'float-left',
+                            'style': 'width:90px;')~' Login',
+                            'class' : 'nav-link btn btn-dark btn-discord btn-sm rounded-pill px-4 text-white') }}
+                    </li>
                     {% endif %}
                 </ul>
             </div>
         </div>
     </nav>
-
     <section class="content py-5">
         <div class="container">
             {{ content() }}

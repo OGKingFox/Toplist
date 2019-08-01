@@ -36,31 +36,33 @@
 </div>
 
 <div class="row">
-    <div class="col-sm-12">
+    <div class="col-sm-12 col-lg-9">
         <div class="card shadow-sm mb-3 border-0 text-secondary">
             <table class="table mb-0 tab" style="line-height: 1.2em">
+                {% set rank = servers.current == 1 ? 1 : (servers.current * 30)-29 %}
+
                 {% for server in servers.items %}
                 <?php $seo_title = Servers::genSeoTitle($server); ?>
                 <tr>
                     <td class="text-center px-4">
-                        <h4 class="mb-0 text-muted">1</h4>
+                        <h6 class="mb-0 text-muted">{{ rank }}</h6>
                     </td>
-                    <td>
-                        <p class="text-secondary my-0 small">SERVER</p>
-                        <h5 class="my-0 text-primary">
+                    <td class="text-truncate" style="max-width:250px;">
+                        <p class="text-secondary my-0 small text-uppercase">Server</p>
+                        <h6 class="my-0 text-primary text-truncate">
                             {{ link_to('view/'~seo_title, server.title, 'class' : 'text-info') }}
-                        </h5>
+                        </h6>
                     </td>
                     <td class="d-md-none d-lg-table-cell">
                         {{ image(server.banner_url, 'class' : 'img-fluid server-banner') }}
                     </td>
-                    <td class="text-center px-4" style="width:150px;">
-                        <h5 class="mb-0 badge badge-info py-2 badge-pill w-100">
-                            {{ server.votes }}
-                        </h5><br>
-                        <small class="text-muted">Vote{{ server.votes > 1 ? 's' : '' }}</small>
+                    <td class="text-center px-4" style="width:100px;">
+                        <h6 class="mb-0">{{ server.votes }}</h6>
+                        <small class="text-muted">Vote{{ server.votes > 1 or server.votes is 0 ? 's' : '' }}</small>
                     </td>
                 </tr>
+
+                {% set rank = rank + 1 %}
                 {% endfor %}
             </table>
         </div>

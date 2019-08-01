@@ -1,0 +1,102 @@
+<div class="row">
+    <div class="col-sm-12 text-center">
+        <h4 class="mb-0">Voting for</h4>
+        <h3 class="mb-4">{{ server.title }}</h3>
+
+        <?php $seo_link = Servers::genSeoTitle($server); ?>
+
+        <p id="content">&nbsp;</p>
+
+        {{ form('vote/'~server.id, 'method' : 'post', 'id' : 'voteform') }}
+        <div class="form-group">
+            {{ submit_button('Vote Now', 'class' : 'btn btn-info') }}
+            {{ hidden_field('server', 'value' : server.id) }}
+            {{ hidden_field('incentive', 'value' : incentive) }}
+            {{ link_to('view/'~seo_link, 'View Server', 'class' : 'btn btn-secondary', 'target' : '_blank') }}
+        </div>
+        {{ end_form() }}
+
+        <hr>
+        <div class="text-center">
+            <p class="mb-2">Do you like this server? Feel free to show some love, and click the like button below!</p>
+            <p id="likeStatus">&nbsp;</p>
+            <a href="https://foxtrot-studios.co" id="like"
+               class="btn btn-info btn-sm"
+               target="_blank" data-id="{{ server.id }}" data-toggle="tooltip"
+               title="" data-original-title="Like this Server"><i class="fal fa-thumbs-up fa-fw"></i> Like</a>
+        </div>
+    </div>
+</div>
+
+<script src="https://www.google.com/recaptcha/api.js?render={{ constant('CAPTCHA_PUBLIC') }}"></script>
+
+<script>
+    let locked = false;
+    let status = $('#likeStatus');
+    let content = $('#content');
+    let count = 0;
+
+    $('#voteform').submit(function(event) {
+        event.preventDefault();
+
+        let form = $(this);
+
+        content.removeClass("text-danger").removeClass("text-success");
+        content.html("<i class='fas fa-spinner fa-pulse'></i>");
+
+        grecaptcha.ready(function() {
+            grecaptcha.execute('{{ constant("CAPTCHA_PUBLIC") }}', {
+                action: 'homepage'
+            }).then(function(token) {
+                $.post('{{ url("vote/verify") }}', {
+                    server: form.find("#server").val(),
+                    incentive: form.find('#incentive').val(),
+                    token: token
+                }, function(data) {
+                    try {
+                        let json = JSON.parse(data);
+                        let success = json.success;
+                        let message = json.message;
+
+                        content.removeClass("text-"+ (success ? "danger" : "success"));
+                        content.addClass("text-" + (success ? 'success' : 'danger')).html(message);
+                    } catch (err) {
+                        content.removeClass("text-success");
+                        content.addClass("text-danger").html("An error occured! Check the browser console and report the error to a site admin.");
+                    }
+                });
+            });
+        });
+    });
+
+    $(document).on('click', '#like', function(event) {
+        event.preventDefault();
+
+        if (locked) {
+            return;
+        }
+
+        locked = true;
+
+        var id = $(this).data("id");
+
+        $.post('/toplist/like', {
+            id: id
+        }, function(data) {
+            locked = false;
+            try {
+                let json = JSON.parse(data);
+                let success = json.success;
+                let msg = json.message;
+
+                status.removeClass("text-"+ (success ? "danger" : "success"));
+                status.addClass("text-" + (success ? 'success' : 'danger')).html(msg)
+            } catch (err) {
+                console.log(err);
+            }
+        });
+
+    });
+
+
+</script>
