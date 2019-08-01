@@ -30,8 +30,11 @@
                 </div>
                 <h4 class="mb-0">{{ server.title }}</h4>
             </div>
-            <div class="card-body">
+            <div class="card-body" id="server-info">
                 {{ server.info }}
+
+                <hr>
+                <div id="images"></div>
             </div>
         </div>
 
@@ -153,6 +156,20 @@
 
 <script>
     var locked = false;
+
+    var info = $('#server-info');
+    var links = info.find('a');
+    var images = info.find('img');
+
+    images.each(function() {
+        var src = $(this).attr("src");
+        $('#images').append("<a href='"+src+"' target='_blank'><img src='"+src+"' alt='"+src+"' style='height:100px'></a>");
+        $(this).remove();
+    });
+
+    links.each(function() {
+        $(this).attr('target', '_blank');
+    });
 
     $(document).on('click', '#like', function(event) {
         event.preventDefault();
