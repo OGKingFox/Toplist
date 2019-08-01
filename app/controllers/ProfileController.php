@@ -39,7 +39,7 @@ class ProfileController extends \Phalcon\Mvc\Controller {
             $this->session->remove('notice');
         }
 
-        if ($this->request->isPost() && $this->security->checkToken()) {
+        if ($this->request->isPost() /*&& $this->security->checkToken()*/) {
             $owner  = $this->session->get("user_info");
 
             $server->assign($this->request->getPost());
