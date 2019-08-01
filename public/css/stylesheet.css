@@ -147,3 +147,7 @@ a:hover {
 .bold-font {
     font-family: "Montserrat-Bold", sans-serif;
 }
+
+.ql-editor p {
+    margin-bottom: 10px !important;
+}
