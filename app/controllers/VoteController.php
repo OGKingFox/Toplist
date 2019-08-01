@@ -66,10 +66,7 @@ class VoteController extends BaseController {
         $recaptcha = $this->getResponse($token);
 
         if (!$recaptcha['success']) {
-            $this->println([
-                'success' => false,
-                'message' => 'Unable to save vote. Failed verification.'
-            ]);
+            $this->println($recaptcha);
             return true;
         }
 
