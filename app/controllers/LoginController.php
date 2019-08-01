@@ -52,7 +52,10 @@ class LoginController extends BaseController {
                 $user->update();
             } else {
                 $user = Users::createUser($userInfo);
-                $user->save();
+                if (!$user->save()) {
+                    $this->flash->error($user->getMessages());
+                    return false;
+                }
             }
 
             $this->session->set("access_token", $token);
