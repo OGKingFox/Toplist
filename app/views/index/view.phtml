@@ -163,7 +163,7 @@
 
     images.each(function() {
         var src = $(this).attr("src");
-        $('#images').append("<a href='"+src+"' target='_blank'><img src='"+src+"' alt='"+src+"' style='height:100px'></a>");
+        $('#images').append("<a href='"+src+"' target='_blank' class='float-left mr-2'><img src='"+src+"' alt='"+src+"' style='height:100px'></a>");
         $(this).remove();
     });
 
