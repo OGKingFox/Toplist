@@ -22,6 +22,7 @@ class Servers extends \Phalcon\Mvc\Model {
 
     public static function getNewestServers() {
         return self::query()
+            ->conditions("website != ''")
             ->orderBy("date_created DESC")
             ->limit(5)
             ->execute();
@@ -32,6 +33,7 @@ class Servers extends \Phalcon\Mvc\Model {
      */
     public static function getMostVotedOn() {
         $query = self::query()
+            ->conditions("website != ''")
             ->columns([
                 'Servers.id',
                 'Servers.title',
