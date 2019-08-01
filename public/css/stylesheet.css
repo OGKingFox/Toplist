@@ -1,3 +1,5 @@
+@import "quill.snow.css";
+
 @font-face { font-family: "Montserrat-Thin"; src: url('../fonts/Montserrat-Thin.otf'); }
 @font-face { font-family: "Montserrat-Light"; src: url('../fonts/Montserrat-Light.otf'); }
 @font-face { font-family: "Montserrat-Regular"; src: url('../fonts/Montserrat-Regular.otf'); }
@@ -150,4 +152,7 @@ a:hover {
 
 .ql-editor p {
     margin-bottom: 10px !important;
+}
+.ql-align-justify {
+    text-align: justify;
 }
