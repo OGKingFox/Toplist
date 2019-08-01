@@ -63,7 +63,7 @@ class VoteController extends BaseController {
             return true;
         }
 
-        $recaptcha = $this->getResponse($token);
+        $recaptcha = $this->verifyReCaptcha($token);
 
         if (!$recaptcha['success']) {
             $this->println($recaptcha);
@@ -120,6 +120,24 @@ class VoteController extends BaseController {
         $response     = file_get_contents($url, false, $context);
         $responseKeys = json_decode($response,true);
         return $responseKeys;
+    }
+
+    private function verifyReCaptcha($recaptchaCode){
+        $curl = curl_init("https://www.google.com/recaptcha/api/siteverify");
+        $data = ["secret" => CAPTCHA_PRIVATE, "response" => $recaptchaCode];
+        curl_setopt_array($curl, array(
+            CURLOPT_RETURNTRANSFER => 1,
+            CURLOPT_HTTPHEADER => array('Accept: application/json'),
+            CURLOPT_POST => 1,
+            CURLOPT_POSTFIELDS => $data
+        ));
+        $resp = curl_exec($curl);
+        curl_close($curl);
+        if ($resp == NULL){
+            return curl_errno($curl);
+        } else {
+            return json_decode($resp, true);
+        }
     }
 
     public function sendIncentive($url, $incentive) {
