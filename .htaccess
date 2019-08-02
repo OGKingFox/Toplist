@@ -2,3 +2,7 @@ RewriteEngine on
 RewriteRule ^(forums|community|api|sitemap.xml)($|/) - [L]
 RewriteRule  ^$ public/    [L]
 RewriteRule  ((?s).*) public/$1 [L]
+
+# Disable server signature
+ServerSignature Off
+Options -Indexes
