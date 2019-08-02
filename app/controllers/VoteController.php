@@ -5,6 +5,7 @@ use Phalcon\Text;
 class VoteController extends BaseController {
 
     public function indexAction($server, $incentive) {
+
         $server    = Servers::getServer($this->filter->sanitize($server, "int"));
         $incentive = $this->filter->sanitize($incentive, 'string');
 
@@ -15,6 +16,8 @@ class VoteController extends BaseController {
             ]);
             return true;
         }
+
+        $this->tag->setTitle("Vote for ".$server->title);
 
         $this->view->server    = $server;
         $this->view->incentive = $incentive;

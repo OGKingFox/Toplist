@@ -2,7 +2,12 @@
 <html lang="en-US">
 <head>
 	<meta charset="utf-8" />
+    {% if get_title(false) is not '' %}
+    <title>Rune-Nexus | {{ get_title(false) }}</title>
+    {% else %}
     <title>Rune-Nexus</title>
+    {% endif %}
+
     <meta name="keywords" content="toplist,topg,mmo,runescape,rsps,runescape,private,server,runelocus,rune-server,rune-list,runelist,top100,arena,top100">
     <meta name="description" content="The most modern top-list built to-date. Completely free, feature rich, and easy to use!">
 	<meta name="author" content="King Fox">
