@@ -165,3 +165,49 @@ a:hover {
 .ql-align-justify {
     text-align: justify;
 }
+
+.card-pricing .card-header {
+    padding-top: 1.25rem;
+    padding-bottom: 1.25rem
+}
+
+.card-pricing .list-unstyled li {
+    padding: .5rem 0
+}
+
+.card-pricing.popular {
+    z-index: 1
+}
+
+.hover-scale-110:hover,
+.scale-110 {
+    -webkit-transform: scale(1.1)!important;
+    -ms-transform: scale(1.1)!important;
+    transform: scale(1.1)!important
+}
+
+.card.hover-scale-110:hover {
+    z-index: 2;
+    border-radius: .375rem!important
+}
+.card-pricing.scale-110 {
+    border-radius: .375rem!important
+}
+
+@media (max-width:991.98px) {
+    .card-pricing.scale-110 {
+        -webkit-transform: scale(1)!important;
+        -ms-transform: scale(1)!important;
+        transform: scale(1)!important
+    }
+}
+
+.card-product .card-price,
+.card-product .card-title {
+    font-size: 1rem;
+    font-weight: 600
+}
+
+.card-product .card-price {
+    display: block
+}
