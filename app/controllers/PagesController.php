@@ -9,4 +9,9 @@ class PagesController extends BaseController {
             including code examples and detailed guides.";
     }
 
+    public function faqAction() {
+        $this->tag->setTitle(ucwords($this->router->getActionName()));
+        $this->view->description = "Get answers to common questions regarding our toplist!";
+    }
+
 }

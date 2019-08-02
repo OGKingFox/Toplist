@@ -56,12 +56,21 @@ header .overlay h1 {
     text-shadow: none;
 }
 .btn-primary {
-    background: #3bafda linear-gradient(135deg,#3bafda 0,#727cf5 70%);
+    background: #727cf5;
     border-color: #727cf5;
     letter-spacing: .025em;
     will-change: transform;
     transition: all .15s ease;
     text-shadow: 1px 1px 1px rgba(0,0,0,0.3);
+}
+.btn-primary:hover, .btn-primary:active, .btn-primary:focus {
+    background: #727cf5;
+    border-color: #727cf5;
+}
+.btn-primary:not(:disabled):not(.disabled).active, .btn-primary:not(:disabled):not(.disabled):active, .show>.btn-primary.dropdown-toggle {
+    color: #fff;
+    background-color: #727cf5;
+    border-color: #727cf5;
 }
 a:hover {
     text-decoration: none !important;

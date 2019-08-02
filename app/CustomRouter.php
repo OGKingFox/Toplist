@@ -110,6 +110,13 @@ class CustomRouter extends RouterGroup {
                 "action"     	=> "advertising"
             ]
         ],
+        [
+            "route" => "/faq",
+            "params" => [
+                "controller" 	=> "pages",
+                "action"     	=> "faq"
+            ]
+        ]
     ];
 
 	public function initialize() {
