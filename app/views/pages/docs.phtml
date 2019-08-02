@@ -56,7 +56,7 @@
         }
 
         # prepare query for execution
-        $stmt = %pdo->prepare("UPDATE votes SET callback_date = UNIX_TIMESTAMP() WHERE code = :code");
+        $stmt = $pdo->prepare("UPDATE votes SET callback_date = UNIX_TIMESTAMP() WHERE code = :code");
         $stmt->bindParam(":code", $callback); # bind the parameters
         $stmt->execute(); # now execute the prepared statement
         $count = $stmt->rowCount(); # counts modified rows
