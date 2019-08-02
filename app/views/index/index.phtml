@@ -19,7 +19,7 @@
                         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="btnGroupDrop1">
                             {% for g in games %}
                             {% set seo_title = g.id~'-'~str_replace(" ", "-", g.title|lowercase) %}
-                            {{ link_to('game/'~seo_title, g.title, 'class' : 'dropdown-item') }}
+                            {{ link_to('game/'~seo_title, g.title, 'class' : 'dropdown-item', 'rel' : 'nofollow') }}
                             {% endfor %}
                         </div>
                     </div>
@@ -49,7 +49,7 @@
                     <td class="text-truncate" style="max-width:250px;">
                         <p class="text-secondary my-0 small text-uppercase">Server</p>
                         <h6 class="my-0 text-primary text-truncate">
-                            {{ link_to('view/'~seo_title, server.title, 'class' : 'text-info') }}
+                            {{ link_to('view/'~seo_title, server.title, 'class' : 'text-info', 'rel' : 'nofollow') }}
                         </h6>
                     </td>
                     <td class="d-md-none d-lg-table-cell text-center">
@@ -75,13 +75,13 @@
     <div class="row">
         <div class="btn-group" role="group" aria-label="Basic example" style="margin:auto;">
             {% set link = username is defined ? '/'~username : '' %}
-            {{ link_to('game/'~game_seo~'/'~servers.first, '<i class="fal fa-angle-double-left"></i>', 'class' : 'btn btn-info') }}
-            {{ link_to('game/'~game_seo~'/'~servers.before, '<i class="fal fa-angle-left"></i>', 'class' : 'btn btn-info') }}
+            {{ link_to('game/'~game_seo~'/'~servers.first, '<i class="fal fa-angle-double-left"></i>', 'class' : 'btn btn-info', 'rel' : 'nofollow') }}
+            {{ link_to('game/'~game_seo~'/'~servers.before, '<i class="fal fa-angle-left"></i>', 'class' : 'btn btn-info', 'rel' : 'nofollow') }}
 
-            {{ link_to('', 'Page '~servers.current~' of '~servers.total_pages, 'class' : 'btn btn-info disabled') }}
+            {{ link_to('', 'Page '~servers.current~' of '~servers.total_pages, 'class' : 'btn btn-info disabled', 'rel' : 'nofollow') }}
 
-            {{ link_to('game/'~game_seo~'/'~servers.next, '<i class="fal fa-angle-right"></i>', 'class' : 'btn btn-info') }}
-            {{ link_to('game/'~game_seo~'/'~servers.last, '<i class="fal fa-angle-double-right"></i>', 'class' : 'btn btn-info') }}
+            {{ link_to('game/'~game_seo~'/'~servers.next, '<i class="fal fa-angle-right"></i>', 'class' : 'btn btn-info', 'rel' : 'nofollow') }}
+            {{ link_to('game/'~game_seo~'/'~servers.last, '<i class="fal fa-angle-double-right"></i>', 'class' : 'btn btn-info', 'rel' : 'nofollow') }}
         </div>
     </div>
     {% endif %}
