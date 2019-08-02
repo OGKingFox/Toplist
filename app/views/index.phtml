@@ -27,6 +27,11 @@
     {{ javascript_include("js/jquery-3.3.1.min.js") }}
     {{ javascript_include("js/bootstrap.bundle.min.js") }}
     {{ javascript_include("js/javascript.js") }}
+
+    {% if router.getControllerName() is 'pages' and router.getActionName() is 'premium' %}
+    {{ javascript_include('js/aos.js?v='~time()) }}
+    {{ stylesheet_link("css/aos.css?v="~time()) }}
+    {% endif %}
 </head>
 
 <body>
@@ -123,6 +128,9 @@
         </div>
     </footer>
 
+<script>
+    AOS.init();
+</script>
 
 </body>
 </html>
