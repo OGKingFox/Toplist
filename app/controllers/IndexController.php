@@ -6,6 +6,8 @@ use Phalcon\Paginator\Adapter\Model as PaginatorModel;
 class IndexController extends BaseController {
 
     public function indexAction($gameId = 1) {
+        $this->tag->setTitle("Home");
+
         $gameId = $this->filter->sanitize($gameId, is_numeric($gameId) ? 'int' : 'string');
         $game   = Games::getGameByIdOrName($gameId);
 
@@ -55,6 +57,8 @@ class IndexController extends BaseController {
             ]);
             return true;
         }
+
+        $this->tag->setTitle($server->title);
 
         if ($this->request->isPost() && $this->security->checkToken()) {
             $user_id  = $this->getUser()->id;
