@@ -89,6 +89,27 @@ class CustomRouter extends RouterGroup {
                 "action"     	=> "like"
             ]
         ],
+        [
+            "route" => "/docs",
+            "params" => [
+                "controller" 	=> "pages",
+                "action"     	=> "docs"
+            ]
+        ],
+        [
+            "route" => "/premium",
+            "params" => [
+                "controller" 	=> "pages",
+                "action"     	=> "premium"
+            ]
+        ],
+        [
+            "route" => "/advertising",
+            "params" => [
+                "controller" 	=> "pages",
+                "action"     	=> "advertising"
+            ]
+        ],
     ];
 
 	public function initialize() {

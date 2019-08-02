@@ -1,0 +1,85 @@
+{{ javascript_include('js/prism.js?v='~time()) }}
+{{ stylesheet_link("css/prism.css?v="~time()) }}
+
+<div class="row">
+    <div class="col-sm-12">
+        <h4>Voting Callbacks</h4>
+        <hr>
+        <p>Rune-Nexus utilizes a callback feature that will send a POST request to the callback url you specify when
+            adding your server. It is a <code>string</code>, usually an IP Address, username, or randomly generated string.
+            This string comes from your voting script which is appended at the end of the vote url.
+        </p>
+
+        <p>Example</p>
+        <code>https://www.rune-nexus.com/vote/&lt;site-id&gt;/&lt;code&gt;</code>
+        <p>Full URL Example: <code>https://www.rune-nexus.com/vote/1/kingfox</code></p>
+
+        <p>
+            Your vote script should redirect to a similar URL, replacing <code>&lt;site-id&gt;</code> with your site's
+            identification number, and <code>&lt;code&gt;</code> with either a username, ip address, or uniquely generated code
+            to identify the person voting. Once a user has voted on our toplist using the generated URL, A post request
+            will be sent back to your callback url containing the code. This allows you to identify who voted and when to supply
+            the player with rewards if desired.
+        </p>
+
+        <p>Callback URL example:</p>
+        <ul>
+            <li>https://yoursite.com/vote/callback/</li>
+            <li>https://yoursite.com/vote/callback.php</li>
+        </ul>
+
+        <p>Example callback code (PHP):<br>
+        <small>Please note: This is not designed to work out the box, it is just an example.</small></p>
+
+<pre class="language-php">
+<code class="language-php">
+&lt;?php
+    $log_file = "callbacks.log";
+
+    $db_host = 'localhost';
+    $db_name = 'voting';
+    $db_user = 'root';
+    $db_pass = 'password';
+
+    if (isset($_POST['callback']) && !empty($_POST['callback']) {
+        $callback = filter_var($_POST['callback'], FILTER_SANITIZE_STRING);
+
+        #Connect to database
+        try {
+            $pdo = new PDO("mysql:host=" . $db_host . ";dbname=" . $db_name, $db_user, $db_pass);
+            $pdo->exec("SET CHARACTER SET utf8");
+            $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            $pdo->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
+        } catch (PDOException $e) {
+            error_log(date('[Y-m-d H:i] ')."[Error] Connection failed: {$e->getMessage()} ".PHP_EOL, 3, $log_file);
+            exit;
+        }
+
+        # prepare query for execution
+        $stmt = %pdo->prepare("UPDATE votes SET callback_date = UNIX_TIMESTAMP() WHERE code = :code");
+        $stmt->bindParam(":code", $callback); # bind the parameters
+        $stmt->execute(); # now execute the prepared statement
+        $count = $stmt->rowCount(); # counts modified rows
+
+        # counts modified rows. if 0, then nothing was changed, Log it to log file.
+        if ($stmt->rowCount() > 0) {
+            error_log(date('[Y-m-d H:i] ')."[Error] Update query failed! ".PHP_EOL, 3, $log_file);
+            exit;
+        }
+
+        # update successful!
+        error_log(date('[Y-m-d H:i] ')."[Success] Callback received and updated! $callback ".PHP_EOL, 3, $log_file);
+    }
+</code>
+</pre>
+
+        <h5>More Info</h5>
+        <p>
+            This code assumes you have a <code>callback_date</code> field in your <code>votes</code> table, which should
+            have a default value of -1. When the callback is received it should update it with the current time in seconds
+            (Unix timestamp). You can use this to determine if the user has voted or not. (-1 means not voted yet, anything
+            else means they have, such as the unix timestamp).
+        </p>
+
+    </div>
+</div>
