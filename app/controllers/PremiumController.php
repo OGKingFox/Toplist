@@ -85,7 +85,7 @@ class PremiumController extends BaseController {
         $res      = $trans['related_resources'][0]['sale'];
 
         $user_id = $trans['custom'];
-        $user = Users::getUser($user_id);
+        $user    = Users::getUser($user_id);
 
         if (!$user) {
             $this->printStatus(false, "Could not find your account. You have not been charged.");
