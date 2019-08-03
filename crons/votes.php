@@ -1,5 +1,5 @@
 <?php
-    include 'public/config.php';
+    include '../public/config.php';
 
     $log_file = "cron.log";
 
