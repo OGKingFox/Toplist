@@ -7,123 +7,35 @@
     </div>
 </div>
 
+{{ content() }}
 
 <div class="row">
+    {% for package in packages %}
     <div class="col-sm-12 col-lg-3">
-        <div class="card border-0 shadow-sm mb-3" data-aos="fade-right" data-aos-delay="250">
-            <div class="card-header bg-dark border-0 text-white text-center">30 Days Premium</div>
+        <div class="card border-0 shadow-sm mb-3" data-aos="fade-right" data-aos-delay="{{ loop.index * 250 }}">
+            <div class="card-header bg-dark border-0 text-white text-center">{{ package.title }}</div>
             <div class="card-header bg-light border-0 text-info text-center bold-font">
-                <h2 class="mb-0">$9.99</h2>
+                <h2 class="mb-0">${{ package.price|number_format(2) }}</h2>
             </div>
             <div class="list-group list-group-flush text-center">
+                {% for feature in package.features|json_decode(true) %}
+                {% if feature %}
                 <div class="list-group-item border-0">
-                    +100 Instant Votes
+                    {{ feature }}
                 </div>
+                {% else %}
                 <div class="list-group-item border-0">
                     <i class="fal fa-times text-danger"></i>
                 </div>
-                <div class="list-group-item border-0">
-                    Animated Banner
-                </div>
-                <div class="list-group-item border-0">
-                    Highlighted Background
-                </div>
-                <div class="list-group-item border-0">
-                    Applies to all servers
-                </div>
+                {% endif %}
+                {% endfor %}
             </div>
             <div class="card-footer">
-                <a href="" class="btn btn-info btn-block">Buy Now</a>
+                <a href="#" class="btn btn-info btn-block" id="buy" data-id="{{ package.id }}">Buy Now</a>
             </div>
         </div>
     </div>
-
-    <div class="col-sm-12 col-lg-3">
-        <div class="card border-0 shadow-sm" data-aos="fade-right" data-aos-delay="500">
-            <div class="card-header bg-dark border-0 text-white text-center">60 Days Premium</div>
-            <div class="card-header bg-light border-0 text-info text-center bold-font">
-                <h2 class="mb-0">$18.99</h2>
-            </div>
-            <div class="list-group list-group-flush text-center">
-                <div class="list-group-item border-0">
-                    +200 Instant Votes
-                </div>
-                <div class="list-group-item border-0">
-                    +200 Votes every reset
-                </div>
-                <div class="list-group-item border-0">
-                    Animated Banner
-                </div>
-                <div class="list-group-item border-0">
-                    Highlighted Background
-                </div>
-                <div class="list-group-item border-0">
-                    Applies to all servers
-                </div>
-            </div>
-            <div class="card-footer">
-                <a href="" class="btn btn-info btn-block">Buy Now</a>
-            </div>
-        </div>
-    </div>
-
-    <div class="col-sm-12 col-lg-3">
-        <div class="card border-0 shadow-sm mb-3" data-aos="fade-right" data-aos-delay="750">
-            <div class="card-header bg-dark border-0 text-white text-center">90 Days Premium</div>
-            <div class="card-header bg-light border-0 text-info text-center bold-font">
-                <h2 class="mb-0">$27.99</h2>
-            </div>
-            <div class="list-group list-group-flush text-center">
-                <div class="list-group-item border-0">
-                    +300 Instant Votes
-                </div>
-                <div class="list-group-item border-0">
-                    +300 Votes every reset
-                </div>
-                <div class="list-group-item border-0">
-                    Animated Banner
-                </div>
-                <div class="list-group-item border-0">
-                    Highlighted Background
-                </div>
-                <div class="list-group-item border-0">
-                    Applies to all servers
-                </div>
-            </div>
-            <div class="card-footer">
-                <a href="" class="btn btn-info btn-block">Buy Now</a>
-            </div>
-        </div>
-    </div>
-
-    <div class="col-sm-12 col-lg-3">
-        <div class="card border-0 shadow-sm mb-3" data-aos="fade-right" data-aos-delay="1000">
-            <div class="card-header bg-dark border-0 text-white text-center">180 Days Premium</div>
-            <div class="card-header bg-light border-0 text-info text-center bold-font">
-                <h2 class="mb-0">$54.99</h2>
-            </div>
-            <div class="list-group list-group-flush text-center">
-                <div class="list-group-item border-0">
-                    +500 Instant Votes
-                </div>
-                <div class="list-group-item border-0">
-                    +500 Votes every reset
-                </div>
-                <div class="list-group-item border-0">
-                    Animated Banner
-                </div>
-                <div class="list-group-item border-0">
-                    Highlighted Background
-                </div>
-                <div class="list-group-item border-0">
-                    Applies to all servers
-                </div>
-            </div>
-            <div class="card-footer">
-                <a href="" class="btn btn-info btn-block">Buy Now</a>
-            </div>
-        </div>
-    </div>
+    {% endfor %}
 </div>
 
 <div class="row mb-5">

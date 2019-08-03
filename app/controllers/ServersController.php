@@ -4,8 +4,6 @@ use Phalcon\Text;
 class ServersController extends BaseController {
 
     public function addAction() {
-        $this->tag->setTitle("Add Server");
-
         if ($this->request->isPost() /*&& $this->security->checkToken()*/) {
             $servers = Servers::query()
                     ->conditions('owner_id = :id:')
@@ -43,8 +41,6 @@ class ServersController extends BaseController {
             ]);
             return true;
         }
-
-        $this->tag->setTitle("Edit Server");
 
         $server = Servers::getServerByOwner($id, $this->getUser()->id);
 

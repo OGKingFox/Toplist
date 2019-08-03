@@ -4,6 +4,27 @@ use \Phalcon\Mvc\Dispatcher;
 
 class BaseController extends Controller {
 
+    private $page_meta = [
+        "pages" => [
+            "docs" => [
+                'title' => 'Documentation',
+                'description' => 'Documentation on how to get set up using our toplist to it\'s fullest, including code 
+                examples and detailed guides.'
+            ],
+            "premium" => [
+                'description' => 'Need a boost? Purchase premiumn to give you acccess to bonus votes, animated banners, and more!'
+            ],
+            "faq" => [
+                'title' => 'FAQ',
+                'description' => 'Get answers to common questions regarding our toplist!'
+            ]
+        ],
+        'servers' => [
+            'add' => ['title' => 'Add Server'],
+            'edit' => ['title' => 'Edit Server']
+        ]
+    ];
+
     public function printData($data) {
         echo "<pre>".json_encode($data, JSON_PRETTY_PRINT, JSON_UNESCAPED_SLASHES)."</pre>";
     }
@@ -151,5 +172,25 @@ class BaseController extends Controller {
             }
         }
         return $headers;
+    }
+
+    public function beforeExecuteRoute(\Phalcon\Dispatcher $dispatcher) {
+        $controller = $this->router->getControllerName();
+        $action = $this->router->getActionName() ?: $controller;
+
+        if (isset($this->page_meta[$controller], $this->page_meta[$controller][$action]) ) {
+            $meta = $this->page_meta[$controller][$action];
+
+            if (isset($meta['title'])) {
+                $this->tag->setTitle($meta['title']);
+            } else {
+                $this->tag->setTitle(ucwords($action));
+            }
+            if (isset($meta['description'])) {
+                $this->view->description = $meta['description'];
+            }
+        } else {
+            $this->tag->setTitle(ucwords($action));
+        }
     }
 }

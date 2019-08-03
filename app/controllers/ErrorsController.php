@@ -1,7 +1,7 @@
 <?php
 use Phalcon\Mvc\Controller;
 
-class ErrorsController extends Controller {
+class ErrorsController extends BaseController {
 
     public function show404Action() {
 
