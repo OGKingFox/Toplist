@@ -38,7 +38,7 @@ class VoteController extends BaseController {
         $server_id = $this->request->getPost("server", 'int');
         $incentive = $this->request->getPost("incentive", "string");
         $token     = $this->request->getPost("token");
-        $server    = Servers::getServer($server_id);
+        $server    = Servers::getServerById($server_id);
 
         if (!$server) {
             $this->println([
@@ -90,7 +90,7 @@ class VoteController extends BaseController {
         $server->setVotes($server->getVotes() + 1);
         $server->update();
 
-        $callback = $this->sendIncentive($server->callback, $incentive);
+        $callback = $this->sendIncentive($server->getCallback(), $incentive);
 
         if (is_array($callback)) {
             $response = $callback['response'];

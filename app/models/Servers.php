@@ -69,18 +69,20 @@ class Servers extends \Phalcon\Mvc\Model {
                 'Servers.discord_id',
                 'Servers.banner_url',
                 'Servers.summary',
-                'Servers.votes',
+                'IF(user.premium_expires > :time:, Servers.votes + (user.premium_level * 100), Servers.votes) AS votes',
                 'Servers.info',
                 'g.id AS game_id',
                 'g.title AS game_title',
                 'user.*'
             ])
-            ->conditions('Servers.game = :gid: AND Servers.website != \'\'')
-            ->bind([
-                'gid' => $gameId
-            ])
-            ->leftJoin("Games", 'g.id = Servers.game', 'g')
-            ->leftJoin("Users", 'user.user_id = Servers.owner_id', 'user')
+                ->conditions('Servers.game = :gid: AND Servers.website != \'\'')
+                ->bind([
+                    'gid' => $gameId,
+                    'time' => time()
+                ])
+                ->leftJoin("Games", 'g.id = Servers.game', 'g')
+                ->leftJoin("Users", 'user.user_id = Servers.owner_id', 'user')
+                ->orderBy("votes DESC")
             ->execute();
         return $query;
     }
