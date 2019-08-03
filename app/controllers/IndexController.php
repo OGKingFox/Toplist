@@ -27,8 +27,6 @@ class IndexController extends BaseController {
         $this->view->game      = $game;
         $this->view->games     = Games::find();
         $this->view->servers   = $serverList;
-
-        $this->view->myServer  = $this->getUser() ? Servers::getServerByOwner($this->getUser()->id) : null;
         return true;
     }
 
@@ -65,9 +63,7 @@ class IndexController extends BaseController {
             $username = $this->getUser()->username;
             $type     = $this->request->getPost("type", 'string');
 
-            if ($type == "report") {
-                echo 'report';
-            } else if ($type == "comment") {
+            if ($type == "comment") {
                 $body = $this->request->getPost("comment", ['string', 'trim']);
 
                 $comment = (new Comments)
@@ -195,7 +191,7 @@ class IndexController extends BaseController {
             return false;
         }
 
-        $like    = Likes::getLike($server->id, $user_id);
+        $like = Likes::getLike($server->id, $user_id);
 
         if ($like) {
             $this->println([

@@ -112,7 +112,7 @@ class BaseController extends Controller {
      * @param $msg array
      */
     public function debug($msg) {
-        echo "<pre>".json_encode($msg, JSON_PRETTY_PRINT|JSON_UNESCAPED_SLASHES)."</pre>";
+        echo "<pre>".htmlspecialchars(json_encode($msg, JSON_PRETTY_PRINT|JSON_UNESCAPED_SLASHES))."</pre>";
     }
 
 

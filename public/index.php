@@ -1,4 +1,8 @@
 <?php
+    ini_set('display_errors', 1);
+    ini_set('display_startup_errors', 1);
+    error_reporting(E_ALL);
+
     header("X-XSS-Protection: 1; mode=block");
     header('X-Content-Type-Options: nosniff');
     header("Strict-Transport-Security:max-age=63072000");

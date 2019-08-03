@@ -1,6 +1,7 @@
 <?php
 
 use Phalcon\Mvc\Model\ResultsetInterface;
+use Phalcon\Mvc\ModelInterface;
 use Phalcon\Validation;
 use \Phalcon\Validation\Validator\Callback;
 use Phalcon\Validation\Validator\Uniqueness;
@@ -13,6 +14,7 @@ class Servers extends \Phalcon\Mvc\Model {
     private $title;
     private $api_key;
     private $website;
+    private $votes;
     private $callback;
     private $discord_id;
     private $summary;
@@ -55,49 +57,38 @@ class Servers extends \Phalcon\Mvc\Model {
         $start  = strtotime(date("Y-m-1 00:00:00"));
         $end    = strtotime(date("Y-m-t 23:59:59"));
 
-        $query->columns([
-            'Servers.id',
-            'Servers.owner_id',
-            'Servers.owner_tag',
-            'Servers.game',
-            'Servers.title',
-            'Servers.website',
-            'Servers.callback',
-            'Servers.discord_id',
-            'Servers.banner_url',
-            'Servers.summary',
-            'Servers.info',
-            'g.id AS game_id',
-            'g.title AS game_title',
-            'user.*',
-            '(SELECT COUNT(*) FROM Votes WHERE Votes.server_id = Servers.id AND voted_on >= :start: AND voted_on < :end:) AS votes'
-        ]);
-
-        if ($gameId != null) {
-            $query->conditions('Servers.game = :gid: AND Servers.website != \'\'');
-            $query->bind([
-                'gid' => $gameId,
-                'start' => $start,
-                'end' => $end
-            ]);
-        } else {
-            $query->conditions('Servers.website != \'\'');
-            $query->bind([
-                'start' => $start,
-                'end' => $end
-            ]);
-        }
-
-        $query->leftJoin("Games", 'g.id = Servers.game', 'g');
-        $query->leftJoin("Users", 'user.user_id = Servers.owner_id', 'user');
-        $query->orderBy("votes DESC, Servers.title DESC");
-        return $query->execute();
+        $query =
+            self::query()->columns([
+                'Servers.id',
+                'Servers.owner_id',
+                'Servers.owner_tag',
+                'Servers.game',
+                'Servers.title',
+                'Servers.website',
+                'Servers.callback',
+                'Servers.discord_id',
+                'Servers.banner_url',
+                'Servers.summary',
+                'Servers.votes',
+                'Servers.info',
+                'g.id AS game_id',
+                'g.title AS game_title',
+                'user.*'
+            ])
+            ->conditions('Servers.game = :gid: AND Servers.website != \'\'')
+            ->bind([
+                'gid' => $gameId
+            ])
+            ->leftJoin("Games", 'g.id = Servers.game', 'g')
+            ->leftJoin("Users", 'user.user_id = Servers.owner_id', 'user')
+            ->execute();
+        return $query;
     }
 
     /**
      * Grabs a server by info, and joins in the game id and title.
      * @param $id
-     * @return bool|\Phalcon\Mvc\ModelInterface|Servers
+     * @return bool|ModelInterface|Servers
      */
     public static function getServer($id) {
         return self::query()
@@ -128,13 +119,15 @@ class Servers extends \Phalcon\Mvc\Model {
 
     /**
      * Like above, but doesn't join the games column so it can be updated or removed.
+     * @param $serverId
      * @param $oid
-     * @return bool|\Phalcon\Mvc\ModelInterface|Servers
+     * @return bool|ModelInterface|Servers
      */
-    public static function getServerByOwner($oid) {
+    public static function getServerByOwner($serverId, $oid) {
         return self::query()
-            ->conditions('owner_id = :id:')
+            ->conditions('id = :sid: AND owner_id = :id:')
             ->bind([
+                'sid' => $serverId,
                 'id' => $oid
             ])->execute()->getFirst();
     }
@@ -142,7 +135,7 @@ class Servers extends \Phalcon\Mvc\Model {
     /**
      * Like above, but doesn't join the games column so it can be updated or removed.
      * @param $id
-     * @return bool|\Phalcon\Mvc\ModelInterface|Servers
+     * @return bool|ModelInterface|Servers
      */
     public static function getServerById($id) {
         return self::query()
@@ -231,21 +224,22 @@ class Servers extends \Phalcon\Mvc\Model {
     /**
      * Generates an SEO friendly title
      * @param $server
+     * @param $isArr
      * @return string
      */
-    public static function genSeoTitle($server) {
+    public static function genSeoTitle($server, $isArr = false) {
         $reps = [
             ' - ' => '-',
             ' ' => '-'
         ];
 
-        $title = preg_replace('/[^ \w]+/', '', $server->title);
+        $title = preg_replace('/[^ \w]+/', '', ($isArr ? $server['title'] : $server->title));
         $title = preg_replace(array('/\s{2,}/', '/[\t\n]/'), ' ', $title);
         $title = str_replace(
             array_keys($reps), array_values($reps),
             strtolower($title));
 
-        return $server->id.'-'.$title;
+        return ($isArr ? $server['id'] : $server->id).'-'.$title;
 
     }
     /**
@@ -402,6 +396,24 @@ class Servers extends \Phalcon\Mvc\Model {
         return $this;
     }
 
+    /**
+     * @return mixed
+     */
+    public function getVotes()
+    {
+        return $this->votes;
+    }
+
+    /**
+     * @param mixed $votes
+     * @return Servers
+     */
+    public function setVotes($votes)
+    {
+        $this->votes = $votes;
+        return $this;
+    }
+
 
 
     public function validation() {
@@ -409,10 +421,6 @@ class Servers extends \Phalcon\Mvc\Model {
 
         $validator->add("title", new Uniqueness([
             "message" => "A server by that name is already registered.",
-        ]));
-
-        $validator->add("owner_id", new Uniqueness([
-            "message" => "You already have a server registered.",
         ]));
 
         $validator->add("discord_id", new Callback([

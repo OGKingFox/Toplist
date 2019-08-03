@@ -87,6 +87,9 @@ class VoteController extends BaseController {
             return true;
         }
 
+        $server->setVotes($server->getVotes() + 1);
+        $server->update();
+
         $callback = $this->sendIncentive($server->callback, $incentive);
 
         if (is_array($callback)) {

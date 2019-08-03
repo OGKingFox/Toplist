@@ -11,6 +11,8 @@ class Users extends \Phalcon\Mvc\Model {
     private $username;
     private $verified;
     private $locale;
+    private $premium_expires;
+    private $premium_level;
     private $premium_type;
     private $mfa_enabled;
     private $user_id;
@@ -126,6 +128,43 @@ class Users extends \Phalcon\Mvc\Model {
     {
         $this->premium_type = $premium_type;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getPremiumExpires()
+    {
+        return $this->premium_expires;
+    }
+
+    /**
+     * @param mixed $premium_expires
+     * @return Users
+     */
+    public function setPremiumExpires($premium_expires)
+    {
+        $this->premium_expires = $premium_expires;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getPremiumLevel()
+    {
+        return $this->premium_level;
+    }
+
+    /**
+     * @param mixed $premium_level
+     * @return Users
+     */
+    public function setPremiumLevel($premium_level)
+    {
+        $this->premium_level = $premium_level;
+        return $this;
+    }
+
 
     /**
      * @return mixed

@@ -4,12 +4,9 @@
         <div class="card border-0 shadow-sm mb-3">
             <div class="card-body">
                 <div class="float-right">
-                    {% if myServer is not null %}
-                        {{ link_to('profile/edit', '<i class="fal fa-plus-circle fa-fw"></i> Manage Server', 'class' : 'btn btn-info') }}
-                    {% else %}
-                        {% if user is defined %}
-                            {{ link_to('profile/add', '<i class="fal fa-plus-circle fa-fw"></i> Add Server', 'class' : 'btn btn-info') }}
-                        {% endif %}
+                    {% if user is defined %}
+                        {{ link_to('profile', '<i class="fal fa-server fa-fw"></i> My Servers', 'class' : 'btn btn-info') }}
+                        {{ link_to('servers/add', '<i class="fal fa-plus-circle fa-fw"></i> Add Server', 'class' : 'btn btn-info') }}
                     {% endif %}
 
                     <div class="btn-group" role="group">
@@ -42,9 +39,15 @@
 
                 {% for server in servers.items %}
                 <?php $seo_title = Servers::genSeoTitle($server); ?>
-                <tr>
+
+                {% set is_premium = server.user.premium_expires > time() %}
+                <tr class="{{ is_premium ? 'bg-warning' : '' }}">
                     <td class="text-center px-4">
+                        {% if is_premium %}
+                        <h6 class="mb-0 text-muted"><i class="fas fa-star"></i></h6>
+                        {% else %}
                         <h6 class="mb-0 text-muted">{{ rank }}</h6>
+                        {% endif %}
                     </td>
                     <td class="text-truncate" style="max-width:250px;">
                         <p class="text-secondary my-0 small text-uppercase">Server</p>
