@@ -22,15 +22,20 @@ $(document).ready(function() {
     var windowBottom = ($(window).height() - windowTop);
     var navbar = $('.navbar');
 
+    updateNavbar();
     $(window).scroll(function() {
+        updateNavbar();
+    });
+
+    function updateNavbar() {
         windowTop = $(window).scrollTop();
-        if (windowTop > 250) {
+        if (windowTop > 250 && navbar.hasClass("bg-transparent")) {
             navbar.addClass("bg-light shadow navbar-light");
             navbar.removeClass("bg-transparent navbar-dark");
         } else {
             navbar.removeClass("bg-light shadow navbar-light");
             navbar.addClass("bg-transparent navbar-dark");
         }
-    });
+    }
 
 });
