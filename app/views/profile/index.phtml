@@ -1,7 +1,64 @@
-<?php
-/**
- * Created by PhpStorm.
- * User: foxtr
- * Date: 6/2/19
- * Time: 4:43 AM
- */
+<div class="row">
+    <div class="col-sm-12 col-lg-3">
+        <div class="card border-0 shadow-sm mb-3">
+            <div class="card-body text-center">
+                <div class="mb-3">{{ image(avatar, 'class' : 'rounded-circle', 'width' : '125') }}</div>
+
+                <div class="text-truncate m-auto h5" style="max-width: 200px;">
+                    {{ filter.sanitize(user.username, 'string') }}
+                </div>
+                <p class="small text-muted">ID: {{ user.user_id }}</p>
+            </div>
+        </div>
+
+        <div class="card border-0 shadow-sm mb-3">
+            <div class="list-group list-group-flush">
+                <div class="list-group-item" style="line-height:1.2em;">
+                    <small class="text-muted">Premium Status</small><br>
+                    {% if user.premium_expires > time() %}
+                    <span class="text-success">Active</span>
+                    {% else %}
+                    <span class="text-danger">Inactive</span>
+                    {% endif %}
+                </div>
+
+                {% if user.premium_expires > time() %}
+                <div class="list-group-item" style="line-height:1.2em;">
+                    <small class="text-muted">Expires</small><br>
+                    {{ date('M. d, Y g:i A', user.premium_expires) }}
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <div class="col-sm-12 col-lg-9">
+        <div class="card border-0 shadow-sm mb-3">
+            <div class="card-header">My Servers</div>
+            <table class="table table-hover mb-0">
+                <thead>
+                <tr class="small text-muted">
+                    <th class="py-1">Title</th>
+                    <th class="py-1">Votes</th>
+                    <th class="py-1">Likes</th>
+                    <th class="py-1">Date Added</th>
+                    <th></th>
+                </tr>
+                </thead>
+                {% for server in servers %}
+                <?php $seo_title = Servers::genSeoTitle($server); ?>
+                <tr>
+                    <td>{{ link_to('view/'~seo_title, server.title, 'class' : 'text-info', 'target' : '_blank') }}</td>
+                    <td>{{ server.votes|number_format }}</td>
+                    <td>{{ server.likes|number_format }}</td>
+                    <td>{{ date("M. d, Y", server.date_created) }}</td>
+                    <td class="text-right">
+                        {{ link_to('servers/edit/', 'Edit', 'class' : 'btn btn-dark btn-sm') }}
+                        {{ link_to('servers/edit/', 'Delete', 'class' : 'btn btn-danger btn-sm') }}
+                    </td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+</div>

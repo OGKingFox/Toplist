@@ -136,6 +136,19 @@ class Servers extends \Phalcon\Mvc\Model {
     }
 
     /**
+     * Like above, but grabs all servers
+     * @param $oid
+     * @return ResultsetInterface|Servers
+     */
+    public static function getServersByOwner($oid) {
+        return self::query()
+            ->conditions('owner_id = :id:')
+            ->bind([
+                'id' => $oid
+            ])->execute();
+    }
+
+    /**
      * Like above, but doesn't join the games column so it can be updated or removed.
      * @param $id
      * @return bool|ModelInterface|Servers

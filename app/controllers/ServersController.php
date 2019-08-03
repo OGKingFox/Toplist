@@ -24,6 +24,13 @@ class ServersController extends BaseController {
                 if (!$server->save()) {
                     $this->flash->error($server->getMessages());
                 } else {
+                    if ($server->getWebsite()) {
+                        $seo  = Servers::genSeoTitle($server);
+
+                        $bot = new NexusBot();
+                        $bot->setMessage("{$this->getUser()->username}, has listed a new server: [{$server->getTitle()}](http://rune-nexus.com/view/{$seo})");
+                        $bot->send();
+                    }
                     return $this->response->redirect("view/".$server->getSeoTitle());
                 }
             }

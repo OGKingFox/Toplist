@@ -1,5 +1,5 @@
 RewriteEngine on
-RewriteRule ^(forums|community|api|sitemap.xml|robots.txt)($|/) - [L]
+RewriteRule ^(api|sitemap.xml|robots.txt)($|/) - [L]
 RewriteRule  ^$ public/    [L]
 RewriteRule  ((?s).*) public/$1 [L]
 
