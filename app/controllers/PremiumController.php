@@ -2,7 +2,7 @@
 
 class PremiumController extends BaseController {
 
-    private static $enabled = false;
+    private static $enabled = true;
 
     public function indexAction() {
         $packages = Packages::find();
