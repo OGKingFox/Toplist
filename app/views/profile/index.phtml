@@ -33,6 +33,8 @@
     </div>
 
     <div class="col-sm-12 col-lg-9">
+        {{ content() }}
+
         <div class="card border-0 shadow-sm mb-3">
             <div class="card-header">My Servers</div>
             <table class="table table-hover mb-0">
@@ -53,8 +55,8 @@
                     <td>{{ server.likes|number_format }}</td>
                     <td>{{ date("M. d, Y", server.date_created) }}</td>
                     <td class="text-right">
-                        {{ link_to('servers/edit/', 'Edit', 'class' : 'btn btn-dark btn-sm') }}
-                        {{ link_to('servers/edit/', 'Delete', 'class' : 'btn btn-danger btn-sm') }}
+                        {{ link_to('servers/edit/'~server.id, 'Edit', 'class' : 'btn btn-dark btn-sm') }}
+                        {{ link_to('', 'Delete', 'class' : 'btn btn-danger btn-sm') }}
                     </td>
                 </tr>
                 {% endfor %}

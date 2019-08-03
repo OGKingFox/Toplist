@@ -1,35 +1,49 @@
 <?php
 /**
- * Ignores the servers timezone and uses this for everything.
+ * Forces a timezone change incase your server isn't configured to your timezone
  */
 define("timezone", "America/Chicago");
 date_default_timezone_set(timezone);
 
-define("server_name", "Gaming TopList");
-
 /**
  * Database credentials...self explanatory.
  */
-define("host",      "localhost");
-define("username", 	"root");
+define("host",      "");
+define("username", 	"");
 define("password", 	"");
-define("dbname", 	"toplist");
+define("dbname", 	"");
 
 /**
- * Discord OAuth Tokens
+ * Discord OAuth Credentials
  * https://discordapp.com/developers/applications/
  */
-define('OAUTH2_CLIENT_ID', '');
-define('OAUTH2_CLIENT_SECRET', '');
+define('OAUTH2_CLIENT_ID', '581970705252614144');
+define('OAUTH2_CLIENT_SECRET', '1ybUbphymYGzHkTbnOu78qjWPLfcYNSw');
+
+/**
+ * OAuth Login URL. Edit with your own URL.
+ */
+define("redirect_uri", "http://localhost/toplist/login/auth");
 
 define("auth_url", "https://discordapp.com/api/oauth2/authorize");
 define("token_url", "https://discordapp.com/api/oauth2/token");
 define("url_base", "https://discordapp.com/api/users/@me");
 
 /**
+ * Webhook URL for the Bot
+ */
+define("webhook_url", "");
+
+/**
  * For image uploads via the create/edit forms using QuillJS
  */
 define("IMGUR_KEY", "");
+
+/**
+ * Google ReCaptcha Keys
+ */
+define("CAPTCHA_PUBLIC", "");
+define("CAPTCHA_PRIVATE", "");
 
 /**
  * this is the folder you have it in. Should include starting and trailing slash.
@@ -51,7 +65,7 @@ define("production_key", 	"");
 
 /**
  * SMTP Settings
- * Enter your own SMTP server settings here.
+ * Enter your own SMTP server settings here or use the ones provided. doesnt matter to me :P
  */
 define("SMTP_HOST", 		"");
 define("SMTP_USER", 		"");
