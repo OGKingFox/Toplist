@@ -47,7 +47,7 @@ class SecurityPlugin extends Plugin {
             'logout'  => ['index'],
             'profile' => ['index', 'add', 'edit'],
             'servers' => ['add', 'edit', 'delete'],
-            'premium' => ['verify', 'process', 'paypal']
+            'premium' => ['verify', 'process', 'button']
         ];
 
         $admin = [

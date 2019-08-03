@@ -8,8 +8,9 @@
 </div>
 
 {{ content() }}
+<div id="pp-notice"></div>
 
-<div class="row">
+<div class="row mb-3">
     {% for package in packages %}
     <div class="col-sm-12 col-lg-3">
         <div class="card border-0 shadow-sm mb-3" data-aos="fade-right" data-aos-delay="{{ loop.index * 250 }}">
@@ -40,11 +41,10 @@
 
 <div class="row mb-5">
     <div class="col-sm-12">
-        <div class="card shadow-sm mb-3 border-0 text-secondary">
-            <div class="card-body">
-                <i>Not yet functional</i>
+            <div class="text-center" style="min-height:230px;">
+                <div id="paypal-btn"></div>
+                <p class="small text-muted mb-0">All payments are a one-time fee and do not recur.</p>
             </div>
-        </div>
     </div>
 </div>
 
@@ -107,6 +107,40 @@
 
     </div>
 </div>
+{{ javascript_include("https://www.paypalobjects.com/api/checkout.js") }}
 
+<script>
+    let locked = false;
 
-<script>AOS.init();</script>
+    $(document).on("click", '#buy', function(event) {
+        event.preventDefault();
+
+        if (locked) {
+            return;
+        }
+
+        locked = true;
+        var id = $(this).data("id");
+
+        $('#paypal-btn').removeClass("text-danger").html("<i class='fal fa-spinner fa-pulse fa-3x mb-3'></i>");
+
+        $.post("{{ url('premium/button') }}", {
+            pid: id
+        }, function(data) {
+            try {
+                let json = JSON.parse(data);
+
+                if (!json.success) {
+                    $('#paypal-btn').addClass("text-danger").html(json.message);
+                }
+            } catch (err) {
+                $('#paypal-btn').removeClass("text-danger").html(data);
+            }
+
+            locked = false;
+        })
+
+    })
+
+</script>
+    <script>AOS.init();</script>

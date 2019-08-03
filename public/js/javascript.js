@@ -22,14 +22,16 @@ $(document).ready(function() {
     var windowBottom = ($(window).height() - windowTop);
     var navbar = $('.navbar');
 
+
     updateNavbar();
+
     $(window).scroll(function() {
         updateNavbar();
     });
 
     function updateNavbar() {
         windowTop = $(window).scrollTop();
-        if (windowTop > 250 && navbar.hasClass("bg-transparent")) {
+        if (windowTop > 250) {
             navbar.addClass("bg-light shadow navbar-light");
             navbar.removeClass("bg-transparent navbar-dark");
         } else {

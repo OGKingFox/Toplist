@@ -130,6 +130,17 @@ class BaseController extends Controller {
     }
 
     /**
+     * @param $success bool
+     * @param $message string
+     */
+    public function printStatus($success, $message) {
+        $this->println([
+            'success' => $success,
+            'message' => $message
+        ]);
+    }
+
+    /**
      * @param $msg array
      */
     public function debug($msg) {

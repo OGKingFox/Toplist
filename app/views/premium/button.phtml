@@ -1,0 +1,130 @@
+
+<h5 class="bold-font">{{ package.title }}</h5>
+<p class="bold-font">${{ package.price|number_format(2) }}</p>
+<div id="pp-btn" class="text-center"></div>
+
+<script>
+    var statusBlock = $(document).find('#pp-notice');
+
+    var buttonData = {
+        env: 'sandbox',
+        style: {
+            label: 'pay',
+            size:  'large', // small | medium | large | responsive
+            shape: 'pill',  // pill | rect
+            color: 'blue',  // gold | blue | silver | black
+            tagline: true,
+            fundingicons: true,
+            branding: 'Rune-Nexus'
+        },
+
+        funding: {
+            disallowed: [
+                paypal.FUNDING.CREDIT
+            ]
+        },
+
+        commit: true,
+
+        payment: function(data, actions) {
+            return actions.payment.create({
+                payment: {
+                    "transactions": [{
+                        "amount": {
+                            "total"     : "{{ package.price|number_format(2) }}",
+                            "currency"  : "USD",
+                            "details"   : {
+                                "subtotal": "{{ package.price|number_format(2) }}"
+                            }
+                        },
+                        "item_list": {
+                            "items": [
+                                {
+                                    'name'      : "{{ package.title }}",
+                                    'sku'       : "{{ package.id }}",
+                                    'price'     : "{{ package.price|number_format(2) }}",
+                                    'currency'  : "USD",
+                                    'quantity'  : 1
+                                }
+                            ]
+                        },
+                        "description"   : "Rune-Nexus Premium",
+                        "custom"        : "{{ user.id }}"
+                    }]
+                },
+                experience: {
+                    input_fields: {
+                        no_shipping: 1
+                    }
+                }
+            });
+        },
+
+        onAuthorize: function(paymentData, actions) {
+            return actions.payment.get().then(function(details) {
+                let transaction = details.transactions[0];
+                let username    = transaction.custom;
+
+                if (!username.trim()) {
+                    showMsg('danger', 'Username does not exist. Reload and try again.');
+                    return false;
+                }
+
+                console.log(details);
+
+                $.post("{{ url('premium/verify') }}", {
+                    postdata: details
+                }).done(function (data) {
+                    console.log(data);
+
+                    try {
+                        let response = JSON.parse(data);
+                        let success = response.success;
+                        let message = response.message;
+
+                        if (!success) {
+                            showMsg('danger', message);
+                            return;
+                        }
+
+                        return actions.payment.execute().then(function(response) {
+                            $.post("{{ url('premium/process') }}", {
+                                postdata: response
+                            }).done(function(data) {
+                                let response = JSON.parse(data);
+                                showMsg(response.success ? 'success' : 'danger', response.message);
+                            });
+                        });
+                    } catch (err) {
+                        console.log(err);
+                        showMsg('danger', 'An error occurred: '+err);
+                    }
+                });
+            });
+        },
+
+        onError: function(err) {
+            showMsg('danger', err);
+        },
+
+        onCancel: function(data, actions) {
+            showMsg('danger', 'Your transaction has been cancelled.');
+        }
+    };
+
+    buttonData.client = {
+        sandbox:    '{{ constant("sandbox_key") }}',
+        production: '{{ constant("production_key") }}'
+    };
+
+    paypal.Button.render(buttonData, "#pp-btn");
+
+    function showMsg(type, text) {
+        statusBlock.html('<div class="alert alert-'+type+' alert-dismissible fade show" role="alert">\n' +
+            ''+text+'\n' +
+            '<button type="button" class="close" data-dismiss="alert" aria-label="Close">\n' +
+            '<span aria-hidden="true">&times;</span>\n' +
+            '</button>\n' +
+            '</div>');
+    }
+</script>

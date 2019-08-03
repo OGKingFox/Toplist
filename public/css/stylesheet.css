@@ -69,7 +69,6 @@ header .overlay h1 {
 }
 .text-discord {
     color: #87a2ff !important;
-    text-shadow: 1px 1px 3px #000;
 }
 .text-discord:hover, .text-discord:focus, .text-discord:active {
     color: #7289DA !important;

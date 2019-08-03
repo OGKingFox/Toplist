@@ -7,6 +7,7 @@ class Packages extends \Phalcon\Mvc\Model {
     private $title;
     private $price;
     private $features;
+    private $length;
     private $active;
 
     /**
@@ -92,6 +93,26 @@ class Packages extends \Phalcon\Mvc\Model {
         $this->active = $active;
         return $this;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getLength()
+    {
+        return $this->length;
+    }
+
+    /**
+     * @param mixed $length
+     * @return Packages
+     */
+    public function setLength($length)
+    {
+        $this->length = $length;
+        return $this;
+    }
+
+
 
 
 }
