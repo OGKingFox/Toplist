@@ -30,7 +30,7 @@ class PremiumController extends BaseController {
         }
 
         $buyer   = $data['payer']['payer_info'];
-        $user_id = $data['transactions'][0]['custom'];
+        $user_id = $this->filter->sanitize($data['transactions'][0]['custom'], 'int');
 
         $user = Users::getUser($user_id);
 
@@ -40,9 +40,9 @@ class PremiumController extends BaseController {
         }
 
         $item   = $data['transactions'][0]['item_list']['items'][0];
-        $name   = $item['name'];
-        $id     = $item['sku'];
-        $paid   = $item['price'];
+        $name   = $this->filter->sanitize($item['name'], 'string');
+        $id     = $this->filter->sanitize($item['sku'], 'int');
+        $paid   = $this->filter->sanitize($item['price'], 'float');
 
         $package = Packages::getPackage($id);
 
@@ -84,8 +84,8 @@ class PremiumController extends BaseController {
         $trans    = $data['transactions'][0];
         $res      = $trans['related_resources'][0]['sale'];
 
-        $user_id = $trans['custom'];
-        $user    = Users::getUser($user_id);
+        $user_id  = $this->filter->sanitize($trans['custom'], 'int');
+        $user     = Users::getUser($user_id);
 
         if (!$user) {
             $this->printStatus(false, "Could not find your account. You have not been charged.");
@@ -96,8 +96,8 @@ class PremiumController extends BaseController {
         $state    = $this->filter->sanitize($res['state'], "string");
 
         $item     = $trans['item_list']['items'][0];
-        $id       = $item['sku'];
-        $paid     = $item['price'];
+        $id       = $this->filter->sanitize($item['sku'], 'int');
+        $paid     = $this->filter->sanitize($item['price'], 'float');
 
         $package = Packages::getPackage($id);
 
