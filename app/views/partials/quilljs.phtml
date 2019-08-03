@@ -7,7 +7,7 @@
 
     var toolbarOptions = [
         [{ 'header': [1, 2, 3, 4, 5, 6, false] }, {'size' : []}],
-        ['bold', 'italic', 'underline', { 'color': [] }, 'link', 'image'],
+        ['bold', 'italic', 'underline', { 'color': [] }, 'link'],
         ['blockquote', 'code-block'],
         [{ 'list': 'ordered'}, { 'list': 'bullet' }],
         [{ 'align': [] }],
@@ -18,55 +18,6 @@
         theme: 'snow',
         modules: {
             toolbar: toolbarOptions
-        }
-    });
-
-    quill.getModule("toolbar").addHandler("image", function (a) {
-        var input = document.createElement('input');
-        input.setAttribute('type', 'file');
-        input.click();
-
-        input.onchange = (s) => {
-            var file = input.files[0];
-
-            if (/^image\//.test(file.type)) {
-                var settings = {
-                    async: true,
-                    crossDomain: true,
-                    processData: false,
-                    contentType: false,
-                    type: 'POST',
-                    url: apiUrl,
-                    headers: {
-                        Authorization: 'Client-ID ' + apiKey,
-                        Accept: 'application/json'
-                    },
-                    mimeType: 'multipart/form-data'
-                };
-
-                var formData = new FormData();
-                formData.append("image", file);
-                settings.data = formData;
-
-                quill.enable(false);   // Disables user input
-
-                var range = quill.getSelection();
-
-                if (range) {
-                    $.ajax(settings).done(function(response) {
-                        var json = JSON.parse(response);
-                        var index = range.index;
-
-                        quill.insertEmbed(index, 'image', json.data.link);
-                        quill.enable();
-                    });
-                } else {
-                    alert("Please select a spot in your post where you wish the image to be placed.")
-                }
-
-            } else {
-                console.warn('You could only upload images.');
-            }
         }
     });
 
