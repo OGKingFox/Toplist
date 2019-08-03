@@ -1,3 +1,5 @@
+{% set loggedIn = user is defined %}
+
 <div class="row mb-5">
     <div class="col-sm-12 col-lg-10 offset-lg-1 text-center">
         <h2>Premium Membership</h2>
@@ -13,8 +15,10 @@
 <div class="row mb-3">
     {% for package in packages %}
     <div class="col-sm-12 col-lg-3">
-        <div class="card border-0 shadow-sm mb-3" data-aos="fade-right" data-aos-delay="{{ loop.index * 250 }}">
-            <div class="card-header bg-dark border-0 text-white text-center">{{ package.title }}</div>
+        <div class="card border-0 shadow-sm mb-3" data-aos="fade-right" data-aos-delay="{{ loop.index * 200 }}">
+            <div class="card-header bg-dark border-0 text-white text-center">
+                 {{ package.title }}
+            </div>
             <div class="card-header bg-light border-0 text-info text-center bold-font">
                 <h2 class="mb-0">${{ package.price|number_format(2) }}</h2>
             </div>
@@ -32,7 +36,7 @@
                 {% endfor %}
             </div>
             <div class="card-footer">
-                <a href="#" class="btn btn-info btn-block" id="buy" data-id="{{ package.id }}">Buy Now</a>
+                <a href="#" class="btn btn-info btn-block {{ loggedIn ? '' : 'disabled' }}" id="buy" data-id="{{ package.id }}">Buy Now</a>
             </div>
         </div>
     </div>
@@ -109,6 +113,8 @@
 
     </div>
 </div>
+
+{% if loggedIn %}
 {{ javascript_include("https://www.paypalobjects.com/api/checkout.js") }}
 
 <script>
@@ -145,4 +151,6 @@
     })
 
 </script>
-    <script>AOS.init();</script>
+{% endif %}
+
+<script>AOS.init();</script>
