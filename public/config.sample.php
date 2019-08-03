@@ -17,8 +17,8 @@ define("dbname", 	"");
  * Discord OAuth Credentials
  * https://discordapp.com/developers/applications/
  */
-define('OAUTH2_CLIENT_ID', '581970705252614144');
-define('OAUTH2_CLIENT_SECRET', '1ybUbphymYGzHkTbnOu78qjWPLfcYNSw');
+define('OAUTH2_CLIENT_ID', '');
+define('OAUTH2_CLIENT_SECRET', '');
 
 /**
  * OAuth Login URL. Edit with your own URL.
