@@ -37,7 +37,9 @@
 
         <div class="card border-0 shadow-sm mb-3">
             <div class="card-header">
-                <a href="/toplist/servers/add" class="btn btn-info btn-sm float-right"><i class="fal fa-plus-circle fa-fw"></i> Add Server</a>
+                {{ link_to('servers/add',
+                    '<i class="fal fa-plus-circle fa-fw"></i> Add Server',
+                    'class' : 'btn btn-info btn-sm float-right') }}
 
                 <h5 class="mb-0 mt-1">My Servers</h5>
             </div>
