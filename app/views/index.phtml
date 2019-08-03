@@ -87,6 +87,7 @@
         </div>
     </nav>
 
+    {% if router.getControllerName() is '' and router.getActionName() is not 'view' %}
     <div class="alert alert-primary rounded-0 mb-0">
         <div class="container">
             <h3>Welcome to Rune-Nexus Beta!</h3>
@@ -95,6 +96,7 @@
                 please notify me on discord @ OGKingFox#0001 with any issues!</p>
         </div>
     </div>
+    {% endif %}
 
     <section class="content py-5">
         <div class="container">
