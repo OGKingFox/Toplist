@@ -2,6 +2,7 @@
 
 use Phalcon\Mvc\Model\ResultsetInterface;
 use Phalcon\Mvc\ModelInterface;
+use Phalcon\Tag;
 use Phalcon\Validation;
 use \Phalcon\Validation\Validator\Callback;
 use Phalcon\Validation\Validator\Uniqueness;
@@ -230,18 +231,7 @@ class Servers extends \Phalcon\Mvc\Model {
      * @return string
      */
     public static function genSeoTitle($server, $isArr = false) {
-        $reps = [
-            ' - ' => '-',
-            ' ' => '-'
-        ];
-
-        $title = preg_replace('/[^ \w]+/', '', ($isArr ? $server['title'] : $server->title));
-        $title = preg_replace(array('/\s{2,}/', '/[\t\n]/'), ' ', $title);
-        $title = str_replace(
-            array_keys($reps), array_values($reps),
-            strtolower($title));
-
-        return ($isArr ? $server['id'] : $server->id).'-'.$title;
+        return ($isArr ? $server['id'] : $server->id).'-'.Tag::friendlyTitle(($isArr ? $server['title'] : $server->title));
 
     }
     /**
