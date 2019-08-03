@@ -39,7 +39,7 @@ class LoginController extends BaseController {
                 ->setUseKey(true)
                 ->submit();
 
-            if (!$userInfo || $userInfo->code) {
+            if (!$userInfo || isset($userInfo->code)) {
                 $this->logout();
                 $this->response->redirect("");
                 return false;
