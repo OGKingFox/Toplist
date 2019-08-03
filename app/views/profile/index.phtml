@@ -36,7 +36,11 @@
         {{ content() }}
 
         <div class="card border-0 shadow-sm mb-3">
-            <div class="card-header">My Servers</div>
+            <div class="card-header">
+                <a href="/toplist/servers/add" class="btn btn-info btn-sm float-right"><i class="fal fa-plus-circle fa-fw"></i> Add Server</a>
+
+                <h5 class="mb-0 mt-1">My Servers</h5>
+            </div>
             <table class="table table-hover mb-0">
                 <thead>
                 <tr class="small text-muted">
@@ -56,7 +60,7 @@
                     <td>{{ date("M. d, Y", server.date_created) }}</td>
                     <td class="text-right">
                         {{ link_to('servers/edit/'~server.id, 'Edit', 'class' : 'btn btn-dark btn-sm') }}
-                        {{ link_to('', 'Delete', 'class' : 'btn btn-danger btn-sm') }}
+                        {{ link_to('', 'Delete', 'class' : 'btn btn-danger btn-sm', 'id' : 'delete', 'data-id' : server.id) }}
                     </td>
                 </tr>
                 {% endfor %}
@@ -64,3 +68,54 @@
         </div>
     </div>
 </div>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
+<script>
+    let timerInterval;
+
+    $(document).on("click", "#delete", function(event) {
+        event.preventDefault();
+
+        var id = $(this).data("id");
+
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Yes, delete it!'
+        }).then((result) => {
+            if (result.value) {
+                $.post("{{ url('servers/delete') }}", {
+                    id: id,
+                }, function(data) {
+                    console.log(data);
+
+                    try {
+                        let json = JSON.parse(data);
+
+                        Swal.fire({
+                            title: json.success ? 'Deleted!' : 'Error',
+                            html: json.message,
+                            type: json.error ? 'error' : 'success',
+                            timer: 2000,
+                            showConfirmButton: false,
+                            onBeforeOpen: () => {
+                                timerInterval = setInterval(() => {}, 100)
+                            },
+                            onClose: () => {
+                                clearInterval(timerInterval);
+                                window.location.reload();
+                            }
+                        });
+                    } catch (err) {
+                        console.log(err);
+                    }
+                    locked = false;
+                });
+            } else {
+                locked = false;
+            }
+        });
+    });
+</script>

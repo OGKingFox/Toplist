@@ -1,4 +1,6 @@
 <?php
+
+use Phalcon\Mvc\View;
 use Phalcon\Text;
 
 class ServersController extends BaseController {
@@ -89,7 +91,24 @@ class ServersController extends BaseController {
     }
 
     public function deleteAction() {
+        $this->view->setRenderLevel(View::LEVEL_NO_RENDER);
 
+        if (!$this->request->isPost() || !$this->request->isAjax() || !$this->request->hasPost("id")) {
+            $this->printStatus(false, 'This page is available via post only');
+            return false;
+        }
+
+        $id = $this->request->getPost("id", 'int');
+        $server = Servers::getServerByOwner($id, $this->getUser()->id);
+
+        if (!$server) {
+            $this->printStatus(false, 'Could not find this server to remove it!');
+            return false;
+        }
+
+        $server->delete();
+        $this->printStatus(true, 'This server has been removed.');
+        return true;
     }
 
     public function uploadAction() {
