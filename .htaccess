@@ -1,5 +1,5 @@
 RewriteEngine on
-RewriteRule ^(forums|community|api|sitemap.xml|cron-job.php)($|/) - [L]
+RewriteRule ^(forums|community|api|sitemap.xml)($|/) - [L]
 RewriteRule  ^$ public/    [L]
 RewriteRule  ((?s).*) public/$1 [L]
 
