@@ -5,4 +5,4 @@
 .idea/*
 **/css/fontawesome.min.css
 **/webfonts/*
-/cron.log
+/crons/cron.log
