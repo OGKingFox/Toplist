@@ -43,23 +43,22 @@
 
                 <h5 class="mb-0 mt-1">My Servers</h5>
             </div>
-            <table class="table table-hover mb-0">
-                <thead>
-                <tr class="small text-muted">
-                    <th class="py-1">Title</th>
-                    <th class="py-1">Votes</th>
-                    <th class="py-1">Likes</th>
-                    <th class="py-1">Date Added</th>
-                    <th></th>
-                </tr>
-                </thead>
+            <table class="table table-hover mb-0" style="line-height:1em;">
                 {% for server in servers %}
                 <?php $seo_title = Servers::genSeoTitle($server); ?>
                 <tr>
                     <td>{{ link_to('view/'~seo_title, server.title, 'class' : 'text-info', 'target' : '_blank') }}</td>
-                    <td>{{ server.votes|number_format }}</td>
-                    <td>{{ server.likes|number_format }}</td>
-                    <td>{{ date("M. d, Y", server.date_created) }}</td>
+                    <td>
+                        <p class="mb-0">{{ server.votes|number_format }}</p>
+                        <small class="text-muted">Votes</small>
+                    </td>
+                    <td>
+                        <p class="mb-0">{{ server.likes|number_format }}</p>
+                        <small class="text-muted">Likes</small>
+                    </td>
+                    <td>
+                        {{ date("M. d, Y", server.date_created) }}
+                    </td>
                     <td class="text-right">
                         {{ link_to('servers/edit/'~server.id, 'Edit', 'class' : 'btn btn-dark btn-sm') }}
                         {{ link_to('', 'Delete', 'class' : 'btn btn-danger btn-sm', 'id' : 'delete', 'data-id' : server.id) }}
