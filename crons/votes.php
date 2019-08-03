@@ -1,7 +1,7 @@
 <?php
+    $start = microtime(true);
     include 'db_connect.php';
 
-    $start = microtime(true);
     $stmt = $pdo->prepare("UPDATE servers SET votes = (SELECT COUNT(*) FROM votes WHERE votes.server_id = servers.id)");
     $stmt->execute();
     $end = microtime(true);
