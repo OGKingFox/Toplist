@@ -6,3 +6,4 @@
 **/css/fontawesome.min.css
 **/webfonts/*
 /crons/cron.log
+/crons/db_connect.php
