@@ -1,11 +1,8 @@
 {% if discord is defined %}
-{#<pre>{{ discord.getRawData()|json_encode(128) }}</pre>
-#}
-
 <div class="card border-0 shadow-sm mb-3 mt-2 discord-block" style="overflow:hidden;">
     <div class="card-body bg-discord">
         <i class="fab fa-discord float-left fa-3x mr-3"></i>
-        <h5 class="mb-0">{{ discord.getServerTitle() }} Discord</h5>
+        <h5 class="mb-0">{{ discord.getServerTitle() }}</h5>
         <p class="mb-0">{{ discord.getMembers()|count }} Members Online</p>
     </div>
 
