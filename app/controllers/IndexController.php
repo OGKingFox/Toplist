@@ -59,6 +59,14 @@ class IndexController extends BaseController {
 
         $this->tag->setTitle($server->title);
 
+        if ($server->meta_info) {
+            $this->view->description = $server->meta_info;
+        }
+        if ($server->meta_tags) {
+            $tags = implode(",", json_decode($server->meta_tags, true));
+            $this->view->meta_tags = $this->filter->sanitize($tags, 'string');
+        }
+
         if ($this->request->isPost() && $this->security->checkToken()) {
             $user_id  = $this->getUser()->id;
             $username = $this->getUser()->username;

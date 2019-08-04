@@ -8,10 +8,14 @@
     <title>Rune-Nexus</title>
     {% endif %}
 
+    {% if meta_tags is defined %}
+    <meta name="keywords" content="{{ meta_tags }}">
+    {% else %}
     <meta name="keywords" content="toplist,topg,mmo,runescape,rsps,runescape,private,server,runelocus,rune-server,rune-list,runelist,top100,arena,top100">
+    {% endif %}
 
     {% if description is defined %}
-    <meta name="description" content="{{ description }}">
+    <meta name="description" content="{{ filter.sanitize(description, 'string') }}">
     {% else %}
     <meta name="description" content="The most modern top-list built to-date. Completely free, feature rich, and easy to use!">
     {% endif %}

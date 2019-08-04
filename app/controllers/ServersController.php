@@ -68,21 +68,30 @@ class ServersController extends BaseController {
             $this->session->remove('notice');
         }
 
-        if ($this->request->isPost() /*&& $this->security->checkToken()*/) {
-            $owner  = $this->session->get("user_info");
+        if ($this->request->isPost() && $this->security->checkToken()) {
+            $owner  = $this->getUser();
 
             $server->assign($this->request->getPost());
             $server->setOwnerTag($owner->username.'#'.$owner->discriminator);
             $server->setInfo(Functions::getPurifier()->purify($server->getInfo()));
 
-            if (!$server->update()) {
-                $this->flash->error($server->getMessages());
-            } else {
-                $this->session->set("notice", [
-                    'type' => 'success',
-                    'message' => 'Your changes have been saved.'
-                ]);
-                return $this->response->redirect("servers/edit/".$server->getId());
+            $update = true;
+
+            if ($this->request->hasPost("meta_tags")) {
+                $meta_tags = explode(",", $this->request->getPost("meta_tags", 'string'));
+                $server->setMetaTags(json_encode($meta_tags));
+            }
+
+            if ($update) {
+                if (!$server->update()) {
+                    $this->flash->error($server->getMessages());
+                } else {
+                    $this->session->set("notice", [
+                        'type' => 'success',
+                        'message' => 'Your changes have been saved.'
+                    ]);
+                    return $this->response->redirect("servers/edit/".$server->getId());
+                }
             }
         }
 

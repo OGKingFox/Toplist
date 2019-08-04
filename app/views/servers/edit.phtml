@@ -27,70 +27,111 @@
             </div>
         </div>
 
+        {{ form('servers/edit/'~server.id, 'method' : 'post', 'autocomplete' : 'off') }}
         <div class="card border-0 shadow-sm mb-3">
-
             <div class="card-body">
-                {{ form('servers/edit/'~server.id, 'method' : 'post', 'autocomplete' : 'off', 'id' : 'postform') }}
                 <div class="form-group">
                     <label for="title" class="mb-0">Server Title</label>
                     <p class="small text-muted">This will be displayed on the front page.</p>
                     {{ text_field('title', 'class' : 'form-control', 'value' : server.title) }}
                 </div>
-
                 <div class="form-group">
                     <label for="game" class="mb-0">Category</label>
                     <p class="small text-muted">The game that your listing relates to.</p>
                     {{ select("game", games, 'using': ['id', 'title'], 'class' : 'form-control', 'value' : server.game) }}
                 </div>
-
-                {#<div class="form-group">
-                    <label for="summary" class="mb-0">Description</label>
-                    <p class="small text-muted">Displayed under your title. Keep it short and sweet. Must be between 20 and 200 chars.
-                        Can contain only basic characters such as A-Z, 0-9, spaces, periods, and underscores..</p>
-                    {{ text_field('summary', 'class' : 'form-control', 'value' : server.summary) }}
-                </div>#}
-
                 <div class="form-group">
                     <label for="website" class="mb-0">Website URL</label>
                     <p class="small text-muted">A link to your server's homepage. Leaving this blank will hide your listing.</p>
                     {{ text_field('website', 'class' : 'form-control', 'value' : server.website) }}
                 </div>
+                <div class="form-group mb-0">
+                    {{ submit_button('Update', 'class' : 'btn btn-info') }}
+                    {{ hidden_field(security.getTokenKey(), 'value' : security.getToken()) }}
+                </div>
+            </div>
+        </div>
+        {{ end_form() }}
 
+        {{ form('servers/edit/'~server.id, 'method' : 'post', 'autocomplete' : 'off') }}
+        <div class="card border-0 shadow-sm mb-3">
+            <div class="card-body">
                 <div class="form-group">
                     <label for="callback" class="mb-0">Callback URL</label>
                     <p class="small text-muted">Optional. Used for voting systems like MotiVote or FoxVote to send data
                         when a user makes a vote.</p>
                     {{ text_field('callback', 'class' : 'form-control', 'value' : server.callback) }}
                 </div>
+                <div class="form-group mb-0">
+                    {{ submit_button('Update', 'class' : 'btn btn-info') }}
+                    {{ hidden_field(security.getTokenKey(), 'value' : security.getToken()) }}
+                </div>
+            </div>
+        </div>
+        {{ end_form() }}
 
+        {{ form('servers/edit/'~server.id, 'method' : 'post', 'autocomplete' : 'off') }}
+        <div class="card border-0 shadow-sm mb-3">
+            <div class="card-body">
                 <div class="form-group">
                     <label for="discord_id" class="mb-0">Discord Server ID</label>
-                    <p class="small text-muted">
+                    <p class="small text-muted" style="line-height:1em;">
                         Optional. Your discord server id. Click
                         <a target="_blank" href="https://support.discordapp.com/hc/en-us/articles/206346498-Where-can-I-find-my-User-Server-Message-ID-">here</a> for more info.
                         This will enable a discord block on your listing showing members and a join link automatically. It's basically sorcery.
                     </p>
                     {{ numeric_field('discord_id', 'class' : 'form-control', 'value' : server.discord_id) }}
                 </div>
+                <div class="form-group mb-0">
+                    {{ submit_button('Update', 'class' : 'btn btn-info') }}
+                    {{ hidden_field(security.getTokenKey(), 'value' : security.getToken()) }}
+                </div>
+            </div>
+        </div>
+        {{ end_form() }}
 
+        {{ form('servers/edit/'~server.id, 'method' : 'post', 'autocomplete' : 'off') }}
+        <div class="card border-0 shadow-sm mb-3">
+            <div class="card-body">
+                <div class="form-group">
+                    <label for="meta_info" class="mb-0">Meta Description</label>
+                    <p class="small text-muted">
+                        A short description of your server. <a href="https://yoast.com/meta-descriptions/" target="_blank">https://yoast.com/meta-descriptions/</a>
+                    </p>
+                    {{ text_field('meta_info', 'class' : 'form-control', 'value' : server.meta_info, 'maxlength' : '155') }}
+                </div>
+                <div class="form-group">
+                    <label for="meta_info" class="mb-0">Meta Tags</label>
+                    <?php $tags = implode(",", json_decode($server->meta_tags, true)); ?>
+                    <p class="small text-muted">Comma separated. Max 15. <a href="https://www.w3schools.com/tags/tag_meta.asp" target="_blank">https://www.w3schools.com/tags/tag_meta.asp</a></p>
+                    {{ text_field('meta_tags', 'class' : 'form-control', 'value' : tags) }}
+                </div>
+                <div class="form-group mb-0">
+                    {{ submit_button('Update', 'class' : 'btn btn-info') }}
+                    {{ hidden_field(security.getTokenKey(), 'value' : security.getToken()) }}
+                </div>
+            </div>
+        </div>
+        {{ end_form() }}
+
+        {{ form('servers/edit/'~server.id, 'method' : 'post', 'autocomplete' : 'off', 'id' : 'postform') }}
+        <div class="card border-0 shadow-sm mb-3">
+            <div class="card-body">
                 <div class="form-group">
                     <label for="editor-form" class="mb-0">Information</label>
                     <p class="small text-muted">A more detailed overview of your server.</p>
                     <?php $desc = Functions::getPurifier()->purify($server->info); ?>
-
                     <div id="editor" class="mb-3">{{ desc }}</div>
-
                     <textarea name='info' id='editor-form' style='display:none'></textarea>
                 </div>
-
-                <div class="form-group">
-                    {{ submit_button('Save Changes', 'class' : 'btn btn-primary') }}
-                    {{ submit_button('Cancel', 'class' : 'btn btn-outline-danger float-right') }}
+                <div class="form-group mb-0">
+                    {{ hidden_field(security.getTokenKey(), 'value' : security.getToken()) }}
+                    {{ submit_button('Update', 'class' : 'btn btn-info') }}
                 </div>
-                {{ hidden_field(security.getTokenKey(), 'value' : security.getToken()) }}
-                {{ end_form() }}
             </div>
         </div>
+        {{ end_form() }}
+
     </div>
 
     <div class="col-sm-12 col-xl-4">

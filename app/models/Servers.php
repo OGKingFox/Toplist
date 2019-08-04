@@ -508,6 +508,20 @@ class Servers extends \Phalcon\Mvc\Model {
             "message" => "Invalid title. May only contain letters, numbers, spaces, and dashes."
         ]));
 
+        $validator->add("meta_info", new Callback([
+            "callback" => function() {
+                return strlen($this->meta_info) <= 160;
+            },
+            "message" => "Meta description can not be longer than 160 characters."
+        ]));
+
+        $validator->add("meta_tags", new Callback([
+            "callback" => function() {
+                return count(json_decode($this->meta_tags, true)) < 15;
+            },
+            "message" => "You can not have more than 15 meta tags."
+        ]));
+
         return $this->validate($validator) == true;
     }
 
