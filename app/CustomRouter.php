@@ -111,6 +111,20 @@ class CustomRouter extends RouterGroup {
             ]
         ],
         [
+            "route" => "/terms",
+            "params" => [
+                "controller" 	=> "pages",
+                "action"     	=> "terms"
+            ]
+        ],
+        [
+            "route" => "/privacy",
+            "params" => [
+                "controller" 	=> "pages",
+                "action"     	=> "privacy"
+            ]
+        ],
+        [
             "route" => "/discord",
             "params" => [
                 "controller" 	=> "index",

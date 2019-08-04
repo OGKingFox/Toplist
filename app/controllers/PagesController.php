@@ -15,5 +15,13 @@ class PagesController extends BaseController {
 
     }
 
+    public function termsAction() {
+
+    }
+
+    public function privacyAction() {
+
+    }
+
 
 }

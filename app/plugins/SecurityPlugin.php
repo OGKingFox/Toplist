@@ -39,7 +39,7 @@ class SecurityPlugin extends Plugin {
             'recover'    => ['index'],
             'vote'       => ['index', 'verify'],
             'errors'     => ['show401', 'show404', 'show500'],
-            'pages'      => ['docs', 'advertising', 'premium', 'faq'],
+            'pages'      => ['docs', 'advertising', 'premium', 'faq', 'terms', 'privacy'],
             'premium'    => ['index']
         ];
 

@@ -36,7 +36,8 @@
 
     <header>
         <div class="overlay text-center text-white">
-            <h1>Rune-Nexus</h1>
+            <h1 class="mb-0">Rune-Nexus</h1>
+            <p>A free, modern, open-source advertising platform.</p>
         </div>
     </header>
 
@@ -91,9 +92,8 @@
     <div class="alert alert-primary rounded-0 mb-0">
         <div class="container">
             <h3>Welcome to Rune-Nexus Beta!</h3>
-            <p class="mb-0">While this page is still in beta, some features may or may not work properly. So far creating a listing,
-                editing, login, and voting are all confirmed working, but may be a little buggy. So if any issues occur
-                please notify me on discord @ OGKingFox#0001 with any issues!</p>
+            <p class="mb-0">While this page is still in beta, some features may or may not work properly. More games will be
+            added with time. </p>
         </div>
     </div>
     {% endif %}
@@ -108,29 +108,25 @@
         <div class="container">
             <div class="row">
                 <div class="col-sm-12 text-center">
+                    <h4>{{ image('img/logo_trans.png', 'height' : '100px', 'class' : 'my-3') }}</h4>
+
                     {{ link_to('', 'Home', 'class' : 'btn btn-link px-3 text-white') }}
                     {{ link_to('docs', 'Documentation', 'class' : 'btn btn-link px-3 text-white') }}
-                    {{ link_to('tools', 'Tools', 'class' : 'btn btn-link px-3 text-white') }}
-                    {{ link_to('premium', 'Premium', 'class' : 'btn btn-link px-3 text-white') }}
-                    {{ link_to('contact', 'Contact', 'class' : 'btn btn-link px-3 text-white') }}
+                    {{ link_to('terms', 'Terms of Service', 'class' : 'btn btn-link px-3 text-white') }}
+                    {{ link_to('privacy', 'Privacy Policy', 'class' : 'btn btn-link px-3 text-white') }}
                 </div>
             </div>
             <div class="row">
                 <div class="col-sm-12 text-center text-white-50">
-                    Copyright &copy; 2019 Foxtrot Studios.
+                    Copyright &copy; {{ date("Y") }} Rune-Nexus | All Rights Reserved.
                 </div>
             </div>
             <div class="row mt-3">
                 <div class="col-sm-12 text-center text-white-50">
-                    {{ link_to('', '<i class="fab fa-facebook-f fa-fw fa-2x"></i>', 'class' : 'btn btn-link text-white', 'rel' : 'nofollow') }}
-                    {{ link_to('', '<i class="fab fa-twitter fa-fw fa-2x"></i>', 'class' : 'btn btn-link text-white', 'rel' : 'nofollow') }}
-                    {{ link_to('', '<i class="fab fa-snapchat-ghost fa-fw fa-2x"></i>', 'class' : 'btn btn-link text-white', 'rel' : 'nofollow') }}
-                    {{ link_to('', '<i class="fab fa-discord fa-fw fa-2x"></i>', 'class' : 'btn btn-link text-white', 'rel' : 'nofollow') }}
+                    {{ link_to('https://facebook.com/RuneNexusOfficial',
+                        '<i class="fab fa-facebook-f fa-fw fa-2x"></i>', false,
+                        'class' : 'btn btn-link text-white', 'target' : '_blank') }}
                 </div>
-            </div>
-
-            <div class="my-3 text-center">
-                {{ image('img/notray.png') }}
             </div>
         </div>
     </footer>
