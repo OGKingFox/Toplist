@@ -42,7 +42,11 @@ class Servers extends \Phalcon\Mvc\Model {
             ->columns([
                 'Servers.id',
                 'Servers.title',
-                '(SELECT COUNT(*) FROM Votes WHERE Votes.server_id = Servers.id) AS votes'
+                'Servers.votes + IF(user.premium_expires > :time:, Servers.votes + (user.premium_level * 100), Servers.votes) AS votes'
+            ])
+            ->leftJoin("Users", 'user.user_id = Servers.owner_id', 'user')
+            ->bind([
+                'time' => time()
             ])
             ->orderBy("votes DESC")
             ->limit(5)

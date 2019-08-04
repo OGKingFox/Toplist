@@ -136,7 +136,9 @@ class IndexController extends BaseController {
 
         $data = $discord->getRawData();
 
-        if ($data) {
+        if ($data->code) {
+            $this->flash->error("Error loading Discord: ".$data->message);
+        } else {
             $this->view->discord = $discord;
         }
         return true;
