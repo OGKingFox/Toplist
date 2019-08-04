@@ -1,5 +1,6 @@
 <?php
 
+use Phalcon\Http\Request\File;
 use Phalcon\Mvc\View;
 use Phalcon\Text;
 
@@ -112,7 +113,105 @@ class ServersController extends BaseController {
     }
 
     public function uploadAction() {
+        $this->view->setRenderLevel(View::LEVEL_NO_RENDER);
 
+        if (!$this->request->isPost() || !$this->request->isAjax() || !$this->request->hasFiles()) {
+            $this->printStatus(false, "Invalid request.");
+            return false;
+        }
+
+        $upType = $this->request->get("uploadType");
+        $file   = $this->request->getUploadedFiles()[0];
+
+        $name   = $file->getName();
+        $type   = $file->getRealType();
+        $size   = $file->getSize();
+        $ext    = $file->getExtension();
+
+        $dims   = getimagesize($file->getTempName());
+        $width  = $dims[0];
+        $height = $dims[1];
+
+        $valid_types = ['jpg' => 'image/jpeg', 'png' => 'image/png', 'gif' => 'image/gif'];
+        $maxDims = $upType == "banner" ? [468, 60] : [1280, 720];
+        $maxSize = 3145728;
+
+        if (!in_array($type, array_values($valid_types)) || !in_array($ext, array_keys($valid_types))) {
+            $this->printStatus(false, "Invalid type. Allowed: ".implode(',', $valid_types));
+            return false;
+        }
+
+        if ($size > $maxSize) {
+            $this->printStatus(false, "Image can not exceed ".(($maxSize/1024)/1024)."MB.");
+            return false;
+        }
+
+        $maxDims = $upType == "banner" ? [468, 60] : [1280, 720];
+
+        if ($upType == "banner") {
+            if ($width != $maxDims[0] && $height != $maxDims[1]) {
+                $this->printStatus(false, "Image must be $maxDims[0]px x $maxDims[1]px.");
+                return false;
+            }
+        } else {
+            if ($width > $maxDims[0] || $height > $maxDims[1]) {
+                $this->printStatus(false, "Image can not exceed $maxDims[0]px x $maxDims[1]px.");
+                return false;
+            }
+        }
+
+        $userId = $this->getUser()->id;
+        $sid    = $this->request->getPost("serverId", "int");
+        $server = Servers::getServerByOwner($sid, $userId);
+
+        if (!$server) {
+            $this->printStatus(true, "Upload failed, could not locate this server!");
+            return false;
+        }
+
+        $upload = $this->uploadImage($file);
+
+        if (isset($upload['error'])) {
+            $this->printStatus(true, $upload['error']);
+            return false;
+        }
+
+        $server->setBannerUrl($upload['link']);
+
+        if (!$server->update()) {
+            $this->printStatus(false, $server->getMessages()[0]);
+            return false;
+        }
+
+        $this->printStatus(true, $upload['link']);
+        return true;
     }
 
+    /**
+     * @param $file File
+     * @return array
+     */
+    private function uploadImage($file) {
+        $handle = fopen($file->getTempName(), 'r');
+        $encode = base64_encode(fread($handle, filesize($file->getTempName())));
+        $query  = http_build_query(['image' => $encode]);
+
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL,"https://api.imgur.com/3/image");
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, ['Authorization: Client-ID '.IMGUR_KEY]);
+        curl_setopt($ch, CURLOPT_POST, 1);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $query);
+
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        $output = json_decode(curl_exec($ch), true);
+        $errors = curl_error($ch);
+        curl_close($ch);
+
+        if ($errors) {
+            return ['error' => $errors ];
+        } else {
+            return ['link' => $output['data']['link']];
+        }
+    }
 }

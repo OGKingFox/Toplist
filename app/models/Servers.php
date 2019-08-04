@@ -15,6 +15,7 @@ class Servers extends \Phalcon\Mvc\Model {
     private $title;
     private $api_key;
     private $website;
+    private $banner_url;
     private $votes;
     private $callback;
     private $discord_id;
@@ -416,6 +417,24 @@ class Servers extends \Phalcon\Mvc\Model {
     public function setVotes($votes)
     {
         $this->votes = $votes;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getBannerUrl()
+    {
+        return $this->banner_url;
+    }
+
+    /**
+     * @param mixed $banner_url
+     * @return Servers
+     */
+    public function setBannerUrl($banner_url)
+    {
+        $this->banner_url = $banner_url;
         return $this;
     }
 

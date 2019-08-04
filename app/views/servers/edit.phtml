@@ -4,6 +4,32 @@
 
         <div class="card border-0 shadow-sm mb-3">
             <div class="card-body">
+                {% set banner = url(server.banner_url) %}
+                <div class="banner" style="background:url({{ banner }}) top center #efefef;" id="banner">
+                    {{ form('servers/edit/', 'method' : 'post', 'enctype' : 'multipart/form-data', 'id' : 'uploadForm') }}
+                    <input type="file" name="image" id="image" style="display: none;">
+                    <input type="hidden" name="uploadType" value="banner">
+                    <input type="hidden" name="serverId" value="{{ server.id }}">
+                    <button type="button" class="btn btn-link btn-sm text-white" id="file-select">
+                        <i class="fas fa-camera fa-fw fa-2x"></i>
+                    </button>
+                    {{ hidden_field(security.getTokenKey(), 'value' : security.getToken()) }}
+                    {{ end_form() }}
+                </div>
+                <div class="text-muted small mb-3">Image restrictions: PNG, JPG, or GIF, 468x60, 3MB file size</div>
+
+                <div id="uploadStatus"></div>
+
+                <div class="progress invisible" style="height: 20px;position: relative;">
+                    <div class="progress-overlay w-100 text-dark"></div>
+                    <div class="progress-bar" style="width: 0;"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card border-0 shadow-sm mb-3">
+
+            <div class="card-body">
                 {{ form('servers/edit/'~server.id, 'method' : 'post', 'autocomplete' : 'off', 'id' : 'postform') }}
                 <div class="form-group">
                     <label for="title" class="mb-0">Server Title</label>
@@ -95,4 +121,5 @@
     </div>
 </div>
 
+{{ javascript_include("js/custom/banner.upload.js") }}
 {{ partial('partials/quilljs') }}

@@ -46,7 +46,7 @@ class SecurityPlugin extends Plugin {
         $private = [
             'logout'  => ['index'],
             'profile' => ['index', 'add', 'edit'],
-            'servers' => ['add', 'edit', 'delete'],
+            'servers' => ['add', 'edit', 'delete', 'upload'],
             'premium' => ['verify', 'process', 'button']
         ];
 

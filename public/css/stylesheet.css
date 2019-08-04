@@ -239,7 +239,6 @@ a:hover {
 .indicator-online {
     background-color:green;
 }
-
 .discord-block .fa-discord {
     color: #fff;
 }
@@ -253,4 +252,29 @@ a:hover {
 .discord-header, .bg-discord  {
     background-color: #7289DA;
     color: white !important;
+}
+.banner {
+    position: relative;
+}
+.banner .btn {
+    position: absolute;
+    width:468px;
+    height:60px;
+    opacity: 0.5;
+}
+.banner .btn:hover {
+    color: white !important;
+    background-color: rgba(0,0,0,0.4);
+    opacity: 0.8;
+}
+.banner {
+    width:468px;
+    height:60px;
+}
+.progress-overlay {
+    position: absolute;
+    height:20px;
+    line-height:20px;
+    text-align:center;
+    color:white;
 }
