@@ -146,7 +146,7 @@ class ServersController extends BaseController {
             return false;
         }
 
-        $maxDims = $upType == "banner" ? [468, 60] : [1280, 720];
+        $maxDims = $upType == "banner" ? [468, 60] : [2560, 1440];
 
         if ($upType == "banner") {
             if ($width != $maxDims[0] && $height != $maxDims[1]) {

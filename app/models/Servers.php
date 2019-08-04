@@ -19,7 +19,8 @@ class Servers extends \Phalcon\Mvc\Model {
     private $votes;
     private $callback;
     private $discord_id;
-    private $summary;
+    private $meta_info;
+    private $meta_tags;
     private $info;
     private $likes;
     private $date_created;
@@ -70,7 +71,8 @@ class Servers extends \Phalcon\Mvc\Model {
                 'Servers.callback',
                 'Servers.discord_id',
                 'Servers.banner_url',
-                'Servers.summary',
+                'Servers.meta_info',
+                'Servers.meta_tags',
                 'IF(user.premium_expires > :time:, Servers.votes + (user.premium_level * 100), Servers.votes) AS votes',
                 'Servers.info',
                 'g.id AS game_id',
@@ -105,7 +107,8 @@ class Servers extends \Phalcon\Mvc\Model {
                 'Servers.website',
                 'Servers.callback',
                 'Servers.discord_id',
-                'Servers.summary',
+                'Servers.meta_info',
+                'Servers.meta_tags',
                 'Servers.info',
                 'Servers.date_created',
                 'Servers.likes',
@@ -315,24 +318,6 @@ class Servers extends \Phalcon\Mvc\Model {
     /**
      * @return mixed
      */
-    public function getSummary()
-    {
-        return $this->summary;
-    }
-
-    /**
-     * @param mixed $summary
-     * @return Servers
-     */
-    public function setSummary($summary)
-    {
-        $this->summary = $summary;
-        return $this;
-    }
-
-    /**
-     * @return mixed
-     */
     public function getInfo()
     {
         return $this->info;
@@ -438,6 +423,42 @@ class Servers extends \Phalcon\Mvc\Model {
         return $this;
     }
 
+    /**
+     * @return mixed
+     */
+    public function getMetaInfo()
+    {
+        return $this->meta_info;
+    }
+
+    /**
+     * @param mixed $meta_info
+     * @return Servers
+     */
+    public function setMetaInfo($meta_info)
+    {
+        $this->meta_info = $meta_info;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getMetaTags()
+    {
+        return $this->meta_tags;
+    }
+
+    /**
+     * @param mixed $meta_tags
+     * @return Servers
+     */
+    public function setMetaTags($meta_tags)
+    {
+        $this->meta_tags = $meta_tags;
+        return $this;
+    }
+
 
 
     public function validation() {
@@ -486,20 +507,6 @@ class Servers extends \Phalcon\Mvc\Model {
             },
             "message" => "Invalid title. May only contain letters, numbers, spaces, and dashes."
         ]));
-
-        /*$validator->add("summary", new Callback([
-            "callback" => function() {
-                return strlen($this->summary) >= 5 && strlen($this->summary) <= 75;
-            },
-            "message" => "Invalid summary. Must be between 5 and 75 characters."
-        ]));
-
-        $validator->add("summary", new Callback([
-            "callback" => function() {
-                return preg_match('/^[A-Za-z0-9 \-_.]+$/i', $this->summary) !== false;
-            },
-            "message" => "Invalid description. Contains invalid characters."
-        ]));*/
 
         return $this->validate($validator) == true;
     }
