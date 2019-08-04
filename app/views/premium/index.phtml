@@ -12,6 +12,7 @@
 {{ content() }}
 <div id="pp-notice"></div>
 
+
 <div class="row mb-3">
     {% for package in packages %}
     <div class="col-sm-12 col-lg-3">
@@ -20,7 +21,12 @@
                  {{ package.title }}
             </div>
             <div class="card-header bg-light border-0 text-info text-center bold-font">
-                <h2 class="mb-0">${{ package.price|number_format(2) }}</h2>
+                <h2 class="mb-0">
+                    ${{ package.price|number_format(2) }}
+                </h2>
+                <span class="text-muted">
+                    -${{ (package.base_price - package.price)|number_format(2) }}
+                </span>
             </div>
             <div class="list-group list-group-flush text-center">
                 {% for feature in package.features|json_decode(true) %}
