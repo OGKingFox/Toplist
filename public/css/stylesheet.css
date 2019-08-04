@@ -199,7 +199,6 @@ a:hover {
 .card-pricing.scale-110 {
     border-radius: .375rem!important
 }
-
 @media (max-width:991.98px) {
     .card-pricing.scale-110 {
         -webkit-transform: scale(1)!important;
@@ -207,13 +206,51 @@ a:hover {
         transform: scale(1)!important
     }
 }
-
 .card-product .card-price,
 .card-product .card-title {
     font-size: 1rem;
     font-weight: 600
 }
-
 .card-product .card-price {
     display: block
+}
+.discord-members {
+    max-height: 350px;
+    overflow-y:scroll;
+    overflow-x: hidden;
+    line-height: 1.2em;
+}
+.discord-indicator {
+    width:15px;
+    height:15px;
+    background-color:red;
+    border-radius:50%;
+    position:absolute;
+    bottom:-5px;
+    right:-5px;
+    border: solid 3px #fff;
+}
+.indicator-dnd {
+    background-color:red;
+}
+.indicator-idle {
+    background-color:orange;
+}
+.indicator-online {
+    background-color:green;
+}
+
+.discord-block .fa-discord {
+    color: #fff;
+}
+.discord-block h5 {
+    color: #fff;
+    font-weight: bold;
+}
+.discord-join {
+    color:#Fff;
+}
+.discord-header, .bg-discord  {
+    background-color: #7289DA;
+    color: white !important;
 }

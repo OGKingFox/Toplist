@@ -1,0 +1,43 @@
+{% if discord is defined %}
+{#<pre>{{ discord.getRawData()|json_encode(128) }}</pre>
+#}
+
+<div class="card border-0 shadow-sm mb-3 mt-2 discord-block" style="overflow:hidden;">
+    <div class="card-body bg-discord">
+        <i class="fab fa-discord float-left fa-3x mr-3"></i>
+        <h5 class="mb-0">{{ discord.getServerTitle() }} Discord</h5>
+        <p class="mb-0">{{ discord.getMembers()|count }} Members Online</p>
+    </div>
+
+    <div class="mb-1 discord-members pt-2">
+        {% for member in discord.getMembers() %}
+        <div class="d-inline-block w-100 mb-2 mx-3" style="border-bottom: solid 1px #efefef;">
+            <div class="float-left mr-3" style="position: relative;width: 32px;height:32px;">
+                {{ image(member.avatar_url, 'class' : 'rounded-circle', 'style' : 'width:32px;') }}
+                <div class="discord-indicator indicator-{{ member.status }}"></div>
+            </div>
+
+            <div style="margin-left: 46px;">
+                <p class="my-0">{{ member.username }}</p>
+                {% if member.game is defined %}
+                {% set gname = member.game.name %}
+                {% if gname|length > 20 %}
+                {% set gname = substr(gname, 0, 20)~'...' %}
+                {% endif %}
+                <p class="mb-1 small text-muted">Playing: {{ gname }}</p>
+                {% else %}
+                <p class="mb-1 small text-muted">{{ member.status }}</p>
+                {% endif %}
+            </div>
+
+        </div>
+        {% endfor %}
+    </div>
+
+    {% if discord.data.instant_invite %}
+    {{ link_to(discord.data.instant_invite,
+        'Join Server',
+        'class' : 'card-footer text-center disabled text-discord bold-font', false, 'target' : '_blank') }}
+    {% endif %}
+</div>
+{% endif %}

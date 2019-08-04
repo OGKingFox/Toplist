@@ -1,6 +1,7 @@
 <?php
 use Phalcon\Cache\Backend\File as BackFile;
 use Phalcon\Cache\Frontend\Data as FrontData;
+use Phalcon\Mvc\View;
 use Phalcon\Paginator\Adapter\Model as PaginatorModel;
 
 class IndexController extends BaseController {
@@ -31,7 +32,7 @@ class IndexController extends BaseController {
     }
 
     public function statsAction() {
-        $this->view->setRenderLevel(\Phalcon\Mvc\View::LEVEL_ACTION_VIEW);
+        $this->view->setRenderLevel(View::LEVEL_ACTION_VIEW);
 
         if (!$this->request->isAjax()) {
             return false;
@@ -113,6 +114,26 @@ class IndexController extends BaseController {
         return true;
     }
 
+    public function discordAction() {
+        $this->view->setRenderLevel(View::LEVEL_ACTION_VIEW);
+
+        if (!$this->request->isPost() ||! $this->request->isAjax()) {
+            return false;
+        }
+
+        $server_id = $this->request->getPost("server_id", "int");
+
+        $discord = new Discord($server_id);
+        $discord->fetch();
+
+        $data = $discord->getRawData();
+
+        if ($data) {
+            $this->view->discord = $discord;
+        }
+        return true;
+    }
+
     public function reportAction() {
         if (!$this->request->isPost() /*|| !$this->security->checkToken()*/) {
             return $this->response->redirect("");
@@ -160,7 +181,7 @@ class IndexController extends BaseController {
     }
 
     public function likeAction() {
-        $this->view->setRenderLevel(\Phalcon\Mvc\View::LEVEL_NO_RENDER);
+        $this->view->setRenderLevel(View::LEVEL_NO_RENDER);
 
         if (!$this->request->isAjax()) {
             $this->println([

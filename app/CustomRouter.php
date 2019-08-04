@@ -109,6 +109,13 @@ class CustomRouter extends RouterGroup {
                 "controller" 	=> "pages",
                 "action"     	=> "faq"
             ]
+        ],
+        [
+            "route" => "/discord",
+            "params" => [
+                "controller" 	=> "index",
+                "action"     	=> "discord"
+            ]
         ]
     ];
 

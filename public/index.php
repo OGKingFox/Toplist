@@ -57,13 +57,25 @@
 	});
 
 	$di->set('voltService', function ($view, $di) {
-        $volt = new VoltExtension($view, $di);
+        $volt = new Volt($view, $di);
         $volt->setOptions([
             'compiledPath'      => '../app/compiled/templates/',
             'compiledExtension' => '.compiled',
         ]);
-        $volt->addFilters();
-        $volt->addFunctions();
+        $compiler = $volt->getCompiler();
+        $compiler->addFilter('number_format', 'number_format');
+        $compiler->addFilter('count', 'count');
+        $compiler->addFilter('strtotime', 'strtotime');
+        $compiler->addFilter('array_chunk', 'array_chunk');
+        $compiler->addFilter('in_array', 'in_array');
+        $compiler->addFilter('implode', 'implode');
+        $compiler->addFilter('unset', 'unset');
+        $compiler->addFilter('getExpForLevel', 'unset');
+        $compiler->addFunction('str_replace','str_replace');
+        $compiler->addFunction('explode','explode');
+        $compiler->addFunction('unset','unset');
+        $compiler->addFunction('substr','substr');
+        $compiler->addFilter('filemtime','filemtime');
         return $volt;
     });
 

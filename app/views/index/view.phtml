@@ -112,10 +112,12 @@
             </div>
         </div>
 
-        {% if server.discord_id is not -1 %}
-        <iframe src="https://discordapp.com/widget?id={{server.discord_id }}&theme=light" width="350"
-                height="500" allowtransparency="true" frameborder="0" class="shadow-sm"></iframe>
-        {% endif %}
+        <div id="discord">
+            <div class="text-center">
+                <i class='fal fa-spinner fa-pulse fa-3x mb-3'></i>
+                <p>Loading Discord...</p>
+            </div>
+        </div>
 
         <p class="small text-muted text-center">
             All server data is cached for up to 15 seconds, so updates may not appear instantly.
@@ -160,6 +162,14 @@
     var info = $('#server-info');
     var links = info.find('a');
     var images = info.find('img');
+
+    setTimeout(function() {
+        $.post('{{ url("discord") }}', {
+            server_id: '{{ server.discord_id }}'
+        }, function(data) {
+            $('#discord').html(data);
+        });
+    }, 1000);
 
     images.each(function() {
         var src = $(this).attr("src");

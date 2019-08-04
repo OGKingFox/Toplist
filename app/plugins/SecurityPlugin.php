@@ -33,7 +33,7 @@ class SecurityPlugin extends Plugin {
         }
 
         $public = [
-            'index'      => ['index', 'logout', 'view', 'like', 'report', 'stats'],
+            'index'      => ['index', 'logout', 'view', 'like', 'report', 'stats', 'discord'],
             'login'      => ['index', 'auth', 'logout'],
             'register'   => ['index'],
             'recover'    => ['index'],
