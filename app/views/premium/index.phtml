@@ -24,9 +24,6 @@
                 <h2 class="mb-0">
                     ${{ package.price|number_format(2) }}
                 </h2>
-                <span class="text-muted">
-                    -${{ (package.base_price - package.price)|number_format(2) }}
-                </span>
             </div>
             <div class="list-group list-group-flush text-center">
                 {% for feature in package.features|json_decode(true) %}
