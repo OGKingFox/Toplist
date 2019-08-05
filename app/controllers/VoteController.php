@@ -4,7 +4,14 @@ use Phalcon\Text;
 
 class VoteController extends BaseController {
 
-    public function indexAction($server, $incentive) {
+    public function indexAction($server = null, $incentive = null) {
+        if ($server == null || $incentive == null) {
+            $this->dispatcher->forward([
+                'controller' => 'errors',
+                'action' => 'show404'
+            ]);
+            return true;
+        }
 
         $server    = Servers::getServer($this->filter->sanitize($server, "int"));
         $incentive = $this->filter->sanitize($incentive, 'string');

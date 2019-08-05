@@ -51,9 +51,8 @@ class SecurityPlugin extends Plugin {
         ];
 
         $admin = [
-            'admin'     => [
-                'index', 'payments', 'users', 'products', 'categories', 'convert',
-                'add', 'edit', 'delete', 'view', 'user', 'banlist'
+            'dashboard'     => [
+                'index', 'users', 'premium', 'servers', 'payments', 'reports'
             ]
         ];
 
