@@ -1,5 +1,6 @@
 @import "quill.snow.css";
 
+
 @font-face { font-family: "Montserrat-Thin"; src: url('../fonts/Montserrat-Thin.otf'); }
 @font-face { font-family: "Montserrat-Light"; src: url('../fonts/Montserrat-Light.otf'); }
 @font-face { font-family: "Montserrat-Regular"; src: url('../fonts/Montserrat-Regular.otf'); }
@@ -28,7 +29,7 @@ header:before {
     bottom: -10px;
     z-index: -1;
     padding-top: 125px;
-    -webkit-filter: blur(4px) brightness(70%);
+    -webkit-filter: blur(4px) brightness(40%);
 }
 header .overlay h1 {
     font-family: "Montserrat-Bold", sans-serif;
@@ -139,19 +140,6 @@ a:hover {
     .server-banner {
         display: none;
     }
-    .navbar {
-        background-color: white !important;
-        color: black;
-    }
-    .navbar-dark .navbar-nav .nav-link {
-        color: rgba(0,0,0,.7);
-    }
-    .navbar-dark .navbar-toggler {
-        border-color: rgba(0,0,0,.1) !important;;
-    }
-    .navbar-dark .custom-toggler {
-        background-image: url("data:image/svg+xml;charset=utf8,%3Csvg viewBox='0 0 32 32' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='rgba(0,0,0, 0.7)' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 8h24M4 16h24M4 24h24'/%3E%3C/svg%3E");
-    }
 }
 .btn-discord {
     background: #7289DA;
@@ -228,7 +216,7 @@ a:hover {
     position:absolute;
     bottom:-5px;
     right:-5px;
-    border: solid 3px #fff;
+    border: solid 3px #36393F;
 }
 .indicator-dnd {
     background-color:red;
@@ -277,4 +265,11 @@ a:hover {
     line-height:20px;
     text-align:center;
     color:white;
+}
+
+.banner-holder {
+    width:468px;height:60px;
+    background-color:rgba(0,0,0,0.05);
+    border:solid 1px rgba(0,0,0,0.1);
+    line-height:60px;
 }

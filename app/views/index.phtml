@@ -26,7 +26,8 @@
 
     {{ stylesheet_link("css/bootstrap.min.css") }}
     {{ stylesheet_link("css/fontawesome.min.css") }}
-    {{ stylesheet_link("css/stylesheet.css?v="~time()) }}
+    {{ stylesheet_link("css/stylesheet.css") }}
+    {{ stylesheet_link("css/bootstrap.dark.css") }}
 
     {{ javascript_include("js/jquery-3.3.1.min.js") }}
     {{ javascript_include("js/bootstrap.bundle.min.js") }}
@@ -92,7 +93,7 @@
         </div>
     </nav>
 
-    {% if router.getControllerName() is '' and router.getActionName() is not 'view' %}
+{#    {% if router.getControllerName() is '' and router.getActionName() is not 'view' %}
     <div class="alert alert-primary rounded-0 mb-0">
         <div class="container">
             <h3 class="mb-0">Welcome to Rune-Nexus Beta!</h3>
@@ -101,7 +102,7 @@
         </div>
     </div>
     {% endif %}
-
+#}
     <section class="content py-5">
         <div class="container">
             {{ content() }}

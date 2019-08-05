@@ -27,7 +27,7 @@ class Votes extends \Phalcon\Mvc\Model {
             ])->execute()->getFirst();
     }
 
-    public static function getVotesForMonth($serverId) {
+    public static function getVotesForMonth($server) {
         $start = strtotime(date("Y-m-1 00:00:00"));
         $end   = strtotime(date("Y-m-t 23:59:59"));
 
@@ -35,10 +35,15 @@ class Votes extends \Phalcon\Mvc\Model {
         $votes = self::query()
             ->conditions("server_id = :sid: AND voted_on BETWEEN :start: AND :end:")
             ->bind([
-                'sid'   => $serverId,
+                'sid'   => $server->id,
                 'start' => $start,
                 'end'   => $end
             ])->execute();
+
+        $premium_lvl = $server->user->premium_level;
+        $bonus_votes = $premium_lvl * 100;
+        $maxDays     = date("t");
+        $votesPerDay = floor($bonus_votes / $maxDays);
 
         $dates = Functions::getDaysOfMonth();
 

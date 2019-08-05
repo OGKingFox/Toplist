@@ -9,28 +9,27 @@
     </div>
 
     <div class="mb-1 discord-members pt-2">
-        {% for member in discord.getMembers() %}
-        <div class="d-inline-block w-100 mb-2 mx-3" style="border-bottom: solid 1px #efefef;">
-            <div class="float-left mr-3" style="position: relative;width: 32px;height:32px;">
-                {{ image(member.avatar_url, 'class' : 'rounded-circle', 'style' : 'width:32px;') }}
-                <div class="discord-indicator indicator-{{ member.status }}"></div>
-            </div>
+        <div class="list-group list-group-flush">
+            {% for member in discord.getMembers() %}
+            <div class="list-group-item py-2">
+                <div class="float-left mr-3" style="position: relative;width: 32px;height:32px;">
+                    {{ image(member.avatar_url, 'class' : 'rounded-circle mt-1', 'style' : 'width:32px;') }}
+                    <div class="discord-indicator indicator-{{ member.status }}"></div>
+                </div>
 
-            <div style="margin-left: 46px;">
-                <p class="my-0">{{ member.username }}</p>
+                <p class="my-0 mt-1">{{ member.username }}</p>
                 {% if member.game is defined %}
                 {% set gname = member.game.name %}
                 {% if gname|length > 20 %}
                 {% set gname = substr(gname, 0, 20)~'...' %}
                 {% endif %}
-                <p class="mb-1 small text-muted">Playing: {{ gname }}</p>
+                <p class="mb-0 small text-muted">Playing: {{ gname }}</p>
                 {% else %}
-                <p class="mb-1 small text-muted">{{ member.status }}</p>
+                <p class="mb-0 small text-muted">{{ member.status }}</p>
                 {% endif %}
             </div>
-
+            {% endfor %}
         </div>
-        {% endfor %}
     </div>
 
     {% if discord.data.instant_invite %}

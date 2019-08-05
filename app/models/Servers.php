@@ -42,7 +42,7 @@ class Servers extends \Phalcon\Mvc\Model {
             ->columns([
                 'Servers.id',
                 'Servers.title',
-                'Servers.votes + IF(user.premium_expires > :time:, Servers.votes + (user.premium_level * 100), Servers.votes) AS votes'
+                'IF(user.premium_expires > :time:, Servers.votes + (user.premium_level * 100), Servers.votes) AS votes'
             ])
             ->leftJoin("Users", 'user.user_id = Servers.owner_id', 'user')
             ->bind([
@@ -116,6 +116,7 @@ class Servers extends \Phalcon\Mvc\Model {
                 'Servers.info',
                 'Servers.date_created',
                 'Servers.likes',
+                'IF(user.premium_expires > :time:, Servers.votes + (user.premium_level * 100), Servers.votes) AS votes',
                 'g.id AS game_id',
                 'g.title AS game_title',
                 'user.*',
@@ -124,7 +125,8 @@ class Servers extends \Phalcon\Mvc\Model {
             ->leftJoin("Games", 'g.id = Servers.game', 'g')
             ->leftJoin("Users", 'user.user_id = Servers.owner_id', 'user')
             ->bind([
-                'id' => $id
+                'id' => $id,
+                'time' => time()
             ])->execute()->getFirst();
     }
 

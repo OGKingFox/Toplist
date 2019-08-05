@@ -13,14 +13,14 @@
         </div>
 
         <div class="card border-0 shadow-sm mb-3">
-            <div class="card-header bg-white">
+            <div class="card-header">
                 <div class="float-right">
                     {{ link_to(server.website, '<i class="fal fa-globe fa-fw"></i>', false, 'target' : '_blank',
-                        'class' : 'btn btn-primary btn-sm border-0',
+                        'class' : 'btn btn-info btn-sm border-0',
                         'data-toggle' : 'tooltip', 'title' : 'Visit Website') }}
 
                     {{ link_to(server.website, '<i class="fal fa-thumbs-up fa-fw"></i> Like', false, 'target' : '_blank',
-                        'class' : 'btn btn-primary btn-sm border-0',
+                        'class' : 'btn btn-info btn-sm border-0',
                         'id' : 'like', 'data-id' : server.id,
                         'data-toggle' : 'tooltip', 'title' : 'Like this Server') }}
 
@@ -39,7 +39,7 @@
         </div>
 
         <div class="card border-0 shadow-sm mb-3">
-            <div class="card-header bg-white">Comments</div>
+            <div class="card-header">Comments</div>
 
             {% if user is defined %}
             <div class="card-body">
@@ -101,7 +101,7 @@
                     Added By <span class="float-right text-right">{{ server.owner_tag }}<br><small>ID: {{ server.owner_id }}</small></span>
                 </div>
                 <div class="list-group-item">
-                    Total Votes <span class="float-right">{{ votes }}</span>
+                    Total Votes <span class="float-right">{{ server.votes }}</span>
                 </div>
                 <div class="list-group-item">
                     Likes <span class="float-right" id="likes">{{ likes }}</span>

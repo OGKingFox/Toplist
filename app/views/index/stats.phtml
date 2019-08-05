@@ -5,10 +5,10 @@
                 <div class="list-group-item text-muted">Newest Servers</div>
                 {% for newest in newest %}
                 <?php $seo_title = Servers::genSeoTitle($newest); ?>
-                <div class="list-group-item" style="line-height:1.0em;">
-                    {{ link_to('view/'~seo_title, newest.title, 'class' : 'text-info', 'target' : '_blank') }}<br>
+                <a class="list-group-item text-info" style="line-height:1.0em;" href="{{ url('view/'~seo_title) }}">
+                    {{ newest.title }}<br>
                     <small class="text-muted">Created <?= Functions::elapsed($newest->date_created); ?></small>
-                </div>
+                </a>
                 {% endfor %}
             </div>
         </div>
@@ -19,24 +19,24 @@
                 <div class="list-group-item text-muted">Most Liked Servers</div>
                 {% for liked in mostLiked %}
                 <?php $seo_title = Servers::genSeoTitle($liked->server); ?>
-                <div class="list-group-item" style="line-height:1.0em;">
-                    {{ link_to('view/'~seo_title, liked.server.title, 'class' : 'text-info', 'target' : '_blank') }}<br>
+                <a class="list-group-item text-info" style="line-height:1.0em;" href="{{ url('view/'~seo_title) }}">
+                    {{ liked.server.title }}<br>
                     <small class="text-muted">{{ liked.likes|number_format }} likes</small>
-                </div>
+                </a>
                 {% endfor %}
             </div>
         </div>
     </div>
     <div class="col-sm-12 col-lg-4">
         <div class="card border-0 shadow-sm mb-3">
-            <div class="list-group list-group-flush">
+            <a class="list-group list-group-flush">
                 <div class="list-group-item text-muted">Most Votes (Accumulative)</div>
                 {% for votedOn in mostVotes %}
                 <?php $seo_title = Servers::genSeoTitle($votedOn); ?>
-                <div class="list-group-item" style="line-height:1.0em;">
-                    {{ link_to('view/'~seo_title, votedOn.title, 'class' : 'text-info', 'target' : '_blank') }}<br>
+                <a class="list-group-item text-info" style="line-height:1.0em;" href="{{ url('view/'~seo_title) }}">
+                    {{ votedOn.title }}<br>
                     <small class="text-muted">{{ votedOn.votes|number_format }} Votes</small>
-                </div>
+                </a>
                 {% endfor %}
             </div>
         </div>

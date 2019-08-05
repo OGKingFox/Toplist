@@ -23,7 +23,7 @@ $(document).ready(function() {
     var navbar = $('.navbar');
 
 
-    updateNavbar();
+   // updateNavbar();
 
     $(window).scroll(function() {
         updateNavbar();
@@ -32,11 +32,9 @@ $(document).ready(function() {
     function updateNavbar() {
         windowTop = $(window).scrollTop();
         if (windowTop > 300) {
-            navbar.addClass("bg-light shadow navbar-light");
-            navbar.removeClass("bg-transparent navbar-dark");
+            navbar.addClass("bg-dark shadow");
         } else {
-            navbar.removeClass("bg-light shadow navbar-light");
-            navbar.addClass("bg-transparent navbar-dark");
+            navbar.removeClass("bg-dark shadow")
         }
     }
 

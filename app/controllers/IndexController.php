@@ -97,8 +97,7 @@ class IndexController extends BaseController {
 
         if (!$data) {
             $data = [
-                'votes'    => Votes::getVoteTotalForMonth($server->id)->total,
-                'voteData' => Votes::getVotesForMonth($server->id),
+                'voteData' => Votes::getVotesForMonth($server),
                 'likes'    => Likes::getLikes($server->id)->amount,
             ];
 
@@ -111,7 +110,6 @@ class IndexController extends BaseController {
             'page'  => $this->request->getQuery("page", "int", 1)
         ]);
 
-        $this->view->votes     = $data['votes'];
         $this->view->server    = $server;
         $this->view->voteData  = $data['voteData'];
         $this->view->days      = range(1, date('t'));

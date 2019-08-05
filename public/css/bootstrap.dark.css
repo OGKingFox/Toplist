@@ -1,0 +1,103 @@
+body {
+    background-color: #2F3136 !important;
+    color:#D2D3D5 !important;
+}
+a {
+    color: #0096CF;
+}
+a:hover, a:active, a:focus {
+    color: #00adff;
+}
+.card{
+    background-color: #36393F
+}
+.card .list-group-item {
+    background-color: transparent;
+}
+.alert-primary {
+    background-color: #0096CF !important;
+    border-color: #0096CF !important;
+    color:rgba(255,255,255,0.9) !important;
+}
+.bg-info {
+    background-color: #32404A !important;
+}
+.bg-warning {
+    background-color: #32404A !important;
+}
+table.table tr td {
+    border-top: solid 1px #474A4F;
+}
+a.text-info {
+    color: #0096CF !important;
+}
+a.text-info:hover, a.text-info:focus, a.text-info:active {
+    color: #0082ba !important;
+}
+table {
+    color: white !important;
+}
+.table-hover tbody tr:hover {
+    color: #efefef;
+    background-color: rgba(0,0,0,.075);
+}
+.bg-dark {
+    background-color: #202225 !important;
+}
+input.form-control, select.form-control {
+    background-color: #484C52 !important;
+    border: solid 1px #484C52 !important;
+    color: #D2D3D5;
+}
+input.form-control:active, input.form-control:focus, select.form-control:active, select.form-control:focus {
+    color: #D2D3D5;
+    box-shadow: none;
+}
+.ql-snow .ql-picker-options {
+    background-color: #484C52;
+    border-color: #484C52;
+    display: none;
+    min-width: 100%;
+    padding: 4px 8px;
+    position: absolute;
+    white-space: nowrap;
+}
+.ql-snow .ql-picker.ql-header .ql-picker-label::before,
+.ql-snow .ql-picker.ql-header .ql-picker-item::before,
+.ql-snow .ql-picker.ql-size .ql-picker-label::before,
+.ql-snow .ql-picker.ql-size .ql-picker-item::before {
+    color: #D2D3D5;
+}
+.ql-snow .ql-picker.ql-header .ql-picker-label:hover::before,
+.ql-snow .ql-picker.ql-header .ql-picker-item:hover::before,
+.ql-snow .ql-picker.ql-size .ql-picker-label:hover::before,
+.ql-snow .ql-picker.ql-size .ql-picker-item:hover::before {
+    color: #FFF;
+}
+.ql-toolbar.ql-snow .ql-picker.ql-expanded .ql-picker-options {
+    border-color: #484C52;
+}
+.ql-toolbar.ql-snow {
+    background-color:#484C52;
+    color: white;
+    border: solid 1px #484C52 !important;
+}
+.ql-editor {
+    background-color: #484C52;
+    min-height: 200px;
+}
+.ql-snow .ql-stroke {
+    stroke: #D2D3D5 !important;
+}
+.ql-toolbar button:hover .ql-stroke {
+    stroke: #FFF !important;
+}
+.ql-container.ql-snow {
+    border: 1px solid #484C52 !important;
+}
+.ql-editor a {
+    color: #0096CF;
+}
+.list-group-item {
+    border-top: solid 1px #474A4F;
+}

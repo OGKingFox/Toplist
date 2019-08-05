@@ -8,17 +8,17 @@
                         {{ link_to('profile', '<i class="fal fa-server fa-fw"></i> My Servers', 'class' : 'btn btn-info') }}
                         {{ link_to('servers/add', '<i class="fal fa-plus-circle fa-fw"></i> Add Server', 'class' : 'btn btn-info') }}
                     {% endif %}
+                </div>
 
-                    <div class="btn-group" role="group">
-                        <button id="btnGroupDrop1" type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <i class="fal fa-list-alt fa-fw"></i> {{ game.title }}
-                        </button>
-                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="btnGroupDrop1">
-                            {% for g in games %}
-                            {% set seo_title = g.id~'-'~str_replace(" ", "-", g.title|lowercase) %}
-                            {{ link_to('game/'~seo_title, g.title, 'class' : 'dropdown-item', 'rel' : 'nofollow') }}
-                            {% endfor %}
-                        </div>
+                <div class="btn-group" role="group">
+                    <button id="btnGroupDrop1" type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <i class="fal fa-list-alt fa-fw"></i> {{ game.title }}
+                    </button>
+                    <div class="dropdown-menu dropdown-menu-left" aria-labelledby="btnGroupDrop1">
+                        {% for g in games %}
+                        {% set seo_title = g.id~'-'~str_replace(" ", "-", g.title|lowercase) %}
+                        {{ link_to('game/'~seo_title, g.title, 'class' : 'dropdown-item', 'rel' : 'nofollow') }}
+                        {% endfor %}
                     </div>
                 </div>
 
@@ -41,13 +41,10 @@
                 <?php $seo_title = Servers::genSeoTitle($server); ?>
 
                 {% set is_premium = server.user.premium_expires > time() %}
+
                 <tr class="{{ is_premium ? 'bg-warning' : '' }}">
-                    <td class="text-center px-4">
-                        {% if is_premium %}
-                        <h6 class="mb-0 text-muted"><i class="fas fa-star"></i></h6>
-                        {% else %}
+                    <td class="text-center px-4" style="width:130px;">
                         <h6 class="mb-0 text-muted">{{ rank }}</h6>
-                        {% endif %}
                     </td>
                     <td class="text-truncate" style="max-width:250px;">
                         <p class="text-secondary my-0 small text-uppercase">Server</p>
@@ -55,8 +52,14 @@
                             {{ link_to('view/'~seo_title, server.title, 'class' : 'text-info') }}
                         </h6>
                     </td>
-                    <td class="d-md-none d-lg-table-cell text-center">
-                        {{ image(server.banner_url, 'class' : 'img-fluid server-banner') }}
+                    <td class="d-md-none d-lg-table-cell">
+                        {% if is_premium and server.banner_url is not 'img/banner_dark.png' %}
+                        {{ image(server.banner_url, 'class' : 'server-banner') }}
+                        {% else %}
+                        <div class="text-center text-muted banner-holder server-banner">
+                            NO BANNER
+                        </div>
+                        {% endif %}
                     </td>
                     <td class="text-center px-4" style="width:100px;">
                         <h6 class="mb-0">{{ server.votes }}</h6>
