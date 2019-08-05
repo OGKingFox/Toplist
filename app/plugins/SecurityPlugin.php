@@ -128,7 +128,7 @@ class SecurityPlugin extends Plugin {
             }
 
             $role = $user->getRole();
-            $this->view->user = $userInfo;
+            $this->view->user = $user;
         }
 
         $acl = $this->getAcl();

@@ -10,7 +10,7 @@ body {
     background-color: #f1f1f1;
 }
 header {
-    height: 300px;
+    height: 350px;
     position: relative;
     width: 100%;
     overflow:hidden;
@@ -18,17 +18,14 @@ header {
 header:before {
     content: ' ';
     background-image: url(../img/header.jpg);
-    background-position: top -80px center;
+    background-position: top -50px left;
     position: absolute;
-    left: -10px;
-    right: -10px;
-    top: -10px;
-    bottom: -10px;
     overflow: hidden;
-    height: 400px;
+    height: 350px;
+    width: 100%;
     z-index: -1;
     padding-top: 125px;
-    -webkit-filter: blur(4px) brightness(50%);
+    -webkit-filter: brightness(70%);
 }
 header .overlay h1 {
     font-family: "Montserrat-Bold", sans-serif;

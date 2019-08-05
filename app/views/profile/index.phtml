@@ -8,6 +8,8 @@
                     {{ filter.sanitize(user.username, 'string') }}
                 </div>
                 <p class="small text-muted">ID: {{ user.user_id }}</p>
+
+                {{ user.role|capitalize }}
             </div>
         </div>
 
