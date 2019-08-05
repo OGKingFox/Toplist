@@ -31,7 +31,7 @@ $(document).ready(function() {
 
     function updateNavbar() {
         windowTop = $(window).scrollTop();
-        if (windowTop > 250) {
+        if (windowTop > 300) {
             navbar.addClass("bg-light shadow navbar-light");
             navbar.removeClass("bg-transparent navbar-dark");
         } else {
