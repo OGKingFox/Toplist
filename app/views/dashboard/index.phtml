@@ -18,9 +18,49 @@
 
     <div class="col-sm-12 col-lg-9">
         {{ content() }}
+
+        <div class="row">
+            <div class="col-sm-12 col-lg-3">
+                <div class="card border-0 shadow-sm mb-3">
+                    <div class="card-body text-center">
+                        <h4 class="text-primary mb-0">{{ servers }}</h4>
+                        <p class="text-muted mb-0">Servers</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-12 col-lg-3">
+                <div class="card border-0 shadow-sm mb-3">
+                    <div class="card-body text-center">
+                        <h4 class="text-primary mb-0">{{ users }}</h4>
+                        <p class="text-muted mb-0">Users</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-12 col-lg-3">
+                <div class="card border-0 shadow-sm mb-3">
+                    <div class="card-body text-center">
+                        <h4 class="text-primary mb-0">{{ votes }}</h4>
+                        <p class="text-muted mb-0">Votes</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-12 col-lg-3">
+                <div class="card border-0 shadow-sm mb-3">
+                    <div class="card-body text-center">
+                        <h4 class="text-primary mb-0">{{ likes }}</h4>
+                        <p class="text-muted mb-0">Likes</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <div class="card border-0 shadow-sm mb-3">
             <div class="card-header">
-                <h5 class="text-white">Apply Premium</h5>
+                <h5 class="text-primary mb-0">Add Premium</h5>
+                <p class="small text-muted mb-0">
+                    This will add days to an existing member, and upgrade them if their
+                    current package is lower.
+                </p>
             </div>
             <div class="card-body">
                 {{ form('dashboard', 'method' : 'post', 'autocomplete' : 'off', 'class' : 'form-inline') }}

@@ -80,6 +80,12 @@
         $volt->getCompiler()->addFunction('avatar', function($resolvedParams) {
             return "Functions::getAvatarUrl(".$resolvedParams.")";
         });
+        $volt->getCompiler()->addFunction('getSeoTitle', function($resolvedParams) {
+            return "Servers::genSeoTitle(".$resolvedParams.")";
+        });
+        $volt->getCompiler()->addFunction('elapsed', function($resolvedParams) {
+            return "Functions::elapsed(".$resolvedParams.")";
+        });
         return $volt;
     });
 

@@ -12,7 +12,7 @@ class Packages extends \Phalcon\Mvc\Model {
 
     /**
      * @param $id
-     * @return bool|ModelInterface
+     * @return bool|ModelInterface|Packages
      */
     public static function getPackage($id) {
         return self::query()

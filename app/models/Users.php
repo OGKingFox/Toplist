@@ -1,4 +1,7 @@
 <?php
+
+use Phalcon\Mvc\ModelInterface;
+
 /**
  * Created by PhpStorm.
  * User: foxtr
@@ -24,12 +27,23 @@ class Users extends \Phalcon\Mvc\Model {
 
     /**
      * @param $id
-     * @return bool|\Phalcon\Mvc\ModelInterface|Users
+     * @return bool|ModelInterface|Users
      */
     public static function getUser($id) {
         return self::query()
             ->conditions("user_id = :id:")
             ->bind(['id' => $id])
+            ->execute()->getFirst();
+    }
+
+    /**
+     * @param $username
+     * @return bool|ModelInterface|Users
+     */
+    public static function getUserByUsername($username) {
+        return self::query()
+            ->conditions("username = :name:")
+            ->bind(['name' => $username])
             ->execute()->getFirst();
     }
 

@@ -31,7 +31,7 @@ $(document).ready(function() {
 
     function updateNavbar() {
         windowTop = $(window).scrollTop();
-        if (windowTop > 300) {
+        if (windowTop > 265) {
             navbar.addClass("bg-dark shadow");
         } else {
             navbar.removeClass("bg-dark shadow")

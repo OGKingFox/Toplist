@@ -96,3 +96,12 @@ tr.bg-primary {
     border-color: rgba(255,255,255,0.11);
     background-color: rgba(255,255,255,0.09);
 }
+.text-primary {
+    color: #6a81ff !important
+}
+a.text-primary {
+    color: #6a81ff !important
+}
+a.text-primary:hover, a.text-primary:focus, a.text-primary:active {
+    color: #5e72e4 !important;
+}

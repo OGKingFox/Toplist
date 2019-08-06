@@ -49,9 +49,8 @@
             </div>
             <table class="table table-hover mb-0" style="line-height:1em;">
                 {% for server in servers %}
-                <?php $seo_title = Servers::genSeoTitle($server); ?>
                 <tr>
-                    <td>{{ link_to('view/'~seo_title, server.title, 'target' : '_blank') }}</td>
+                    <td>{{ link_to('view/'~getSeoTitle(server), server.title, 'target' : '_blank') }}</td>
                     <td>
                         <p class="mb-0">{{ server.votes|number_format }}</p>
                         <small class="text-muted">Votes</small>

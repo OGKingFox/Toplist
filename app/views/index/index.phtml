@@ -38,8 +38,6 @@
                 {% set rank = servers.current == 1 ? 1 : (servers.current * 30)-29 %}
 
                 {% for server in servers.items %}
-                <?php $seo_title = Servers::genSeoTitle($server); ?>
-
                 {% set is_premium = server.user.premium_expires > time() %}
 
                 <tr class="{{ is_premium ? 'bg-primary' : '' }}">
@@ -49,12 +47,12 @@
                     <td class="text-truncate" style="max-width:250px;">
                         <p class="text-muted my-0 small text-uppercase">Server</p>
                         <h6 class="my-0 text-primary text-truncate">
-                            {{ link_to('view/'~seo_title, server.title) }}
+                            {{ link_to('view/'~getSeoTitle(server), server.title, 'class' : 'text-primary') }}
                         </h6>
                     </td>
                     <td class="d-md-none d-lg-table-cell">
                         {% if is_premium and server.banner_url is not 'img/banner_dark.png' %}
-                        {{ image(server.banner_url, 'class' : 'server-banner') }}
+                        {{  link_to('view/'~getSeoTitle(server), image(server.banner_url, 'class' : 'server-banner')) }}
                         {% else %}
                         <div class="text-center text-muted banner-holder server-banner">
                             NO BANNER
@@ -117,8 +115,8 @@
 
 <div id="stats">
     <div class="text-center">
-        <p><i class="fal fa-spinner fa-spin fa-pulse fa-4x"></i></p>
-        <h4>Loading Statistics</h4>
+        <p><i class="fal fa-spinner fa-spin fa-pulse fa-4x text-primary"></i></p>
+        <h4 class="text-primary">Loading Statistics</h4>
     </div>
 </div>
 
