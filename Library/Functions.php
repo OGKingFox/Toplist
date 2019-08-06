@@ -21,6 +21,10 @@ class Functions {
      * @return string
      */
     public static function getAvatarUrl($user_id, $avatar_hash) {
+        if (!$avatar_hash) {
+            return null;
+        }
+
         $isGif = substr($avatar_hash, 0, 2) == "a_";
 
         $base_url   = "https://cdn.discordapp.com/avatars/";

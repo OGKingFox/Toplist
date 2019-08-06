@@ -76,6 +76,10 @@
         $compiler->addFunction('unset','unset');
         $compiler->addFunction('substr','substr');
         $compiler->addFilter('filemtime','filemtime');
+
+        $volt->getCompiler()->addFunction('avatar', function($resolvedParams) {
+            return "Functions::getAvatarUrl(".$resolvedParams.")";
+        });
         return $volt;
     });
 
