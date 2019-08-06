@@ -15,17 +15,17 @@
         <div class="card border-0 shadow-sm mb-3">
             <div class="card-header">
                 <div class="float-right">
-                    {{ link_to(server.website, '<i class="fal fa-globe fa-fw"></i>', false, 'target' : '_blank',
-                        'class' : 'btn btn-info btn-sm border-0',
+                    {{ link_to(server.website, '<i class="fal fa-globe fa-fw"></i> Website', false, 'target' : '_blank',
+                        'class' : 'btn btn-primary btn-sm',
                         'data-toggle' : 'tooltip', 'title' : 'Visit Website') }}
 
                     {{ link_to(server.website, '<i class="fal fa-thumbs-up fa-fw"></i> Like', false, 'target' : '_blank',
-                        'class' : 'btn btn-info btn-sm border-0',
+                        'class' : 'btn btn-primary btn-sm',
                         'id' : 'like', 'data-id' : server.id,
                         'data-toggle' : 'tooltip', 'title' : 'Like this Server') }}
 
-                    {{ link_to(server.website, '<i class="fal fa-flag fa-fw"></i>', false, 'target' : '_blank',
-                        'class' : 'btn btn-danger btn-sm border-0',
+                    {{ link_to(server.website, '<i class="fal fa-flag fa-fw"></i> Report', false, 'target' : '_blank',
+                        'class' : 'btn btn-danger btn-sm',
                         'data-toggle' : 'modal', 'data-target' : '#reportModal') }}
                 </div>
                 <h4 class="mb-0">{{ server.title }}</h4>
