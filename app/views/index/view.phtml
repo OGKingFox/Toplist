@@ -61,7 +61,7 @@
             <div class="list-group list-group-flush">
                 {% for comment in comments.items %}
                 <?php $avatar = Functions::getAvatarUrl($comment->user_id, $comment->avatar); ?>
-                <div class="list-group-item {{ comment.user_id is server.user.user_id ? 'bg-warning' : '' }}">
+                <div class="list-group-item">
                     <div class="d-flex">
                         <div class="flex-fill">
                             {{ image(avatar, 'width' : '42px;', 'class' : 'rounded-circle mr-3') }}
@@ -76,22 +76,39 @@
             </div>
         </div>
 
-        <div class="mb-3">
-            {% if comments.total_pages > 0 %}
-            <div class="row my-4">
-                <div class="btn-group" role="group" aria-label="Basic example" style="margin:auto;">
-                    {% set link = username is defined ? '/'~username : '' %}
-                    {{ link_to('view/'~seo_title~'?page='~comments.first, '<i class="fal fa-angle-double-left"></i>', 'class' : 'btn btn-light') }}
-                    {{ link_to('view/'~seo_title~'?page='~comments.before, '<i class="fal fa-angle-left"></i>', 'class' : 'btn btn-light') }}
 
-                    {{ link_to('', 'Page '~comments.current~' of '~comments.total_pages, 'class' : 'btn btn-light disabled') }}
+        {% if comments.total_pages > 0 %}
+        <nav aria-label="...">
+            <ul class="pagination pagination-lg justify-content-center">
+                <li class="page-item">
+                    {{ link_to('view/'~seo_title~'?page='~comments.first,
+                    '<i class="fal fa-angle-double-left"></i>',
+                    'class' : 'page-link') }}
+                </li>
+                <li class="page-item mr-3">
+                    {{ link_to('view/'~seo_title~'?page='~comments.before,
+                    '<i class="fal fa-angle-left"></i>',
+                    'class' : 'page-link') }}
+                </li>
 
-                    {{ link_to('view/'~seo_title~'?page='~comments.next, '<i class="fal fa-angle-right"></i>', 'class' : 'btn btn-light') }}
-                    {{ link_to('view/'~seo_title~'?page='~comments.last, '<i class="fal fa-angle-double-right"></i>', 'class' : 'btn btn-light') }}
-                </div>
-            </div>
-            {% endif %}
-        </div>
+                <li class="page-item text-center text-muted" style="padding-top:12px;">
+                    Page {{ comments.current }} of {{ comments.total_pages }}
+                </li>
+
+                <li class="page-item ml-3">
+                    {{ link_to('view/'~seo_title~'?page='~comments.next,
+                    '<i class="fal fa-angle-right"></i>',
+                    'class' : 'page-link') }}
+                </li>
+                <li class="page-item">
+                    {{ link_to('view/'~seo_title~'?page='~comments.last,
+                    '<i class="fal fa-angle-double-right"></i>',
+                    'class' : 'page-link') }}
+                </li>
+            </ul>
+        </nav>
+
+        {% endif %}
     </div>
 
     <div class="col-sm-12 col-xl-4">

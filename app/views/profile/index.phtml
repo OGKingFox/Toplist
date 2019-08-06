@@ -43,7 +43,7 @@
             <div class="card-header">
                 {{ link_to('servers/add',
                     '<i class="fal fa-plus-circle fa-fw"></i> Add Server',
-                    'class' : 'btn btn-info btn-sm float-right') }}
+                    'class' : 'btn btn-outline-primary float-right') }}
 
                 <h5 class="mb-0 mt-1">My Servers</h5>
             </div>
@@ -64,8 +64,8 @@
                         {{ date("M. d, Y", server.date_created) }}
                     </td>
                     <td class="text-right">
-                        {{ link_to('servers/edit/'~server.id, 'Edit', 'class' : 'btn btn-dark btn-sm') }}
-                        {{ link_to('', 'Delete', 'class' : 'btn btn-danger btn-sm', 'id' : 'delete', 'data-id' : server.id) }}
+                        {{ link_to('servers/edit/'~server.id, 'Edit', 'class' : 'btn btn-outline-primary btn-sm') }}
+                        {{ link_to('', 'Delete', 'class' : 'btn btn-outline-danger btn-sm', 'id' : 'delete', 'data-id' : server.id) }}
                     </td>
                 </tr>
                 {% endfor %}

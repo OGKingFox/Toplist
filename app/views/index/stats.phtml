@@ -5,7 +5,7 @@
                 <div class="list-group-item text-muted">Newest Servers</div>
                 {% for newest in newest %}
                 <?php $seo_title = Servers::genSeoTitle($newest); ?>
-                <a class="list-group-item text-info" style="line-height:1.0em;" href="{{ url('view/'~seo_title) }}">
+                <a class="list-group-item" style="line-height:1.0em;" href="{{ url('view/'~seo_title) }}">
                     {{ newest.title }}<br>
                     <small class="text-muted">Created <?= Functions::elapsed($newest->date_created); ?></small>
                 </a>
@@ -19,7 +19,7 @@
                 <div class="list-group-item text-muted">Most Liked Servers</div>
                 {% for liked in mostLiked %}
                 <?php $seo_title = Servers::genSeoTitle($liked->server); ?>
-                <a class="list-group-item text-info" style="line-height:1.0em;" href="{{ url('view/'~seo_title) }}">
+                <a class="list-group-item" style="line-height:1.0em;" href="{{ url('view/'~seo_title) }}">
                     {{ liked.server.title }}<br>
                     <small class="text-muted">{{ liked.likes|number_format }} likes</small>
                 </a>
@@ -33,7 +33,7 @@
                 <div class="list-group-item text-muted">Most Votes (Accumulative)</div>
                 {% for votedOn in mostVotes %}
                 <?php $seo_title = Servers::genSeoTitle($votedOn); ?>
-                <a class="list-group-item text-info" style="line-height:1.0em;" href="{{ url('view/'~seo_title) }}">
+                <a class="list-group-item" style="line-height:1.0em;" href="{{ url('view/'~seo_title) }}">
                     {{ votedOn.title }}<br>
                     <small class="text-muted">{{ votedOn.votes|number_format }} Votes</small>
                 </a>

@@ -50,9 +50,6 @@ header .overlay h1 {
     position: absolute;
     right: 0;
 }
-.text-primary {
-    color: #3bafda !important;
-}
 .navbar {
     transition: all .2s ease-in-out;
     text-shadow: none;
@@ -276,4 +273,7 @@ a:hover {
 }
 input.form-control:focus, select.form-control:focus {
     box-shadow: none !important;
+}
+tr.bg-primary {
+    background-color: rgba(94, 114, 228, 0.2) !important;
 }
