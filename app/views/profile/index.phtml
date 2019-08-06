@@ -6,7 +6,7 @@
 
                 <div class="mb-3">{{ image(avatar, 'class' : 'rounded-circle', 'width' : '125') }}</div>
 
-                <div class="text-truncate m-auto h5 text-white" style="max-width: 200px;">
+                <div class="text-truncate m-auto h5 text-primary" style="max-width: 200px;">
                     {{ filter.sanitize(user.username, 'string') }}
                 </div>
                 <p class="small text-muted">ID: {{ user.user_id }}</p>
@@ -40,12 +40,13 @@
         {{ content() }}
 
         <div class="card border-0 shadow-sm mb-3">
-            <div class="card-header">
+            <div class="card-header bg-gradient-primary" style="line-height:1em;">
                 {{ link_to('servers/add',
                     '<i class="fal fa-plus-circle fa-fw"></i> Add Server',
                     'class' : 'btn btn-primary float-right') }}
 
-                <h5 class="mb-0 mt-1 text-white">My Servers</h5>
+                <h5 class="mb-0 text-white">My Servers</h5>
+                <p class="mb-0 small text-white-50">Manage all of your servers in one place.</p>
             </div>
             <table class="table table-hover mb-0" style="line-height:1em;">
                 {% for server in servers %}

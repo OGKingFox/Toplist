@@ -6,7 +6,7 @@
 
                 <div class="mb-3">{{ image(avatar, 'class' : 'rounded-circle', 'width' : '125') }}</div>
 
-                <div class="text-truncate m-auto h5 text-white" style="max-width: 200px;">
+                <div class="text-truncate m-auto h5 text-primary" style="max-width: 200px;">
                     {{ filter.sanitize(user.username, 'string') }}
                 </div>
                 <p class="small text-muted">ID: {{ user.user_id }}</p>
@@ -55,9 +55,9 @@
         </div>
 
         <div class="card border-0 shadow-sm mb-3">
-            <div class="card-header">
-                <h5 class="text-primary mb-0">Add Premium</h5>
-                <p class="small text-muted mb-0">
+            <div class="card-header bg-gradient-primary">
+                <h5 class="text-white mb-0">Add Premium</h5>
+                <p class="small mb-0 text-white-50">
                     This will add days to an existing member, and upgrade them if their
                     current package is lower.
                 </p>
