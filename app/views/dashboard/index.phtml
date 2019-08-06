@@ -6,7 +6,7 @@
 
                 <div class="mb-3">{{ image(avatar, 'class' : 'rounded-circle', 'width' : '125') }}</div>
 
-                <div class="text-truncate m-auto h5" style="max-width: 200px;">
+                <div class="text-truncate m-auto h5 text-white" style="max-width: 200px;">
                     {{ filter.sanitize(user.username, 'string') }}
                 </div>
                 <p class="small text-muted">ID: {{ user.user_id }}</p>
@@ -19,9 +19,10 @@
     <div class="col-sm-12 col-lg-9">
         {{ content() }}
         <div class="card border-0 shadow-sm mb-3">
+            <div class="card-header">
+                <h5 class="text-white">Apply Premium</h5>
+            </div>
             <div class="card-body">
-                <h5>Apply Premium</h5>
-                <hr>
                 {{ form('dashboard', 'method' : 'post', 'autocomplete' : 'off', 'class' : 'form-inline') }}
                 <div class="form-group mr-2">
                     {{ text_field('username', 'class' : 'form-control', 'placeholder' : 'Username') }}
@@ -30,7 +31,7 @@
                     {{ select("package", packages, 'using': ['id', 'title'], 'class' : 'form-control') }}
                 </div>
                 <div class="form-group">
-                    {{ submit_button('Apply', 'class' : 'btn btn-info') }}
+                    {{ submit_button('Apply', 'class' : 'btn btn-primary') }}
                     {{ hidden_field(security.getTokenKey(), 'value' : security.getToken()) }}
                 </div>
                 {{ end_form() }}

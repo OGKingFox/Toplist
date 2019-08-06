@@ -274,3 +274,6 @@ input.form-control:focus, select.form-control:focus {
 tr.bg-primary {
     background-color: rgba(94, 114, 228, 0.2) !important;
 }
+.card-header {
+    background-color:rgba(0,0,0,0.03) !important;
+}

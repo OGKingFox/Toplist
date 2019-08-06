@@ -13,6 +13,7 @@
             </div>
         </div>
     </div>
+
     <div class="col-sm-12 col-lg-4">
         <div class="card border-0 shadow-sm mb-3">
             <div class="list-group list-group-flush">
@@ -27,9 +28,10 @@
             </div>
         </div>
     </div>
+
     <div class="col-sm-12 col-lg-4">
         <div class="card border-0 shadow-sm mb-3">
-            <a class="list-group list-group-flush">
+            <div class="list-group list-group-flush">
                 <div class="list-group-item text-muted">Most Votes (Accumulative)</div>
                 {% for votedOn in mostVotes %}
                 <?php $seo_title = Servers::genSeoTitle($votedOn); ?>
