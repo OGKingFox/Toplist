@@ -2,13 +2,12 @@
 
 <div class="row mb-5">
     <div class="col-sm-12 col-lg-10 offset-lg-1 text-center">
-        <h2>Premium Membership</h2>
+        <h2 class="text-white">Premium Membership</h2>
         <p>Need a boost? Buying premium will give you instant votes, and votes at the beginning of the month.
             It's basically
             perpetual bonus votes! You'll also be able to use an animated banner, and get a highlighted background to boot!</p>
     </div>
 </div>
-
 {{ content() }}
 <div id="pp-notice"></div>
 
@@ -20,8 +19,9 @@
             <div class="card-header bg-dark border-0 text-white text-center">
                  {{ package.title }}
             </div>
-            <div class="card-header bg-light border-0 text-info text-center bold-font">
-                <h2 class="mb-0">
+
+            <div class="py-3 bg-primary">
+                <h2 class="mb-0 text-white text-center">
                     ${{ package.price|number_format(2) }}
                 </h2>
             </div>
@@ -38,8 +38,8 @@
                 {% endif %}
                 {% endfor %}
             </div>
-            <div class="card-footer">
-                <a href="#" class="btn btn-info btn-block {{ loggedIn ? '' : 'disabled' }}" id="buy" data-id="{{ package.id }}">Buy Now</a>
+            <div class="card-footer bg-transparent">
+                <a href="#" class="btn btn-primary btn-block {{ loggedIn ? '' : 'disabled' }}" id="buy" data-id="{{ package.id }}">Buy Now</a>
             </div>
         </div>
     </div>
@@ -52,32 +52,32 @@
                 <div id="paypal-btn"></div>
                 <p class="small text-muted mb-0">All payments are a one-time fee and do not recur.</p>
                 <p class="small mb-0">By purchasing premium on our platform, you agree to our
-                    {{ link_to('terms', 'Terms &amp; Conditions', 'target' : '_blank', 'class' : 'text-info') }}</p>
+                    {{ link_to('terms', 'Terms &amp; Conditions', 'target' : '_blank', 'class' : 'text-primary') }}</p>
             </div>
     </div>
 </div>
 
 <div class="row">
     <div class="col-sm-12">
-        <h3>Premium Server Example</h3>
+        <h3 class="text-white">Premium Server Example</h3>
         <hr>
         <div class="card shadow-sm mb-3 border-0 text-secondary">
             <table class="table mb-0 tab" style="line-height: 1.2em">
-                <tr class="bg-warning">
-                    <td class="text-center px-4">
-                        <h6 class="mb-0 text-warning"><i class="fas fa-star"></i></h6>
-                    </td>
+                <tr class="bg-primary">
+                    <td class="text-center px-4 text-muted">1</td>
                     <td class="text-truncate" style="max-width:250px;">
-                        <p class="text-secondary my-0 small text-uppercase">Server</p>
-                        <h6 class="my-0 text-primary text-truncate">
-                            <a rel="nofollow" href="#" class="text-info">Your Server Name</a>
+                        <p class="text-muted my-0 small text-uppercase">Server</p>
+                        <h6 class="my-0 text-truncate">
+                            <a rel="nofollow" href="#" class="text-primary">Your Server Name</a>
                         </h6>
                     </td>
                     <td class="d-md-none d-lg-table-cell text-center">
-                        {{ image('img/banner_light.png', 'class' : 'img-fluid server-banner') }}
+                        <div class="text-center text-muted banner-holder server-banner m-auto">
+                            YOUR BANNER HERE
+                        </div>
                     </td>
                     <td class="text-right px-4" style="width:100px;">
-                        <h6 class="mb-0">500</h6>
+                        <h6 class="mb-0 text-white">500</h6>
                         <small class="text-muted">Votes</small>
                     </td>
                 </tr>
@@ -86,9 +86,9 @@
                         <h6 class="mb-0 text-muted">2</h6>
                     </td>
                     <td class="text-truncate" style="max-width:250px;">
-                        <p class="text-secondary my-0 small text-uppercase">Server</p>
+                        <p class="text-muted my-0 small text-uppercase">Server</p>
                         <h6 class="my-0 text-primary text-truncate">
-                            <a rel="nofollow" href="#" class="text-info">Some other server</a>
+                            <a rel="nofollow" href="#" class="text-primary">Some other server</a>
                         </h6>
                     </td>
                     <td class="text-right px-4" style="width:100px;" colspan="2">
@@ -101,9 +101,9 @@
                         <h6 class="mb-0 text-muted">3</h6>
                     </td>
                     <td class="text-truncate" style="max-width:250px;">
-                        <p class="text-secondary my-0 small text-uppercase">Server</p>
+                        <p class="text-muted my-0 small text-uppercase">Server</p>
                         <h6 class="my-0 text-primary text-truncate">
-                            <a rel="nofollow" href="#" class="text-info">Some other server</a>
+                            <a rel="nofollow" href="#" class="text-primary">Some other server</a>
                         </h6>
                     </td>
                     <td class="text-right px-4" style="width:100px;" colspan="2">

@@ -11,11 +11,6 @@ a:hover, a:active, a:focus {
 .card .list-group-item {
     background-color: transparent;
 }
-.alert-primary {
-    background-color: #0096CF !important;
-    border-color: #0096CF !important;
-    color:rgba(255,255,255,0.9) !important;
-}
 .bg-info {
     background-color: #32404A !important;
 }
