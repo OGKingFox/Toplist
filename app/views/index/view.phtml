@@ -58,7 +58,8 @@
 
             <div class="list-group list-group-flush">
                 {% for comment in comments.items %}
-                <?php $avatar = Functions::getAvatarUrl($comment->user_id, $comment->avatar); ?>
+                {% set avatar = avatar(comment.user_id, comment.avatar) %}
+
                 <div class="list-group-item">
                     <div class="d-flex">
                         <div class="flex-fill">
@@ -174,8 +175,8 @@
 <script>
     var locked = false;
 
-    var info = $('#server-info');
-    var links = info.find('a');
+    var info   = $('#server-info');
+    var links  = info.find('a');
     var images = info.find('img');
 
     setTimeout(function() {
@@ -186,13 +187,7 @@
         });
     }, 1000);
 
-    images.each(function() {
-        var src = $(this).attr("src");
-        $('#images').append("<a href='"+src+"' target='_blank' class='float-left mr-2'><img src='"+src+"' alt='"+src+"' style='height:100px'></a>");
-        $(this).remove();
-    });
-
-    links.each(function() {
+    info.find('a').each(function() {
         $(this).attr('target', '_blank');
     });
 

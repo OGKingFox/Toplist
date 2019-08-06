@@ -15,38 +15,40 @@
 <div class="row mb-3">
     {% for package in packages %}
     <div class="col-sm-12 col-lg-3">
-        <div class="card border-0 shadow-sm mb-3" data-aos="fade-right" data-aos-delay="{{ loop.index * 200 }}">
-            <div class="card-header bg-dark border-0 text-primary text-center">
+        <div class="card border-0 shadow-sm mb-3 text-center"
+             data-aos="fade-right" data-aos-delay="{{ loop.index * 200 }}" id="package" data-package="{{ package.id }}">
+            <div class="card-header bg-gradient-primary border-0 text-white">
                  {{ package.title }}
             </div>
-
-            <div class="py-3 bg-primary">
-                <h2 class="mb-0 text-white text-center">
+            <div class="py-3">
+                <h2 class="mb-0 text-primary text-center">
                     ${{ package.price|number_format(2) }}
                 </h2>
             </div>
             <div class="list-group list-group-flush text-center">
                 {% for feature in package.features|json_decode(true) %}
                 {% if feature %}
-                <div class="list-group-item border-0">
+                <div class="list-group-item border-0 bg-transparent">
                     {{ feature }}
                 </div>
                 {% else %}
-                <div class="list-group-item border-0">
+                <div class="list-group-item border-0 bg-transparent">
                     <i class="fal fa-times text-danger"></i>
                 </div>
                 {% endif %}
                 {% endfor %}
             </div>
             <div class="card-footer bg-transparent">
-                <a href="#" class="btn btn-primary btn-block {{ loggedIn ? '' : 'disabled' }}" id="buy" data-id="{{ package.id }}">Buy Now</a>
+                <a href="#" class="btn btn-primary btn-block {{ loggedIn ? '' : 'disabled' }}" id="buy" data-id="{{ package.id }}">
+                    Select
+                </a>
             </div>
         </div>
     </div>
     {% endfor %}
 </div>
 
-<div class="row mb-5">
+<div class="row">
     <div class="col-sm-12">
         <div class="text-center" style="min-height:230px;">
             <div id="paypal-btn"></div>
@@ -129,6 +131,17 @@
         if (locked) {
             return;
         }
+
+        let parent = $(this).closest(".card");
+        let parentId = parent.data("package");
+
+        parent.removeClass("border-0").addClass("border-primary");
+
+        $('div[id^="package"]').each(function () {
+            if ($(this).data("package") !== parentId) {
+                $(this).addClass("border-0").removeClass("border-primary");
+            }
+        });
 
         locked = true;
         var id = $(this).data("id");
