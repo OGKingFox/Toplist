@@ -23,10 +23,6 @@
                         'class' : 'btn btn-primary btn-sm',
                         'id' : 'like', 'data-id' : server.id,
                         'data-toggle' : 'tooltip', 'title' : 'Like this Server') }}
-
-                    {{ link_to(server.website, '<i class="fal fa-flag fa-fw"></i> Report', false, 'target' : '_blank',
-                        'class' : 'btn btn-danger btn-sm',
-                        'data-toggle' : 'modal', 'data-target' : '#reportModal') }}
                 </div>
                 <h4 class="mb-0 text-white">{{ server.title }}</h4>
             </div>
@@ -34,7 +30,9 @@
                 {{ server.info }}
 
                 <hr>
-                <div id="images"></div>
+                {{ link_to(server.website, '<i class="fal fa-flag fa-fw"></i> Report', false, 'target' : '_blank',
+                'class' : 'btn btn-danger btn-sm',
+                'data-toggle' : 'modal', 'data-target' : '#reportModal') }}
             </div>
         </div>
 
