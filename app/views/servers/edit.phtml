@@ -46,7 +46,7 @@
                     {{ text_field('website', 'class' : 'form-control', 'value' : server.website) }}
                 </div>
                 <div class="form-group mb-0">
-                    {{ submit_button('Update', 'class' : 'btn btn-info') }}
+                    {{ submit_button('Update', 'class' : 'btn btn-outline-primary') }}
                     {{ hidden_field(security.getTokenKey(), 'value' : security.getToken()) }}
                 </div>
             </div>
@@ -63,7 +63,7 @@
                     {{ text_field('callback', 'class' : 'form-control', 'value' : server.callback) }}
                 </div>
                 <div class="form-group mb-0">
-                    {{ submit_button('Update', 'class' : 'btn btn-info') }}
+                    {{ submit_button('Update', 'class' : 'btn btn-outline-primary') }}
                     {{ hidden_field(security.getTokenKey(), 'value' : security.getToken()) }}
                 </div>
             </div>
@@ -83,7 +83,7 @@
                     {{ numeric_field('discord_id', 'class' : 'form-control', 'value' : server.discord_id) }}
                 </div>
                 <div class="form-group mb-0">
-                    {{ submit_button('Update', 'class' : 'btn btn-info') }}
+                    {{ submit_button('Update', 'class' : 'btn btn-outline-primary') }}
                     {{ hidden_field(security.getTokenKey(), 'value' : security.getToken()) }}
                 </div>
             </div>
@@ -107,7 +107,7 @@
                     {{ text_field('meta_tags', 'class' : 'form-control', 'value' : tags) }}
                 </div>
                 <div class="form-group mb-0">
-                    {{ submit_button('Update', 'class' : 'btn btn-info') }}
+                    {{ submit_button('Update', 'class' : 'btn btn-outline-primary') }}
                     {{ hidden_field(security.getTokenKey(), 'value' : security.getToken()) }}
                 </div>
             </div>
@@ -126,7 +126,7 @@
                 </div>
                 <div class="form-group mb-0">
                     {{ hidden_field(security.getTokenKey(), 'value' : security.getToken()) }}
-                    {{ submit_button('Update', 'class' : 'btn btn-info') }}
+                    {{ submit_button('Update', 'class' : 'btn btn-outline-primary') }}
                 </div>
             </div>
         </div>

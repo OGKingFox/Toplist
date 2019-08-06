@@ -5,13 +5,13 @@
             <div class="card-body">
                 <div class="float-right">
                     {% if user is defined %}
-                        {{ link_to('profile', '<i class="fal fa-server fa-fw"></i> My Servers', 'class' : 'btn btn-info') }}
-                        {{ link_to('servers/add', '<i class="fal fa-plus-circle fa-fw"></i> Add Server', 'class' : 'btn btn-info') }}
+                        {{ link_to('profile', '<i class="fal fa-server fa-fw"></i> My Servers', 'class' : 'btn btn-primary') }}
+                        {{ link_to('servers/add', '<i class="fal fa-plus-circle fa-fw"></i> Add Server', 'class' : 'btn btn-primary') }}
                     {% endif %}
                 </div>
 
                 <div class="btn-group" role="group">
-                    <button id="btnGroupDrop1" type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <button id="btnGroupDrop1" type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <i class="fal fa-list-alt fa-fw"></i> {{ game.title }}
                     </button>
                     <div class="dropdown-menu dropdown-menu-left" aria-labelledby="btnGroupDrop1">
@@ -78,18 +78,51 @@
     {% set game_seo = game.id~'-'~str_replace(" ", "-", game.title|lowercase) %}
 
     {% if servers.total_pages > 0 %}
+    <nav aria-label="...">
+        <ul class="pagination justify-content-center">
+            <li class="page-item">
+                {{ link_to('game/'~game_seo~'/'~servers.first,
+                    '<i class="fal fa-angle-double-left"></i>',
+                    'class' : 'page-link') }}
+            </li>
+            <li class="page-item mr-3">
+                {{ link_to('game/'~game_seo~'/'~servers.before,
+                '<i class="fal fa-angle-left"></i>',
+                'class' : 'page-link') }}
+            </li>
+
+            {% for i in 1..servers.total_pages %}
+            <li class="page-item {{ i is servers.current ? 'active' : ''}}">
+                <a class="page-link" href="#">{{ i }}</a>
+            </li>
+            {% endfor %}
+
+            <li class="page-item ml-3">
+                {{ link_to('game/'~game_seo~'/'~servers.next,
+                '<i class="fal fa-angle-right"></i>',
+                'class' : 'page-link') }}
+            </li>
+            <li class="page-item">
+                {{ link_to('game/'~game_seo~'/'~servers.last,
+                '<i class="fal fa-angle-double-right"></i>',
+                'class' : 'page-link') }}
+            </li>
+        </ul>
+    </nav>
+
+    {#
     <div class="row">
         <div class="btn-group" role="group" aria-label="Basic example" style="margin:auto;">
-            {% set link = username is defined ? '/'~username : '' %}
-            {{ link_to('game/'~game_seo~'/'~servers.first, '<i class="fal fa-angle-double-left"></i>', 'class' : 'btn btn-info', 'rel' : 'nofollow') }}
-            {{ link_to('game/'~game_seo~'/'~servers.before, '<i class="fal fa-angle-left"></i>', 'class' : 'btn btn-info', 'rel' : 'nofollow') }}
+            {{ link_to('game/'~game_seo~'/'~servers.first, '<i class="fal fa-angle-double-left"></i>', 'class' : 'btn btn-primary', 'rel' : 'nofollow') }}
+            {{ link_to('game/'~game_seo~'/'~servers.before, '<i class="fal fa-angle-left"></i>', 'class' : 'btn btn-primary', 'rel' : 'nofollow') }}
 
-            {{ link_to('', 'Page '~servers.current~' of '~servers.total_pages, 'class' : 'btn btn-info disabled', 'rel' : 'nofollow') }}
+            {{ link_to('', 'Page '~servers.current~' of '~servers.total_pages, 'class' : 'btn btn-primary disabled', 'rel' : 'nofollow') }}
 
-            {{ link_to('game/'~game_seo~'/'~servers.next, '<i class="fal fa-angle-right"></i>', 'class' : 'btn btn-info', 'rel' : 'nofollow') }}
-            {{ link_to('game/'~game_seo~'/'~servers.last, '<i class="fal fa-angle-double-right"></i>', 'class' : 'btn btn-info', 'rel' : 'nofollow') }}
+            {{ link_to('game/'~game_seo~'/'~servers.next, '<i class="fal fa-angle-right"></i>', 'class' : 'btn btn-primary', 'rel' : 'nofollow') }}
+            {{ link_to('game/'~game_seo~'/'~servers.last, '<i class="fal fa-angle-double-right"></i>', 'class' : 'btn btn-primary', 'rel' : 'nofollow') }}
         </div>
     </div>
+    #}
     {% endif %}
 </div>
 

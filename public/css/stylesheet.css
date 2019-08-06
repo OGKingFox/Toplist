@@ -5,9 +5,10 @@
 @font-face { font-family: "Montserrat-Light"; src: url('../fonts/Montserrat-Light.otf'); }
 @font-face { font-family: "Montserrat-Regular"; src: url('../fonts/Montserrat-Regular.otf'); }
 @font-face { font-family: "Montserrat-Bold"; src: url('../fonts/Montserrat-Bold.otf'); }
-
+@font-face { font-family: "OpenSans-Light"; src: url('../fonts/OpenSans-Light.ttf'); }
+@font-face { font-family: "OpenSans-Regular"; src: url('../fonts/OpenSans-Regular.ttf'); }
 body {
-    font-family: 'Open Sans', sans-serif;
+    font-family: 'OpenSans-Regular', sans-serif;
     background-color: #f1f1f1;
 }
 header {
@@ -272,4 +273,7 @@ a:hover {
     background-color:rgba(0,0,0,0.05);
     border:solid 1px rgba(0,0,0,0.1);
     line-height:60px;
+}
+input.form-control:focus, select.form-control:focus {
+    box-shadow: none !important;
 }
