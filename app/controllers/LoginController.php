@@ -71,13 +71,7 @@ class LoginController extends BaseController {
                 $this->cookies->set("access_token", $token, time() + $expires, base_url);
                 $this->session->set("user", $userInfo);
 
-                /*$user->setRole("member");
-                $user->save();
-                $this->cookies->set("access_token", $token, time() + $expires, base_url);
-                $this->session->set("user", $userInfo);
-                return $this->response->redirect("");*/
-                echo 'failed to fetch server info?';
-                exit;
+                return $this->response->redirect("");
             }
 
             $user_roles = $server_info['roles'];
