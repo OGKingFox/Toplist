@@ -51,7 +51,7 @@
                         </h6>
                     </td>
                     <td class="d-md-none d-lg-table-cell">
-                        {% if is_premium and server.banner_url is not 'img/banner_dark.png' %}
+                        {% if server.banner_url is not 'img/banner_dark.png' %}
                         {{  link_to('view/'~getSeoTitle(server), image(server.banner_url, 'class' : 'server-banner')) }}
                         {% else %}
                         <div class="text-center text-muted banner-holder server-banner">
