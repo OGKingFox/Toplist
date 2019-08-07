@@ -73,11 +73,12 @@ $("input[id='images']").change(function(event) {
                 let json = JSON.parse(response);
 
                 if (json.success) {
-                    button.removeAttr("disabled").html("Select Images");
                     $('#upstatus').html("Images successfully uploaded.");
                 } else {
                     $('#upstatus').html(json.message);
                 }
+
+                button.removeAttr("disabled").html("Select Images");
             } catch (err) {
                 console.log(err)
             }
