@@ -147,20 +147,19 @@ class SecurityPlugin extends Plugin {
             $user = Users::getUser($verified->id);
 
             if (!$user) {
-                echo 'cant load user. rip.';
-                //$this->logout();
-                //$this->response->redirect("");
+                $this->logout();
+                $this->response->redirect("");
                 return false;
             }
 
-            /*if (!$this->session->has("user")) {
+            if (!$this->session->has("user")) {
                 $this->session->set("user", $verified);
             }
 
             $role = $user->getRole();
 
             $this->view->user    = $user;
-            $this->view->role    = strtolower($role);*/
+            $this->view->role    = strtolower($role);
         }
 
         $acl = $this->getAcl();
