@@ -1,9 +1,9 @@
 $(document).ready(function() {
     let status = $('#uploadStatus');
 
-    let bar = $(document).find(".progress");
-    let progress = bar.find(".progress-bar");
-    let overlay = bar.find(".progress-overlay");
+    let bar = $(document).find("#banner-bar");
+    let progress = bar.find("#banner-progress");
+    let overlay = bar.find("#banner-overlay");
 
     $(document).on("click", '#file-select', function(event) {
         var form = $(this).parents('form:first');
@@ -24,7 +24,7 @@ $(document).ready(function() {
         $.ajax({
             type: "POST",
             enctype: 'multipart/form-data',
-            url: "/servers/upload/",
+            url: "/toplist/servers/banner/",
             data: data,
             processData: false,
             contentType: false,

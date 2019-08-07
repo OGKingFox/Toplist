@@ -1,5 +1,5 @@
 <div class="row">
-    <div class="col-sm-12 col-xl-8">
+    <div class="col-sm-12 col-lg-8">
         {{ content() }}
 
         <div class="card border-0 shadow-sm mb-3">
@@ -8,7 +8,6 @@
                 <div class="banner" style="background:url({{ banner }}) top center #efefef;" id="banner">
                     {{ form('servers/edit/', 'method' : 'post', 'enctype' : 'multipart/form-data', 'id' : 'uploadForm') }}
                     <input type="file" name="image" id="image" style="display: none;">
-                    <input type="hidden" name="uploadType" value="banner">
                     <input type="hidden" name="serverId" value="{{ server.id }}">
                     <button type="button" class="btn btn-link btn-sm text-white" id="file-select">
                         <i class="fas fa-camera fa-fw fa-2x"></i>
@@ -20,10 +19,16 @@
 
                 <div id="uploadStatus"></div>
 
-                <div class="progress invisible" style="height: 20px;position: relative;">
-                    <div class="progress-overlay w-100 text-dark"></div>
-                    <div class="progress-bar" style="width: 0;"></div>
+                <div class="progress invisible" style="height: 20px;position: relative;" id="banner-bar">
+                    <div class="progress-overlay w-100 text-dark" id="banner-overlay"></div>
+                    <div class="progress-bar" style="width: 0;" id="banner-progress"></div>
                 </div>
+            </div>
+        </div>
+
+        <div class="card border-0 shadow-sm mb-0 mb-3">
+            <div class="card-body">
+                <button class="btn btn-dark" data-toggle="modal" data-target="#loginModal">Upload Images</button>
             </div>
         </div>
 
@@ -133,15 +138,43 @@
         {{ end_form() }}
     </div>
 
-    <div class="col-sm-12 col-xl-4">
-        <div class="card border-0 shadow-sm mb-0">
-            <div class="card-header bg-gradient-primary text-white">Upload Images</div>
-            <div class="card-body">
+    <div class="col-sm-12 col-lg-4">
 
+        <div class="card border-0 shadow-sm mb-0">
+            <div class="card-header">Images</div>
+            <div class="card-body">
+                // images to be here
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="loginModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-body text-center">
+
+                <i class="fal fa-images text-discord fa-5x fa-fw my-4"></i>
+
+                <h3 class="mb-2">Upload Images</h3>
+                <p class="small mb-4">You may select up to 5 at a time. 10 max. Invalid images will be skipped.<br>
+                    PNG, GIF, or JPEG. Max 1376x768, 3MB file size.</p>
+
+                <div class="text-center">
+                    <p id="upstatus">&nbsp;</p>
+
+                    {{ form('servers/images', 'method' : 'post', 'id' : 'imageForm') }}
+                    <input type="file" name="images" id="images" style="display: none;" data-server="{{ server.id }}" multiple>
+                    <button type="button" class="btn btn-primary" id="imagesUpload">Select Images</button>
+                    {{ end_form() }}
+                </div>
             </div>
         </div>
     </div>
 </div>
 
 {{ javascript_include("js/custom/banner.upload.js") }}
+{{ javascript_include("js/custom/images.upload.js") }}
+
 {{ partial('partials/quilljs') }}

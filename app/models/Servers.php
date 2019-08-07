@@ -23,6 +23,7 @@ class Servers extends \Phalcon\Mvc\Model {
     private $meta_tags;
     private $info;
     private $likes;
+    private $images;
     private $date_created;
 
     public static function getNewestServers() {
@@ -462,6 +463,23 @@ class Servers extends \Phalcon\Mvc\Model {
     public function setMetaTags($meta_tags)
     {
         $this->meta_tags = $meta_tags;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getImages()
+    {
+        return json_decode($this->images, true);
+    }
+
+    /**
+     * @param mixed $images
+     * @return Servers
+     */
+    public function setImages($images) {
+        $this->images = $images;
         return $this;
     }
 

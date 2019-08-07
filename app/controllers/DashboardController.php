@@ -18,15 +18,13 @@ class DashboardController extends BaseController {
                 if (!$user) {
                     $this->flash->error("User '$user_id' could not be found.");
                 } else {
-                    if ($user->getPremiumExpires()) {
-                        $user->setPremiumExpires($user->getPremiumExpires() + $package->getLength());
-                    } else {
-                        $user->setPremiumExpires(time() + $package->getLength());
-                    }
+                    $expires = $user->getPremiumExpires();
+                    $user->setPremiumExpires(($expires ? $expires : time()) + $package->getLength());
 
                     if ($package->id > $user->getPremiumLevel()) {
                         $user->setPremiumLevel($package->id);
                     }
+
                     if ($user->update()) {
                         $this->flash->success("{$user->getUsername()} has been given {$package->getTitle()}");
                     } else {

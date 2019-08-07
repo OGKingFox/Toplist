@@ -117,24 +117,6 @@ class VoteController extends BaseController {
         return true;
     }
 
-    private function getResponse($token) {
-        $url = 'https://www.google.com/recaptcha/api/siteverify';
-        $data = array('secret' => CAPTCHA_PRIVATE, 'response' => $token);
-
-        $options = array(
-            'http' => array(
-                'header'  => "Content-type: application/x-www-form-urlencoded\r\n",
-                'method'  => 'POST',
-                'content' => http_build_query($data)
-            )
-        );
-
-        $context      = stream_context_create($options);
-        $response     = file_get_contents($url, false, $context);
-        $responseKeys = json_decode($response,true);
-        return $responseKeys;
-    }
-
     private function verifyReCaptcha($recaptchaCode){
         $curl = curl_init("https://www.google.com/recaptcha/api/siteverify");
         $data = ["secret" => CAPTCHA_PRIVATE, "response" => $recaptchaCode];
@@ -163,18 +145,31 @@ class VoteController extends BaseController {
 
         rtrim($fields_string, '&');
 
+        $header = array(
+            'User-Agent: Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.9.2.12) Gecko/20101026 Firefox/3.6.12',
+            'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+            'Accept-Language: en-us,en;q=0.5',
+            'Accept-Encoding: gzip,deflate',
+            'Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7',
+            'Keep-Alive: 115',
+            'Connection: keep-alive',
+        );
+
         $ch = curl_init();
         curl_setopt($ch,CURLOPT_URL, $url);
         curl_setopt($ch,CURLOPT_POST, count($fields));
         curl_setopt($ch,CURLOPT_POSTFIELDS, $fields_string);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER,1);
+        curl_setopt($ch,CURLOPT_HTTPHEADER,$header);
+
         $httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-        $result = curl_exec($ch);
+        $result   = curl_exec($ch);
+
         curl_close($ch);
 
         return [
             'http_code' => $httpcode,
-            'response' => json_decode($result, true)
+            'response'  => json_decode($result, true)
         ];
     }
 }

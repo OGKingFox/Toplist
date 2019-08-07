@@ -121,7 +121,7 @@ class ServersController extends BaseController {
         return true;
     }
 
-    public function uploadAction() {
+    public function imagesAction() {
         $this->view->setRenderLevel(View::LEVEL_NO_RENDER);
 
         if (!$this->request->isPost() || !$this->request->isAjax() || !$this->request->hasFiles()) {
@@ -129,9 +129,94 @@ class ServersController extends BaseController {
             return false;
         }
 
-        $upType = $this->request->get("uploadType");
-        $file   = $this->request->getUploadedFiles()[0];
+        $files = $this->request->getUploadedFiles();
 
+        $valid_types = ['jpg' => 'image/jpeg', 'png' => 'image/png', 'gif' => 'image/gif'];
+        $maxDims = [1366, 768];
+        $maxSize = 3145728;
+
+        $userId = $this->getUser()->id;
+        $server_id = $this->request->getPost("server_id", "int");
+        $server = Servers::getServerByOwner($server_id, $userId);
+
+        if (!$server) {
+            $this->printStatus(true, 'Failed to load server info. '.$server_id);
+            return false;
+        }
+
+        $images = $server->getImages();
+        $new_images = [];
+        if ($images && count($images) == 10) {
+            $this->printStatus(false, 'You can not have any more images.');
+            return false;
+        }
+
+        $count = 0;
+        $links = [];
+
+        foreach ($files as $file) {
+            if ($count >= 5) {
+                break;
+            }
+
+            $type   = $file->getRealType();
+            $size   = $file->getSize();
+            $ext    = $file->getExtension();
+
+            $dims   = getimagesize($file->getTempName());
+            $width  = $dims[0];
+            $height = $dims[1];
+
+            if (!in_array($type, array_values($valid_types)) || !in_array($ext, array_keys($valid_types))) {
+                continue;
+            }
+
+            if ($size > $maxSize) {
+                continue;
+            }
+
+            if ($width > $maxDims[0] || $height > $maxDims[1]) {
+                continue;
+            }
+
+            if (count($images) == 10) {
+                break;
+            }
+
+            $upload = $this->uploadImage($file);
+
+            if (isset($upload['error'])) {
+                $this->printStatus(true, $upload['error']);
+                break;
+            }
+
+            if (isset($upload['link'])) {
+                $images[] = $upload['link'];
+                $new_images[] = $upload['link'];
+            }
+
+            $count++;
+        }
+
+        $server->setImages(json_encode($images, JSON_UNESCAPED_SLASHES));
+        $server->update();
+
+        $this->println([
+            'success' => true,
+            'message' => $new_images
+        ]);
+        return true;
+    }
+
+    public function bannerAction() {
+        $this->view->setRenderLevel(View::LEVEL_NO_RENDER);
+
+        if (!$this->request->isPost() || !$this->request->isAjax() || !$this->request->hasFiles()) {
+            $this->printStatus(false, "Invalid request.");
+            return false;
+        }
+
+        $file   = $this->request->getUploadedFiles()[0];
         $name   = $file->getName();
         $type   = $file->getRealType();
         $size   = $file->getSize();
@@ -142,7 +227,7 @@ class ServersController extends BaseController {
         $height = $dims[1];
 
         $valid_types = ['jpg' => 'image/jpeg', 'png' => 'image/png', 'gif' => 'image/gif'];
-        $maxDims = $upType == "banner" ? [468, 60] : [1280, 720];
+        $maxDims = [468, 60];
         $maxSize = 3145728;
 
         if (!in_array($type, array_values($valid_types)) || !in_array($ext, array_keys($valid_types))) {
@@ -155,18 +240,9 @@ class ServersController extends BaseController {
             return false;
         }
 
-        $maxDims = $upType == "banner" ? [468, 60] : [2560, 1440];
-
-        if ($upType == "banner") {
-            if ($width != $maxDims[0] && $height != $maxDims[1]) {
-                $this->printStatus(false, "Image must be $maxDims[0]px x $maxDims[1]px.");
-                return false;
-            }
-        } else {
-            if ($width > $maxDims[0] || $height > $maxDims[1]) {
-                $this->printStatus(false, "Image can not exceed $maxDims[0]px x $maxDims[1]px.");
-                return false;
-            }
+        if ($width != $maxDims[0] && $height != $maxDims[1]) {
+            $this->printStatus(false, "Image must be $maxDims[0]px x $maxDims[1]px.");
+            return false;
         }
 
         $userId = $this->getUser()->id;
