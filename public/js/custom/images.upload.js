@@ -2,6 +2,7 @@ let bar = $(document).find("#images-bar");
 let progress = bar.find("#images-progress");
 let overlay = bar.find("#images-overlay");
 let button = $('#imagesUpload');
+let statusMsg = $('#upstatus');
 
 $(document).on("click", '#imagesUpload', function(event) {
     console.log("clicked");
@@ -22,6 +23,8 @@ $("input[id='images']").change(function(event) {
 
     data.append("server_id", $(this).data("server"));
 
+    let count = 0;
+
     for (let i = 0; i < this.files.length; i++) {
         let file = this.files[i];
 
@@ -36,9 +39,15 @@ $("input[id='images']").change(function(event) {
         }
 
         data.append(file.name, file);
+        count++;
     }
 
-    $('#upstatus').html("&nbsp;");
+    if (count === 0) {
+        statusMsg.html("No valid images to upload.");
+        return;
+    }
+
+    statusMsg.html("&nbsp;");
     button.attr("disabled", "disabled").html("Uploading...");
 
     $(this).val('');
@@ -73,13 +82,14 @@ $("input[id='images']").change(function(event) {
                 let json = JSON.parse(response);
 
                 if (json.success) {
-                    $('#upstatus').html("Images successfully uploaded.");
+                    statusMsg.html("Images successfully uploaded.");
                 } else {
-                    $('#upstatus').html(json.message);
+                    statusMsg.html(json.message);
                 }
 
                 button.removeAttr("disabled").html("Select Images");
             } catch (err) {
+                button.removeAttr("disabled").html("Select Images");
                 console.log(err)
             }
         },
