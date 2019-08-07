@@ -79,15 +79,21 @@
 
                 <ul class="navbar-nav ml-auto">
                     {% if user is defined %}
-                    <li class="nav-item">{{ link_to('profile', user.username, 'class' : 'nav-link') }}</li>
-                    <li class="nav-item">
-                        {{ link_to('logout', 'Logout', 'class' : 'nav-link') }}
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            {{ user.username }}
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                            {{ link_to('profile', 'My Account', 'class' : 'dropdown-item') }}
+
+                            {% if role is 'administrator' or role is 'owner' %}
+                            {{ link_to('dashboard', 'Admin Dashboard', 'class' : 'dropdown-item') }}
+                            {% endif %}
+
+                            <div class="dropdown-divider"></div>
+                            {{ link_to('logout', 'Logout', 'class' : 'dropdown-item text-danger') }}
+                        </div>
                     </li>
-                    {% if role is 'administrator' or role is 'owner' %}
-                    <li class="nav-item">
-                        {{ link_to('dashboard', 'Dashboard', 'class' : 'nav-link') }}
-                    </li>
-                    {% endif %}
                     {% else %}
                     <li class="nav-item" style="width:200px;">
                         {{ link_to('login', ''~image('img/discord-white.svg',
