@@ -65,11 +65,13 @@ class LoginController extends BaseController {
                 ->submitBot(true);
 
             if (!$server_info || isset($server_info['code'])) {
-                $user->setRole("member");
+                /*$user->setRole("member");
                 $user->save();
                 $this->cookies->set("access_token", $token, time() + $expires, base_url);
                 $this->session->set("user", $userInfo);
-                return $this->response->redirect("");
+                return $this->response->redirect("");*/
+                echo 'failed to fetch server info?';
+                exit;
             }
 
             $user_roles = $server_info['roles'];
