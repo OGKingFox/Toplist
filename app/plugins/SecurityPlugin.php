@@ -137,16 +137,18 @@ class SecurityPlugin extends Plugin {
             $verified = $this->verifyUser($access_token);
 
             if (!$verified) {
-                $this->session->destroy();
-                $this->response->redirect("");
+                echo 'User data could not be fetched';
+                //$this->session->destroy();
+                //$this->response->redirect("");
                 return false;
             }
 
             $user = Users::getUser($verified->id);
 
             if (!$user) {
-                $this->logout();
-                $this->response->redirect("");
+                echo 'User could not be loaded.';
+                //$this->logout();
+                //$this->response->redirect("");
                 return false;
             }
 
@@ -219,29 +221,7 @@ class SecurityPlugin extends Plugin {
         if (!$userInfo || isset($userInfo->code)) {
             return false;
         }
-
         return $userInfo;
     }
 
-    private function getUser($userInfo) {
-        $user = Users::getUser($userInfo['user']['id']);
-
-        if ($user) {
-            $user->setUserId($userInfo['user']['id']);
-            $user->setDiscriminator($userInfo['user']['discriminator']);
-            $user->setUsername($userInfo['user']['username']);
-            $user->update();
-        } else {
-            $user = new Users;
-            $user->setUserId($userInfo['user']['id']);
-            $user->setDiscriminator($userInfo['user']['discriminator']);
-            $user->setUsername($userInfo['user']['username']);
-
-            if (!$user->save()) {
-                return false;
-            }
-        }
-
-        return $user;
-    }
 }
