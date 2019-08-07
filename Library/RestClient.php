@@ -26,7 +26,7 @@ class RestClient
     private $endpoint;
     private $type = "get";
     private $data;
-    private $timeout = 30;
+    private $timeout = 2;
     private $use_key = true;
     private $verify_peer = false;
     private $access_token = "";

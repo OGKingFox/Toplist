@@ -67,6 +67,10 @@ class LoginController extends BaseController {
             if (!$server_info || isset($server_info['code'])) {
                 $user->setRole("member");
                 $user->save();
+
+                $this->cookies->set("access_token", $token, time() + $expires, base_url);
+                $this->session->set("user", $userInfo);
+
                 /*$user->setRole("member");
                 $user->save();
                 $this->cookies->set("access_token", $token, time() + $expires, base_url);
