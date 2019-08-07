@@ -24,7 +24,7 @@ $(document).ready(function() {
         $.ajax({
             type: "POST",
             enctype: 'multipart/form-data',
-            url: "/toplist/servers/banner/",
+            url: "/servers/banner/",
             data: data,
             processData: false,
             contentType: false,

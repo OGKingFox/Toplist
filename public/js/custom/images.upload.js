@@ -48,7 +48,7 @@ $(document).ready(function() {
         statusMsg.html("&nbsp;");
         button.attr("disabled", "disabled").html("Uploading...");
 
-        let input = this;
+        let input = $(this);
         input.val('');
 
         $.ajax({
