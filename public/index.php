@@ -150,7 +150,7 @@
 
     $di->set('crypt', function() {
         $crypt = new Phalcon\Crypt();
-        $crypt->setKey('ReallyRandomKey');
+        $crypt->setKey(encryption_key);
         return $crypt;
     });
 

@@ -68,8 +68,7 @@ class LoginController extends BaseController {
                 $user->setRole("member");
                 $user->save();
 
-                setcookie("access_token", $token, time() + $expires, base_url);
-                //$this->cookies->set("access_token", $token, time() + $expires, base_url);
+                $this->cookies->set("access_token", $token, time() + $expires, base_url);
                 $this->session->set("user", $userInfo);
 
                 return $this->response->redirect("");
@@ -95,16 +94,14 @@ class LoginController extends BaseController {
                 }
             }
 
-            echo $role;
-
             $user->setRole($role);
             $user->save();
 
-            /*$this->cookies->set("access_token", $token, time() + $expires, base_url);
-            $this->session->set("user", $userInfo);*/
+            $this->cookies->set("access_token", $token, time() + $expires, base_url);
+            $this->session->set("user", $userInfo);
         }
 
-        /*return $this->response->redirect("");*/
+        return $this->response->redirect("");
     }
 
 }

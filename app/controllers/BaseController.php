@@ -81,9 +81,12 @@ class BaseController extends Controller {
             ->submit(true);
 
         if (isset($userInfo['code']) && $userInfo['code'] == 0) {
+            $this->cookies->delete("access_token");
+            $this->session->destroy();
             return false;
         }
 
+        $this->cookies->delete("access_token");
         $this->session->destroy();
         return true;
     }
