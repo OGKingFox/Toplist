@@ -167,6 +167,7 @@
                     {{ form('servers/images', 'method' : 'post', 'id' : 'imageForm') }}
                     <input type="file" name="images" id="images" style="display: none;" data-server="{{ server.id }}" multiple>
                     <button type="button" class="btn btn-primary" id="imagesUpload">Select Images</button>
+                    <button type="button" class="btn btn-link" data-dismiss="modal">Close</button>
                     {{ end_form() }}
                 </div>
             </div>
