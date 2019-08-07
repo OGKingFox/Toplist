@@ -65,13 +65,17 @@ class LoginController extends BaseController {
                 ->submitBot(true);
 
             if (!$server_info || isset($server_info['code'])) {
-                $user->setRole("member");
+               /* $user->setRole("member");
                 $user->save();
 
                 $this->cookies->set("access_token", $token, time() + $expires, base_url);
                 $this->session->set("user", $userInfo);
 
-                return $this->response->redirect("");
+                return $this->response->redirect("");*/
+
+               $this->debug($userInfo);
+               $this->debug($server_info);
+               return false;
             }
 
             $user_roles = $server_info['roles'];
