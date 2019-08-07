@@ -70,11 +70,7 @@ class LoginController extends BaseController {
 
                 $this->cookies->set("access_token", $token, time() + $expires, base_url);
                 $this->session->set("user", $userInfo);
-
-                $this->debug($userInfo);
-                $this->debug($server_info);
-                return false;
-                //return $this->response->redirect("");
+                return $this->response->redirect("");
             }
 
             $user_roles = $server_info['roles'];

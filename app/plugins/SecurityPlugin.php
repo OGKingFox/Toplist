@@ -134,21 +134,21 @@ class SecurityPlugin extends Plugin {
             }
 
             $access_token = $this->cookies->get("access_token");
-            $verified = $this->verifyUser($access_token);
+            $verified     = $this->verifyUser($access_token);
+
+            echo json_encode($verified);
 
             if (!$verified) {
-                echo 'User data could not be fetched';
-                //$this->session->destroy();
-                //$this->response->redirect("");
+                $this->session->destroy();
+                $this->response->redirect("");
                 return false;
             }
 
             $user = Users::getUser($verified->id);
 
-            if (!$user) {
-                echo 'User could not be loaded.';
-                //$this->logout();
-                //$this->response->redirect("");
+            /*if (!$user) {
+                $this->logout();
+                $this->response->redirect("");
                 return false;
             }
 
@@ -159,7 +159,7 @@ class SecurityPlugin extends Plugin {
             $role = $user->getRole();
 
             $this->view->user    = $user;
-            $this->view->role    = strtolower($role);
+            $this->view->role    = strtolower($role);*/
         }
 
         $acl = $this->getAcl();
