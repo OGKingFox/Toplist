@@ -4,6 +4,7 @@ use \Phalcon\Text;
 class ProfileController extends BaseController {
 
     public function indexAction() {
-        $this->view->servers = Servers::getServersByOwner($this->getUser()->id);
+        $userInfo = $this->session->get("user");
+        $this->view->servers = Servers::getServersByOwner($userInfo->id);
     }
 }

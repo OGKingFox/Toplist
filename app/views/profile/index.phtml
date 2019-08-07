@@ -9,9 +9,9 @@
                 <div class="text-truncate m-auto h5 text-primary" style="max-width: 200px;">
                     {{ filter.sanitize(user.username, 'string') }}
                 </div>
-                <p class="small text-muted">ID: {{ user.user_id }}</p>
 
-                {{ user.role|capitalize }}
+                <p class="small text-muted">ID: {{ user.user_id }}</p>
+                {{ role|capitalize }}
             </div>
         </div>
 
@@ -75,6 +75,7 @@
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
+
 <script>
     let timerInterval;
 

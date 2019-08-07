@@ -91,6 +91,7 @@ class IndexController extends BaseController {
         }
 
         $seo    = Servers::genSeoTitle($server);
+
         $fCache = new FrontData(['lifetime' => '15']);
         $cache  = new BackFile($fCache, ['cacheDir' => "../app/compiled/servers/"]);
         $data   = $cache->get($seo.".cache");

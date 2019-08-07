@@ -1,5 +1,7 @@
 <?php
 
+use Phalcon\Mvc\ModelInterface;
+
 class LoginController extends BaseController {
 
     public function indexAction() {
@@ -30,8 +32,9 @@ class LoginController extends BaseController {
             ])
             ->submit();
 
-        if ($response->access_token) {
-            $token = $response->access_token;
+        if (isset($response->access_token)) {
+            $expires = $response->expires_in;
+            $token   = $response->access_token;
 
             $userInfo = (new RestClient())
                 ->setEndpoint("users/@me")
@@ -39,30 +42,61 @@ class LoginController extends BaseController {
                 ->setUseKey(true)
                 ->submit();
 
+            $this->debug($userInfo);
+
             if (!$userInfo || isset($userInfo->code)) {
                 $this->logout();
                 $this->response->redirect("");
                 return false;
             }
 
-            $user = Users::getUser($userInfo->id);
+            if (!$user = Users::getUser($userInfo->id)) {
+                $user = new Users;
+            }
 
-            if ($user) {
-                $user->updateUser($userInfo);
-                $user->update();
-            } else {
-                $user = Users::createUser($userInfo);
-                if (!$user->save()) {
-                    $this->flash->error($user->getMessages());
-                    return false;
+            $user->setUserId($userInfo->id);
+            $user->setEmail($userInfo->email);
+            $user->setUsername($userInfo->username);
+            $user->setDiscriminator($userInfo->discriminator);
+            $user->setAvatar($userInfo->avatar);
+
+            $server_info = (new RestClient())
+                ->setEndpoint("guilds/".server_id."/members/".$userInfo->id)
+                ->submitBot(true);
+
+            if (!$server_info || isset($server_info['code'])) {
+                $user->setRole("member");
+                $user->save();
+                $this->cookies->set("access_token", $token, time() + $expires, base_url);
+                $this->session->set("user", $userInfo);
+                return $this->response->redirect("");
+            }
+
+            $user_roles = $server_info['roles'];
+
+            $roles = [
+                '569975210409984009' => 'Owner',
+                '569975354941374464' => 'Administrator',
+                '569975599867625487' => 'Moderator',
+                '607355749676351491' => 'Server Owner',
+                '198682930338463744' => 'Member'
+            ];
+
+            $keys = array_keys($roles);
+            $role = "member";
+
+            foreach ($keys as $key) {
+                if (in_array($key, $user_roles)) {
+                    $role = $roles[$key];
+                    break;
                 }
             }
 
-            $this->session->set("access_token", $token);
-            $this->session->set("user_info", $userInfo);
+            $user->setRole($role);
+            $user->save();
 
-
-            return $this->response->redirect("");
+            $this->cookies->set("access_token", $token, time() + $expires, base_url);
+            $this->session->set("user", $userInfo);
         }
 
         return $this->response->redirect("");

@@ -148,6 +148,12 @@
 		]);
     });
 
+    $di->set('crypt', function() {
+        $crypt = new Phalcon\Crypt();
+        $crypt->setKey('ReallyRandomKey');
+        return $crypt;
+    });
+
     $di->set('session', function(){
         $session = new \Phalcon\Session\Adapter\Files();
         $session->start(); // we need to start session

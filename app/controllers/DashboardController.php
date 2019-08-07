@@ -5,18 +5,18 @@ class DashboardController extends BaseController {
 
     public function indexAction() {
         if ($this->request->isPost() && $this->security->checkToken()) {
-            $username = $this->request->getPost("username", 'string');
-            $pid      = $this->request->getPost("package", "int");
+            $user_id = $this->request->getPost("user_id", 'string');
+            $pid = $this->request->getPost("package", "int");
 
             $package = Packages::getPackage($pid);
 
             if (!$package) {
                 $this->flash->error("Invalid package id.");
             } else {
-                $user = Users::getUserByUsername($username);
+                $user = Users::getUser($user_id);
 
                 if (!$user) {
-                    $this->flash->error("User '$username' could not be found.");
+                    $this->flash->error("User '$user_id' could not be found.");
                 } else {
                     $user->setPremiumExpires($user->getPremiumExpires() + $package->getLength());
                     if ($package->id > $user->getPremiumLevel()) {

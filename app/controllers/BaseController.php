@@ -64,7 +64,7 @@ class BaseController extends Controller {
     }
 
     public function logout() {
-        if (!$this->session->has("access_token")) {
+        if (!$this->cookies->has("access_token")) {
             return false;
         }
 
@@ -73,7 +73,7 @@ class BaseController extends Controller {
             ->setType('post')
             ->setContentType("x-www-form-urlencoded")
             ->setData([
-                "token"         => $this->session->get("access_token"),
+                "token"         => $this->cookies->get("access_token"),
                 'client_id'     => OAUTH2_CLIENT_ID,
                 'client_secret' => OAUTH2_CLIENT_SECRET,
             ])
@@ -89,14 +89,14 @@ class BaseController extends Controller {
     }
 
     public function getUser() {
-        return $this->session->get("user_info");
+        return $this->session->get("user");
     }
 
     public function getUserAvatar() {
         $user    = $this->getUser();
         $user_id = $user->id;
         $hash    = $user->avatar;
-        $isGif    = substr($hash, 0, 2) == "a_";
+        $isGif   = substr($hash, 0, 2) == "a_";
 
         $base_url   = "https://cdn.discordapp.com/avatars/";
         return $base_url.$user_id.'/'.$hash.'.'.($isGif ? 'gif' : 'png').'';

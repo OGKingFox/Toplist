@@ -23,9 +23,12 @@ class SecurityPlugin extends Plugin {
         $acl->setDefaultAction(Acl::DENY);
 
         $roles = [
-            'admins'  => new Role('admin'),
-            'members' => new Role('member'),
-            'guests'  => new Role('guest')
+            'owner'      => new Role('Owner'),
+            'admins'     => new Role('Administrator'),
+            'moderators' => new Role('Moderator'),
+            'owners'     => new Role('Server Owner'),
+            'members'    => new Role('Member'),
+            'guests'     => new Role('guest')
         ];
 
         foreach ($roles as $role) {
@@ -80,15 +83,19 @@ class SecurityPlugin extends Plugin {
         //Grant access to private area to role Users
         foreach ($private as $resource => $actions) {
             foreach ($actions as $action) {
-                $acl->allow('member', $resource, $action);
-                $acl->allow('admin', $resource, $action);
+                $acl->allow('Member', $resource, $action);
+                $acl->allow('Server Owner', $resource, $action);
+                $acl->allow('Moderator', $resource, $action);
+                $acl->allow('Administrator', $resource, $action);
+                $acl->allow('Owner', $resource, $action);
             }
         }
 
         //Grant access to admin area to role Admins
         foreach ($admin as $resource => $actions) {
             foreach ($actions as $action) {
-                $acl->allow('admin', $resource, $action);
+                $acl->allow('Administrator', $resource, $action);
+                $acl->allow('Owner', $resource, $action);
             }
         }
 
@@ -112,23 +119,45 @@ class SecurityPlugin extends Plugin {
             return true;
         }
 
-        if ($this->session->has('access_token')) {
+        $omit = [
+            'index' => ['stats']
+        ];
+
+        if (in_array($controller, array_keys($omit)) && in_array($action, $omit[$controller])) {
+            return true;
+        }
+
+        if ($this->cookies->has('access_token')) {
             if ($this->dispatcher->getControllerName() == "login") {
                 $this->response->redirect("");
                 return false;
             }
 
-            $userInfo = $this->session->get("user_info");
+            $access_token = $this->cookies->get("access_token");
+            $verified = $this->verifyUser($access_token);
 
-            $user = Users::getUser($userInfo->id);
+            if (!$verified) {
+                $this->session->destroy();
+                $this->response->redirect("");
+                return false;
+            }
+
+            $user = Users::getUser($verified->id);
 
             if (!$user) {
-                $this->session->destroy();
-                return $this->response->redirect("");
+                $this->logout();
+                $this->response->redirect("");
+                return false;
+            }
+
+            if (!$this->session->has("user")) {
+                $this->session->set("user", $verified);
             }
 
             $role = $user->getRole();
-            $this->view->user = $user;
+
+            $this->view->user    = $user;
+            $this->view->role    = strtolower($role);
         }
 
         $acl = $this->getAcl();
@@ -154,4 +183,65 @@ class SecurityPlugin extends Plugin {
         return true;
     }
 
+    public function logout() {
+        if (!$this->cookies->has("access_token")) {
+            return false;
+        }
+
+        $userInfo = (new RestClient())
+            ->setEndpoint("oauth2/token/revoke")
+            ->setType('post')
+            ->setContentType("x-www-form-urlencoded")
+            ->setData([
+                "token"         => $this->cookies->get("access_token"),
+                'client_id'     => OAUTH2_CLIENT_ID,
+                'client_secret' => OAUTH2_CLIENT_SECRET,
+            ])
+            ->setUseKey(false)
+            ->submit(true);
+
+        if (isset($userInfo['code']) && $userInfo['code'] == 0) {
+            return false;
+        }
+
+        $this->cookies->reset();
+        $this->session->destroy();
+        return true;
+    }
+
+    private function verifyUser($access_token) {
+        $userInfo = (new RestClient())
+            ->setEndpoint("users/@me")
+            ->setAccessToken($access_token)
+            ->setUseKey(true)
+            ->submit();
+
+        if (!$userInfo || isset($userInfo->code)) {
+            return false;
+        }
+
+        return $userInfo;
+    }
+
+    private function getUser($userInfo) {
+        $user = Users::getUser($userInfo['user']['id']);
+
+        if ($user) {
+            $user->setUserId($userInfo['user']['id']);
+            $user->setDiscriminator($userInfo['user']['discriminator']);
+            $user->setUsername($userInfo['user']['username']);
+            $user->update();
+        } else {
+            $user = new Users;
+            $user->setUserId($userInfo['user']['id']);
+            $user->setDiscriminator($userInfo['user']['discriminator']);
+            $user->setUsername($userInfo['user']['username']);
+
+            if (!$user->save()) {
+                return false;
+            }
+        }
+
+        return $user;
+    }
 }

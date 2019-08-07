@@ -83,6 +83,11 @@
                     <li class="nav-item">
                         {{ link_to('logout', 'Logout', 'class' : 'nav-link') }}
                     </li>
+                    {% if role is 'administrator' or role is 'owner' %}
+                    <li class="nav-item">
+                        {{ link_to('dashboard', 'Dashboard', 'class' : 'nav-link') }}
+                    </li>
+                    {% endif %}
                     {% else %}
                     <li class="nav-item" style="width:200px;">
                         {{ link_to('login', ''~image('img/discord-white.svg',

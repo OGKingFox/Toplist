@@ -241,4 +241,52 @@ class RestClient
     }
 
 
+    /**
+     * @param bool $asArray
+     * @return mixed
+     */
+    public function submitBot($asArray = false) {
+        $ch  = curl_init();
+        $url = $this->getFullUrl();
+
+        if ($this->getData() != null) {
+            if ($this->getType() == 'post') {
+                curl_setopt($ch, CURLOPT_POST, 1);
+                curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($this->getData()));
+            } else if ($this->getType() == 'get') {
+                $url =  $url.'?'.http_build_query($this->getData());
+            } else if ($this->getType() == 'delete' || $this->getType() == 'put') {
+                curl_setopt($ch, CURLOPT_CUSTOMREQUEST, strtoupper($this->getType()));
+                curl_setopt($ch, CURLOPT_POST, 1);
+                curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($this->getData()));
+            } else {
+                return ['error' => 'Type must be either get or post.'];
+            }
+        }
+
+        if ($this->isUseKey()) {
+            curl_setopt($ch, CURLOPT_HTTPHEADER, [
+                'Accept: '.$this->getContentType(),
+                'Content-Type: application/json',
+                "Authorization: Bot " . bot_key
+            ]);
+        } else {
+            curl_setopt($ch, CURLOPT_HTTPHEADER, [
+                'Accept: '.$this->getContentType()
+            ]);
+        }
+
+        curl_setopt($ch, CURLOPT_IPRESOLVE, CURL_IPRESOLVE_V4);
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_TIMEOUT, $this->getTimeout());
+
+        if (!$this->isVerifyPeer()) {
+            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true);
+        }
+
+        $response = curl_exec($ch);
+        curl_close($ch);
+        return json_decode($response, $asArray);
+    }
 }
