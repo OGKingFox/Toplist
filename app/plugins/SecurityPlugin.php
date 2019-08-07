@@ -37,7 +37,7 @@ class SecurityPlugin extends Plugin {
 
         $public = [
             'index'      => ['index', 'logout', 'view', 'like', 'report', 'stats', 'discord'],
-            'login'      => ['index', 'auth', 'logout'],
+            'login'      => ['index', 'auth', 'logout', 'url'],
             'register'   => ['index'],
             'recover'    => ['index'],
             'vote'       => ['index', 'verify'],

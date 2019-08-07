@@ -1,6 +1,7 @@
 <?php
 
 use Phalcon\Mvc\ModelInterface;
+use Phalcon\Mvc\View;
 
 class LoginController extends BaseController {
 
@@ -13,6 +14,24 @@ class LoginController extends BaseController {
         );
 
         return $this->response->redirect('https://discordapp.com/api/oauth2/authorize?'.http_build_query($params));
+    }
+
+    public function urlAction() {
+        $this->view->setRenderLevel(View::LEVEL_NO_RENDER);
+
+        if (!$this->request->isAjax()) {
+            return false;
+        }
+
+        $params = array(
+            'client_id'     => OAUTH2_CLIENT_ID,
+            'redirect_uri'  => redirect_uri,
+            'response_type' => 'code',
+            'scope'         => 'identify guilds email'
+        );
+
+        echo 'https://discordapp.com/api/oauth2/authorize?'.http_build_query($params);
+        return true;
     }
 
     public function authAction() {

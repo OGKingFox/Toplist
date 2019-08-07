@@ -110,11 +110,10 @@
                         </div>
                     </li>
                     {% else %}
-                    <li class="nav-item" style="width:200px;">
-                        {{ link_to('login', ''~image('img/discord-white.svg',
-                            'class' : 'float-left mr-2',
-                            'style': 'height:18px;')~' Login',
-                            'class' : 'btn btn-dark btn-discord btn-sm rounded-pill px-4 text-white') }}
+                    <li class="nav-item">
+                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#loginModal">
+                            Login
+                        </button>
                     </li>
                     {% endif %}
                 </ul>
@@ -158,6 +157,41 @@
             </div>
         </div>
     </footer>
-
 </body>
 </html>
+
+{% if user is not defined %}
+<div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="loginModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-body text-center">
+
+                <i class="fab fa-discord text-discord fa-5x fa-fw my-4"></i>
+
+                <h3 class="mb-0">Login with Discord</h3>
+                <p class="small mb-4">Click below to log in using your Discord Account.</p>
+
+                <div class="text-center">
+                    <button type="button" class="btn btn-primary" id="loginbtn">Continue</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).on("click", "#loginbtn", function(event) {
+        $(this).addClass("disabled");
+        $(this).attr("disabled", "disabled");
+        $(this).html("<i class='fal fa-spinner fa-pulse fa-fw'></i>");
+
+        $.get('{{ url("login/url") }}', function(data) {
+            let url = data.toString();
+
+            setTimeout(function() {
+                window.location = url;
+            }, 750);
+        });
+    });
+</script>
+{% endif %}

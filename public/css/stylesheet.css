@@ -66,7 +66,7 @@ header .overlay h1 {
 .text-discord {
     color: #87a2ff !important;
 }
-.text-discord:hover, .text-discord:focus, .text-discord:active {
+a.text-discord:hover, a.text-discord:focus, a.text-discord:active {
     color: #7289DA !important;
 }
 .btn-primary:not(:disabled):not(.disabled).active, .btn-primary:not(:disabled):not(.disabled):active, .show>.btn-primary.dropdown-toggle {
