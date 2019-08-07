@@ -65,7 +65,7 @@ class LoginController extends BaseController {
                 ->submitBot(true);
 
             if (!$server_info || isset($server_info['code'])) {
-                $user->setRole("member");
+                $user->setRole("Member");
                 $user->save();
 
                 $this->cookies->set("access_token", $token, time() + $expires, base_url);
@@ -84,7 +84,7 @@ class LoginController extends BaseController {
             ];
 
             $keys = array_keys($roles);
-            $role = "member";
+            $role = "Member";
 
             foreach ($keys as $key) {
                 if (in_array($key, $user_roles)) {

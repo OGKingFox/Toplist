@@ -136,30 +136,29 @@ class SecurityPlugin extends Plugin {
             $access_token = $this->cookies->get("access_token");
             $verified     = $this->verifyUser($access_token);
 
-            echo json_encode($verified);
-
             if (!$verified) {
-                $this->session->destroy();
-                $this->response->redirect("");
+                $this->cookies->delete("access_token");
+                $this->session->remove("user");
                 return false;
             }
 
-            $user = Users::getUser($verified->id);
+            $user_id = $verified->id;
+            $user = Users::getUser($user_id);
 
             if (!$user) {
-                $this->logout();
-                $this->response->redirect("");
+                $this->cookies->delete("access_token");
+                $this->session->remove("user");
                 return false;
             }
 
-            /*if (!$this->session->has("user")) {
+            if (!$this->session->has("user")) {
                 $this->session->set("user", $verified);
-            }*/
+            }
 
             $role = $user->getRole();
 
-            $this->view->user    = $user;
-            $this->view->role    = strtolower($role);
+            $this->view->user = $user;
+            $this->view->role = strtolower($role);
         }
 
         $acl = $this->getAcl();
