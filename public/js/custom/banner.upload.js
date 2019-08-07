@@ -1,9 +1,5 @@
 $(document).ready(function() {
     let status = $('#bannerstatus');
-
-    let bar = $(document).find("#banner-bar");
-    let progress = bar.find("#banner-progress");
-    let overlay = bar.find("#banner-overlay");
     let button = $('#file-select');
 
     $(document).on("click", '#file-select', function(event) {
@@ -77,22 +73,4 @@ $(document).ready(function() {
             }
         });
     });
-
-    function setProgressBar(percent, text, failed) {
-        bar.removeClass("invisible");
-
-        progress.css("width", percent+"%");
-        overlay.html(text);
-
-        if (failed) {
-            progress.addClass("bg-danger");
-        } else {
-            if (progress.hasClass("bg-danger")) {
-                progress.removeClass("bg-danger");
-                if (percent === 100) {
-                    progress.addClass("bg-success");
-                }
-            }
-        }
-    }
 });
