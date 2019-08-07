@@ -50,7 +50,8 @@ $("input[id='images']").change(function(event) {
     statusMsg.html("&nbsp;");
     button.attr("disabled", "disabled").html("Uploading...");
 
-    $(this).val('');
+    let input = this;
+    input.val('');
 
     $.ajax({
         url: '/servers/images',
@@ -92,24 +93,12 @@ $("input[id='images']").change(function(event) {
                 button.removeAttr("disabled").html("Select Images");
                 console.log(err)
             }
+
+            input.val('');
         },
+        error: function (e) {
+            console.log("ERROR : ", e);
+            input.val('');
+        }
     });
 });
-
-function setImageProgress(percent, text, failed) {
-    bar.removeClass("invisible");
-
-    progress.css("width", percent+"%");
-    overlay.html(text);
-
-    if (failed) {
-        progress.addClass("bg-danger");
-    } else {
-        if (progress.hasClass("bg-danger")) {
-            progress.removeClass("bg-danger");
-            if (percent === 100) {
-                progress.addClass("bg-success");
-            }
-        }
-    }
-}

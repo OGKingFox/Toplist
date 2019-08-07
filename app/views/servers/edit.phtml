@@ -3,32 +3,12 @@
         {{ content() }}
 
         <div class="card border-0 shadow-sm mb-3">
-            <div class="card-body">
-                {% set banner = url(server.banner_url) %}
-                <div class="banner" style="background:url({{ banner }}) top center #efefef;" id="banner">
-                    {{ form('servers/edit/', 'method' : 'post', 'enctype' : 'multipart/form-data', 'id' : 'uploadForm') }}
-                    <input type="file" name="image" id="image" style="display: none;">
-                    <input type="hidden" name="serverId" value="{{ server.id }}">
-                    <button type="button" class="btn btn-link btn-sm text-white" id="file-select">
-                        <i class="fas fa-camera fa-fw fa-2x"></i>
-                    </button>
-                    {{ hidden_field(security.getTokenKey(), 'value' : security.getToken()) }}
-                    {{ end_form() }}
-                </div>
-                <div class="text-muted small mb-3">Image restrictions: PNG, JPG, or GIF, 468x60, 3MB file size</div>
-
-                <div id="uploadStatus"></div>
-
-                <div class="progress invisible" style="height: 20px;position: relative;" id="banner-bar">
-                    <div class="progress-overlay w-100 text-dark" id="banner-overlay"></div>
-                    <div class="progress-bar" style="width: 0;" id="banner-progress"></div>
-                </div>
+            <div class="card-body text-center">
+                {{ image(server.banner_url, 'id' : 'server-banner') }}
             </div>
-        </div>
-
-        <div class="card border-0 shadow-sm mb-0 mb-3">
-            <div class="card-body">
-                <button class="btn btn-primary" data-toggle="modal" data-target="#loginModal">Upload Images</button>
+            <div class="card-footer text-center">
+                <button class="btn btn-primary" data-toggle="modal" data-target="#bannerModal">Upload Banner</button>
+                <button class="btn btn-primary" data-toggle="modal" data-target="#imagesModal">Upload Images</button>
             </div>
         </div>
 
@@ -150,7 +130,32 @@
     </div>
 </div>
 
-<div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="loginModalLabel" aria-hidden="true">
+<div class="modal fade" id="bannerModal" tabindex="-1" role="dialog" aria-labelledby="bannerModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-body text-center">
+
+                <i class="fal fa-image text-discord fa-5x fa-fw my-4"></i>
+
+                <h3 class="mb-2">Upload Banner</h3>
+                <p class="small mb-4">PNG, GIF, or JPEG. Exactly 468x60, 3MB file size.</p>
+
+                <div class="text-center">
+                    <p id="bannerstatus">&nbsp;</p>
+
+                    {{ form('servers/edit/', 'method' : 'post', 'enctype' : 'multipart/form-data', 'id' : 'uploadForm') }}
+                    <input type="file" name="image" id="image" style="display: none;">
+                    <input type="hidden" name="serverId" value="{{ server.id }}">
+                    <button type="button" class="btn btn-primary" id="file-select">Select Image</button>
+                    <button type="button" class="btn btn-link" data-dismiss="modal">Close</button>
+                    {{ end_form() }}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="imagesModal" tabindex="-1" role="dialog" aria-labelledby="imagesModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-body text-center">
@@ -164,7 +169,7 @@
                 <div class="text-center">
                     <p id="upstatus">&nbsp;</p>
 
-                    {{ form('servers/images', 'method' : 'post', 'id' : 'imageForm') }}
+                    {{ form('servers/images', 'method' : 'post', 'enctype' : 'multipart/form-data','id' : 'imageForm') }}
                     <input type="file" name="images" id="images" style="display: none;" data-server="{{ server.id }}" multiple>
                     <button type="button" class="btn btn-primary" id="imagesUpload">Select Images</button>
                     <button type="button" class="btn btn-link" data-dismiss="modal">Close</button>

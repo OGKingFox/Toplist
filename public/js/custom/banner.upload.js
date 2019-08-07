@@ -1,9 +1,10 @@
 $(document).ready(function() {
-    let status = $('#uploadStatus');
+    let status = $('#bannerstatus');
 
     let bar = $(document).find("#banner-bar");
     let progress = bar.find("#banner-progress");
     let overlay = bar.find("#banner-overlay");
+    let button = $('#file-select');
 
     $(document).on("click", '#file-select', function(event) {
         var form = $(this).parents('form:first');
@@ -12,14 +13,17 @@ $(document).ready(function() {
 
     $("input[id='image']").change(function(event) {
         event.preventDefault();
-        let form = $('#uploadForm')[0];
-        let data = new FormData(form);
+        let data = new FormData($('#uploadForm')[0]);
         let size = this.files[0].size;
 
         if (size > 3145728) {
-            setProgressBar(100, "File size can not exceed 3MB", true);
+            status.html("File size can not exceed 3MB");
             return;
         }
+
+        status.html("&nbsp;");
+        button.attr("disabled", "disabled").html("Uploading...");
+        $(this).val('');
 
         $.ajax({
             type: "POST",
@@ -38,9 +42,9 @@ $(document).ready(function() {
                             let percent = Math.ceil((e.loaded * 100) / e.total);
 
                             if (percent === 100) {
-                                setProgressBar(100, "Processing Image...", false);
+                                button.html("Processing Image");
                             } else {
-                                setProgressBar(percent, percent + "%", false);
+                                button.html("Uploading "+percent+"%");
                             }
                         }
                     }, false);
@@ -52,18 +56,24 @@ $(document).ready(function() {
                     var json = JSON.parse(data);
 
                     if (json.success) {
-                        setProgressBar(100, "Upload Successful!", false);
-                        $("#banner").css("background", 'url('+json.message+') top center #efefef');
+                        status.html("Upload Successful!");
+                        $('#server-banner').attr('src', json.message);
                     } else {
-                        setProgressBar(100, json.message, true);
+                        status.html(json.message);
                     }
+
+                    button.removeAttr("disabled").html("Select Image");
                 } catch (err) {
+                    button.removeAttr("disabled").html("Select Image");
                     console.log(err);
                     console.log(data);
                 }
+
+                $(this).val('');
             },
             error: function (e) {
                 console.log("ERROR : ", e);
+                $(this).val('');
             }
         });
     });
