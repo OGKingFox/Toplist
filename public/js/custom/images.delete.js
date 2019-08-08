@@ -13,7 +13,7 @@ $(document).ready(function() {
 
         var listItem = $(this).parents('.list-group-item:first');
 
-        $.post('{{ url("servers/removeimage") }}', {
+        $.post('/servers/removeimage', {
             image: image,
             server_id: server
         }, function(response) {
