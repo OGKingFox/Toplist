@@ -313,3 +313,6 @@ button {
     text-align:center;
     line-height:50px;
 }
+#screenshot:hover {
+    cursor: pointer;
+}

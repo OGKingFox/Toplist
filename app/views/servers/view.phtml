@@ -127,13 +127,13 @@
 
         <div id="discord"></div>
 
-        {% set images = server.images|json_decode %}
 
+        {% set images = server.images|json_decode %}
         {% if images %}
         <div class="card border-0 shadow-sm mb-3">
             <div class="card-body custom-scroll">
                 {% for image in images %}
-                {{ image(image, 'class' : 'img-fluid mb-2') }}
+                {{ image(image, 'class' : 'img-fluid mb-2', 'id' : 'screenshot') }}
                 {% endfor %}
             </div>
         </div>
@@ -173,6 +173,17 @@
     </div>
 </div>
 
+<div class="modal fade" id="imageModal" tabindex="-1" role="dialog" aria-labelledby="imageModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-body" id="img"></div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary border-0" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 {{ javascript_include("js/chart.min.js") }}
 
 <script>
@@ -181,6 +192,12 @@
     var info   = $('#server-info');
     var links  = info.find('a');
     var images = info.find('img');
+
+    $(document).on('click', '#screenshot', function(event) {
+       let source = $(this).attr("src");
+       $('#img').html('<img src="'+source+'" class="img-fluid">');
+       $('#imageModal').modal();
+    });
 
     setTimeout(function() {
         $.post('{{ url("servers/discord") }}', {
