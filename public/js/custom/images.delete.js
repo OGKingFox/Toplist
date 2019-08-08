@@ -13,7 +13,7 @@ $(document).ready(function() {
 
         var listItem = $(this).parents('.list-group-item:first');
 
-        $.post('/servers/removeimage', {
+        $.post('/servers/removeimage/', {
             image: image,
             server_id: server
         }, function(response) {
@@ -38,6 +38,7 @@ $(document).ready(function() {
                     }
                 });
             } catch (err) {
+                console.log(response);
                 console.log(err);
             }
 
