@@ -469,8 +469,7 @@ class Servers extends \Phalcon\Mvc\Model {
     /**
      * @return mixed
      */
-    public function getImages()
-    {
+    public function getImages() {
         return json_decode($this->images, true);
     }
 

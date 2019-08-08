@@ -121,6 +121,44 @@ class ServersController extends BaseController {
         return true;
     }
 
+    public function removeimageAction() {
+        $this->view->setRenderLevel(View::LEVEL_NO_RENDER);
+
+        if (!$this->request->isPost() || !$this->request->isAjax()) {
+            $this->printStatus(false, "Invalid request.");
+            return false;
+        }
+
+        $owner_id  = $this->getUser()->id;
+        $server_id = $this->request->getPost("server_id", "int");
+        $image_url = $this->request->getPost("image", "url");
+        $server    = Servers::getServerByOwner($server_id, $owner_id);
+
+        if (!$server) {
+            $this->printStatus(true, 'Failed to load server info. '.$server_id);
+            return false;
+        }
+
+        $images = $server->getImages();
+        $new_images = [];
+
+        for($i = 0; $i < count($images); $i++) {
+            if ($images[$i] != $image_url) {
+                $new_images[] = $images[$i];
+            }
+        }
+
+        $server->setImages(json_encode($new_images));
+
+        if (!$server->update()) {
+            $this->printStatus(false, 'Failed to update: '.$server->getMessages()[0]);
+            return false;
+        }
+
+        $this->printStatus(true, 'Image removed successfully.');
+        return true;
+    }
+
     public function imagesAction() {
         $this->view->setRenderLevel(View::LEVEL_NO_RENDER);
 
@@ -132,7 +170,7 @@ class ServersController extends BaseController {
         $files = $this->request->getUploadedFiles();
 
         $valid_types = ['jpg' => 'image/jpeg', 'png' => 'image/png', 'gif' => 'image/gif'];
-        $maxDims = [1366, 768];
+        $maxDims = [1600, 900];
         $maxSize = 3145728;
 
         $userId = $this->getUser()->id;
@@ -140,7 +178,7 @@ class ServersController extends BaseController {
         $server = Servers::getServerByOwner($server_id, $userId);
 
         if (!$server) {
-            $this->printStatus(true, 'Failed to load server info. '.$server_id);
+            $this->printStatus(false, 'Failed to load server info. '.$server_id);
             return false;
         }
 
@@ -202,8 +240,9 @@ class ServersController extends BaseController {
         $server->update();
 
         $this->println([
-            'success' => true,
-            'message' => $new_images
+            'success'   => true,
+            'server_id' => $server->getId(),
+            'message'   => $new_images
         ]);
         return true;
     }

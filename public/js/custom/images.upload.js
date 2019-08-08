@@ -81,13 +81,14 @@ $(document).ready(function() {
                     let json = JSON.parse(response);
 
                     if (json.success) {
+                        let server_id = json.server_id;
                         let images = json.message;
                         for (let i = 0; i < images.length; i++) {
                             let image = images[i];
                             $('#imagelist').append('' +
                                 '<div class="list-group-item d-flex justify-content-between align-items-center small">'+
                                 '<a href="'+image+'" target="_blank">'+image+'</a>'+
-                                '<button id="delete" class="btn btn-link btn-sm" data-image="'+image+'"> ' +
+                                '<button id="delete" class="btn btn-link btn-sm" data-image="'+image+'" data-server="'+server_id+'"> ' +
                                 '<i class="fal fa-times text-danger"></i> ' +
                                 '</button>'+
                                 '</div>');

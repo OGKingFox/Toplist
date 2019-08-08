@@ -23,7 +23,7 @@ $(document).ready(function() {
     var navbar = $('.navbar');
 
 
-   // updateNavbar();
+    updateNavbar();
 
     $(window).scroll(function() {
         updateNavbar();
