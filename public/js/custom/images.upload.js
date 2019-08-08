@@ -52,7 +52,7 @@ $(document).ready(function() {
         input.val('');
 
         $.ajax({
-            url: '/servers/images',
+            url: '/toplist/servers/images',
             type: 'post',
             data: data,
             contentType: false,
@@ -81,6 +81,18 @@ $(document).ready(function() {
                     let json = JSON.parse(response);
 
                     if (json.success) {
+                        let images = json.message;
+                        for (let i = 0; i < images.length; i++) {
+                            let image = images[i];
+                            $('#imagelist').append('' +
+                                '<div class="list-group-item d-flex justify-content-between align-items-center small">'+
+                                '<a href="'+image+'" target="_blank">'+image+'</a>'+
+                                '<button id="delete" class="btn btn-link btn-sm" data-image="'+image+'"> ' +
+                                '<i class="fal fa-times text-danger"></i> ' +
+                                '</button>'+
+                                '</div>');
+                        }
+
                         statusMsg.html("Images successfully uploaded.");
                     } else {
                         statusMsg.html(json.message);
