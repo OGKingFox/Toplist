@@ -19,7 +19,7 @@ $(document).ready(function() {
     });
 
     var windowTop = $(window).scrollTop();
-    var navbar = $('nav');
+    var navbar = $('.navbar:first');
 
     let navpos = navbar.position()['top'];
     let height = navbar.outerHeight();
