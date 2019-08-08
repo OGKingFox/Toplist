@@ -5,7 +5,7 @@
         {{ content() }}
         <div id="alerts"></div>
 
-        <div class="card border-0 shadow-sm mb-3" id="chart"></div>
+        <div id="chart"></div>
 
         <div class="card border-0 shadow-sm mb-3">
             <div class="card-header bg-gradient-primary">
@@ -22,7 +22,9 @@
                 <h4 class="mb-0 text-white">{{ server.title }}</h4>
             </div>
             <div class="card-body" id="server-info">
+                <div class="custom-scroll pr-3" style="max-height: 700px;">
                 {{ server.info }}
+                </div>
 
                 <hr>
                 {{ link_to(server.website, '<i class="fal fa-flag fa-fw"></i> Report', false, 'target' : '_blank',
@@ -123,12 +125,7 @@
             </div>
         </div>
 
-        <div id="discord">
-            <div class="text-center">
-                <i class='fal fa-spinner fa-pulse fa-3x mb-3'></i>
-                <p>Loading Discord...</p>
-            </div>
-        </div>
+        <div id="discord"></div>
 
         {% set images = server.images|json_decode %}
 

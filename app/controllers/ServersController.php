@@ -150,7 +150,8 @@ class ServersController extends BaseController {
             return true;
         }
 
-        $server = Servers::getServerByOwner($id, $this->getUser()->id);
+        $user_id = $this->getUser()->id;
+        $server = Servers::getServerByOwner($id, $user_id);
 
         if (!$server) {
             $this->dispatcher->forward([
@@ -195,6 +196,7 @@ class ServersController extends BaseController {
 
         $this->view->games  = Games::find();
         $this->view->server = $server;
+        $this->view->serverImages = Screenshots::getScreenshots($server->getId(), $user_id);
         return true;
     }
 
@@ -230,26 +232,18 @@ class ServersController extends BaseController {
         $owner_id  = $this->getUser()->id;
         $server_id = $this->request->getPost("server_id", "int");
         $image_url = $this->request->getPost("image", "url");
-        $server    = Servers::getServerByOwner($server_id, $owner_id);
 
-        if (!$server) {
-            $this->printStatus(true, 'Failed to load server info. '.$server_id);
+        $images = Screenshots::getScreenshots($owner_id, $server_id);
+
+        if (!$images) {
+            $this->printStatus(true, 'No images to remove!');
             return false;
         }
 
-        $images = $server->getImages();
-        $new_images = [];
+        $images->removeImage($image_url);
 
-        for($i = 0; $i < count($images); $i++) {
-            if ($images[$i] != $image_url) {
-                $new_images[] = $images[$i];
-            }
-        }
-
-        $server->setImages(json_encode($new_images));
-
-        if (!$server->update()) {
-            $this->printStatus(false, 'Failed to update: '.$server->getMessages()[0]);
+        if (!$images->save()) {
+            $this->printStatus(false, 'Failed to update: '.$images->getMessages()[0]);
             return false;
         }
 
@@ -265,12 +259,6 @@ class ServersController extends BaseController {
             return false;
         }
 
-        $files = $this->request->getUploadedFiles();
-
-        $valid_types = ['jpg' => 'image/jpeg', 'png' => 'image/png', 'gif' => 'image/gif'];
-        $maxDims = [1600, 900];
-        $maxSize = 3145728;
-
         $userId = $this->getUser()->id;
         $server_id = $this->request->getPost("server_id", "int");
         $server = Servers::getServerByOwner($server_id, $userId);
@@ -280,12 +268,27 @@ class ServersController extends BaseController {
             return false;
         }
 
-        $images = $server->getImages();
-        $new_images = [];
+        $screenshots = Screenshots::getScreenshots($server->getId(), $server->getOwnerId());
+
+        if (!$screenshots) {
+            $screenshots = new Screenshots;
+            $screenshots->setServerId($server->getId());
+            $screenshots->setOwnerId($userId);
+            $screenshots->setImages('[]');
+        }
+
+        $images = $screenshots->getImages();
+
         if ($images && count($images) == 10) {
             $this->printStatus(false, 'You can not have any more images.');
             return false;
         }
+
+        $files = $this->request->getUploadedFiles();
+
+        $valid_types = ['jpg' => 'image/jpeg', 'png' => 'image/png', 'gif' => 'image/gif'];
+        $maxDims = [1600, 900];
+        $maxSize = 3145728;
 
         $count = 0;
         $links = [];
@@ -298,7 +301,6 @@ class ServersController extends BaseController {
             $type   = $file->getRealType();
             $size   = $file->getSize();
             $ext    = $file->getExtension();
-
             $dims   = getimagesize($file->getTempName());
             $width  = $dims[0];
             $height = $dims[1];
@@ -326,21 +328,22 @@ class ServersController extends BaseController {
                 break;
             }
 
-            if (isset($upload['link'])) {
-                $images[] = $upload['link'];
-                $new_images[] = $upload['link'];
-            }
-
+            $images[] = $upload['link'];
+            $links[]  = $upload['link'];
             $count++;
         }
 
-        $server->setImages(json_encode($images, JSON_UNESCAPED_SLASHES));
-        $server->update();
+        $screenshots->setImages(json_encode($images, JSON_UNESCAPED_SLASHES));
+
+        if (!$screenshots->save()) {
+            $this->printStatus(true, $screenshots->getMessages()[0]);
+            return false;
+        }
 
         $this->println([
             'success'   => true,
             'server_id' => $server->getId(),
-            'message'   => $new_images
+            'message'   => $links
         ]);
         return true;
     }
@@ -354,7 +357,6 @@ class ServersController extends BaseController {
         }
 
         $file   = $this->request->getUploadedFiles()[0];
-        $name   = $file->getName();
         $type   = $file->getRealType();
         $size   = $file->getSize();
         $ext    = $file->getExtension();

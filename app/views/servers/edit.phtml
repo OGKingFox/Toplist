@@ -122,21 +122,22 @@
         <div class="card border-0 shadow-sm mb-0">
             <div class="card-header">Images</div>
             <div class="list-group list-group-flush justify-content-between" id="imagelist">
-                {% set images = server.images %}
-                {% if images %}
-                {% for image in images %}
-                {% if image is not null %}
-                <div class="list-group-item d-flex justify-content-between align-items-center small">
-                    {{ link_to(image, image, false, 'target' : '_blank') }}
+                {% if serverImages is not null %}
+                    {% set images = serverImages.getImages() %}
 
-                    <button id="delete" class="btn btn-link btn-sm"
-                            data-image="{{ image }}"
-                            data-server="{{ server.id }}">
-                        <i class="fal fa-times text-danger"></i>
-                    </button>
-                </div>
-                {% endif %}
-                {% endfor %}
+                    {% for image in images %}
+                        {% if image is not null %}
+                        <div class="list-group-item d-flex justify-content-between align-items-center small">
+                            {{ link_to(image, image, false, 'target' : '_blank') }}
+
+                            <button id="delete" class="btn btn-link btn-sm"
+                                    data-image="{{ image }}"
+                                    data-server="{{ server.id }}">
+                                <i class="fal fa-times text-danger"></i>
+                            </button>
+                        </div>
+                        {% endif %}
+                    {% endfor %}
                 {% endif %}
             </div>
         </div>
