@@ -14,17 +14,17 @@ $(document).ready(function() {
 
         let data = new FormData();
 
-        if (this.files.length > 10) {
-            console.log("too many files!");
-            return;
-        }
-
         data.append("server_id", $(this).data("server"));
 
         let count = 0;
 
         for (let i = 0; i < this.files.length; i++) {
             let file = this.files[i];
+
+            if (count === 5) {
+                console.log('Skipepd: '+file.name);
+                continue;
+            }
 
             if (file.size > 3145728) {
                 console.log("Skipped file "+file.name+": Too large.");
