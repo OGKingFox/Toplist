@@ -135,10 +135,21 @@
             </div>
         </div>
 
+        {% set images = server.images|json_decode %}
+
+        {% if images %}
+        <div class="card border-0 shadow-sm mb-3">
+            <div class="card-body custom-scroll">
+                {% for image in images %}
+                {{ image(image, 'class' : 'img-fluid mb-2') }}
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+
         <p class="small text-muted text-center">
             All server data is cached for up to 15 seconds, so updates may not appear instantly.
         </p>
-
     </div>
 </div>
 

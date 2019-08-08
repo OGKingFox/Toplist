@@ -112,6 +112,7 @@ class Servers extends \Phalcon\Mvc\Model {
                 'Servers.website',
                 'Servers.callback',
                 'Servers.discord_id',
+                'Servers.images',
                 'Servers.meta_info',
                 'Servers.meta_tags',
                 'Servers.info',

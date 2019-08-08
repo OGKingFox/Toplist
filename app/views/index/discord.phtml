@@ -1,41 +1,20 @@
 {{ content() }}
 
 {% if discord is defined %}
-<div class="card border-0 shadow-sm mb-3 mt-2 discord-block" style="overflow:hidden;">
-    <div class="card-body bg-discord">
-        <i class="fab fa-discord float-left fa-3x mr-3"></i>
-        <h5 class="mb-0">{{ discord.getServerTitle() }}</h5>
-        <p class="mb-0">{{ discord.getMembers()|count }} Members Online</p>
-    </div>
 
-    <div class="mb-1 discord-members pt-2">
-        <div class="list-group list-group-flush">
-            {% for member in discord.getMembers() %}
-            <div class="list-group-item py-2">
-                <div class="float-left mr-3" style="position: relative;width: 32px;height:32px;">
-                    {{ image(member.avatar_url, 'class' : 'rounded-circle mt-1', 'style' : 'width:32px;') }}
-                    <div class="discord-indicator indicator-{{ member.status }}"></div>
-                </div>
-
-                <p class="my-0 mt-1">{{ member.username }}</p>
-                {% if member.game is defined %}
-                {% set gname = member.game.name %}
-                {% if gname|length > 20 %}
-                {% set gname = substr(gname, 0, 20)~'...' %}
-                {% endif %}
-                <p class="mb-0 small text-muted">Playing: {{ gname }}</p>
-                {% else %}
-                <p class="mb-0 small text-muted">{{ member.status }}</p>
-                {% endif %}
-            </div>
-            {% endfor %}
-        </div>
+<div class="card border-0 shadow-sm bg-primary mb-3">
+    <div class="card-header">
+        <i class="fab fa-discord fa-3x mr-2 float-left text-white"></i>
+        <h5 class="mb-0 text-white mt-1" style="line-height:1em !important;">
+            {{ discord.getServerTitle() }}<br>
+            <small class="text-white-50">{{ discord.getMembers()|count }} Members Online</small>
+        </h5>
     </div>
 
     {% if discord.data.instant_invite %}
     {{ link_to(discord.data.instant_invite,
         'Join Server',
-        'class' : 'card-footer text-center disabled text-discord bold-font', false, 'target' : '_blank') }}
+        'class' : 'btn btn-link text-white btn-block btn-sm py-3', false, 'target' : '_blank') }}
     {% endif %}
 </div>
 {% endif %}

@@ -3,6 +3,14 @@
 @font-face { font-family: "Montserrat-Bold"; src: url('../fonts/Montserrat-Bold.otf'); }
 @font-face { font-family: "OpenSans-Light"; src: url('../fonts/OpenSans-Light.ttf'); }
 @font-face { font-family: "OpenSans-Regular"; src: url('../fonts/OpenSans-Regular.ttf'); }
+
+
+:root {
+    --scroll-thumb-color: #727cf5;
+    --scroll-bg-color: #dedede;
+}
+
+
 body {
     font-family: 'OpenSans-Regular', sans-serif;
     background-color: #f1f1f1;
@@ -276,4 +284,52 @@ tr.bg-primary {
 }
 .card-header {
     background-color:rgba(0,0,0,0.03) !important;
+}
+
+body {
+    font-family: sans-serif;
+}
+#container {
+    background: #DDD;
+    max-width: 1400px;
+}
+.item {
+    width: 200px;
+    float: left;
+}
+.item img {
+    display: block;
+    width: 100%;
+}
+button {
+    font-size: 18px;
+}
+.container{
+    width:100%;
+}
+:root {
+    --scroll-thumb-color: #727cf5;
+    --scroll-bg-color: #efefef;
+}
+
+.custom-scroll {
+    max-height: 450px;
+    overflow-y: scroll;
+}
+.custom-scroll::-webkit-scrollbar {
+    -webkit-appearance: none;
+    width: 12px;
+    background-color: var(--scroll-bg-color);
+}
+.custom-scroll::-webkit-scrollbar-thumb {
+    background-color: var(--scroll-thumb-color);
+    background-clip: padding-box;
+    border: 3px solid transparent;
+    border-radius: 5px;
+}
+.custom-scroll::-webkit-scrollbar-track-piece {
+    background-color: transparent;
+    background-clip: padding-box;
+    border: 3px solid transparent;
+    border-radius: 10px;
 }
