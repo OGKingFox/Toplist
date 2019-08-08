@@ -233,7 +233,7 @@ class ServersController extends BaseController {
         $server_id = $this->request->getPost("server_id", "int");
         $image_url = $this->request->getPost("image", "url");
 
-        $images = Screenshots::getScreenshots($owner_id, $server_id);
+        $images = Screenshots::getScreenshots($server_id, $owner_id);
 
         if (!$images) {
             $this->printStatus(true, 'No images to remove!');
