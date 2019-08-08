@@ -36,7 +36,8 @@ class SecurityPlugin extends Plugin {
         }
 
         $public = [
-            'index'      => ['index', 'logout', 'view', 'like', 'report', 'stats', 'discord'],
+            'index'      => ['index', 'logout'],
+            'servers'    => ['index', 'view', 'stats', 'discord', 'report', 'like'],
             'login'      => ['index', 'auth', 'logout', 'url'],
             'register'   => ['index'],
             'recover'    => ['index'],
@@ -55,7 +56,7 @@ class SecurityPlugin extends Plugin {
 
         $admin = [
             'dashboard'     => [
-                'index', 'users', 'premium', 'servers', 'payments', 'reports'
+                'index', 'users', 'premium', 'servers', 'payments', 'reports', 'news'
             ]
         ];
 

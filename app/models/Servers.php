@@ -60,11 +60,6 @@ class Servers extends \Phalcon\Mvc\Model {
      * @return ResultsetInterface
      */
     public static function getServers($gameId = null) {
-        $query = self::query();
-
-        $start  = strtotime(date("Y-m-1 00:00:00"));
-        $end    = strtotime(date("Y-m-t 23:59:59"));
-
         $query =
             self::query()->columns([
                 'Servers.id',

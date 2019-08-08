@@ -1,129 +1,60 @@
-{{ content() }}
 <div class="row">
-    <div class="col-sm-12">
-        <div class="card border-0 shadow-sm mb-3">
+    <div class="col-sm-12 col-lg-8">
+        <div class="card shadow-sm">
+            <div class="card-header" style="line-height: 0.8em;">
+                <img src="https://cdn.discordapp.com/avatars/150486701695827968/71301c86622ac53b03a02b1fe0cef8de.png"
+                     class="float-left rounded-circle mr-3" width="60">
+
+                <h4 class="mb-0 text-primary">Example News Header</h4>
+                <span class="mb-0 small text-muted">by John Snow on Oct 29th at 10:23 AM</span>
+            </div>
+
             <div class="card-body">
-                <div class="float-right">
-                    {% if user is defined %}
-                        {{ link_to('profile', '<i class="fal fa-server fa-fw"></i> My Servers', 'class' : 'btn btn-primary') }}
-                        {{ link_to('servers/add', '<i class="fal fa-plus-circle fa-fw"></i> Add Server', 'class' : 'btn btn-primary') }}
-                    {% endif %}
-                </div>
+                <p class="card-text">
+                    Lorem ipsum dolor sit amet, mea no quot albucius elaboraret, pro in aeque commodo partiendo, est suas utamur volumus an. Mazim patrioque duo et, ex ius imperdiet reformidans. Cu nam mandamus postulant intellegam. An vix munere dissentias temporibus, id velit praesent mel. Ius ad rebum vocent electram, dicit labore id usu.
+                </p>
+                <p class="card-text">
+                    Ad oratio atomorum mei. Ex sea meliore referrentur, ullum aliquando qui eu. Qui eu tota sanctus, ei dolorum commune euripidis has. Nibh vivendo omittam no vis. Id numquam dissentias usu, duo ut eirmod utroque. Ex sint choro eum, vim id quem stet comprehensam.
 
-                <div class="btn-group" role="group">
-                    <button id="btnGroupDrop1" type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <i class="fal fa-list-alt fa-fw"></i> {{ game.title }}
-                    </button>
-                    <div class="dropdown-menu dropdown-menu-left" aria-labelledby="btnGroupDrop1">
-                        {% for g in games %}
-                        {% set seo_title = g.id~'-'~str_replace(" ", "-", g.title|lowercase) %}
-                        {{ link_to('game/'~seo_title, g.title, 'class' : 'dropdown-item', 'rel' : 'nofollow') }}
-                        {% endfor %}
-                    </div>
-                </div>
+                </p>
+                <p class="card-text">
+                    Populo voluptua te cum. Vel id postea philosophia, eu sed esse posse petentium, mundi vivendum pri ne. Duo veri semper te, ex inani fabellas tractatos pri, mel unum rebum putent te. Sonet partem malorum qui ei, mei tale viris tractatos an, eu tale deleniti consulatu mea.
 
-                {#{{ form('', 'class' : 'form-inline search-form', 'method' : 'post') }}
-                {{ text_field('', 'class' : 'form-control rounded-pill', 'placeholder' : 'Search...') }}
-                <button type="submit" class="btn btn-info rounded-pill">Search</button>
-                {{ end_form() }}#}
+                </p>
+                <a href="#!" class="btn btn-link mb-0 px-0">View article</a>
             </div>
         </div>
     </div>
-</div>
-
-<div class="row">
-    <div class="col-sm-12 col-lg-12">
-        <div class="card shadow-sm mb-3 border-0 text-secondary">
-            <table class="table mb-0 tab" style="line-height: 1.2em">
-                {% set rank = servers.current == 1 ? 1 : (servers.current * 30)-29 %}
-
-                {% for server in servers.items %}
-                {% set is_premium = server.user.premium_expires > time() %}
-
-                <tr class="{{ is_premium ? 'bg-primary' : '' }}">
-                    <td class="text-center px-4" style="width:120px;">
-                        <h6 class="mb-0 text-muted">{{ rank }}</h6>
-                    </td>
-                    <td class="text-truncate" style="max-width:250px;">
-                        <p class="text-muted my-0 small text-uppercase">Server</p>
-                        <h6 class="my-0 text-primary text-truncate">
-                            {{ link_to('view/'~getSeoTitle(server), server.title, 'class' : 'text-primary') }}
-                        </h6>
-                    </td>
-                    <td class="d-md-none d-lg-table-cell">
-                        {% if server.banner_url is not 'img/banner_dark.png' %}
-                        {{  link_to('view/'~getSeoTitle(server), image(server.banner_url, 'class' : 'server-banner')) }}
-                        {% else %}
-                        <div class="text-center text-muted banner-holder server-banner">
-                            NO BANNER
-                        </div>
-                        {% endif %}
-                    </td>
-                    <td class="text-center px-4" style="width:100px;">
-                        <h6 class="mb-0 text-primary">{{ server.votes }}</h6>
-                        <small class="text-muted">Vote{{ server.votes > 1 or server.votes is 0 ? 's' : '' }}</small>
-                    </td>
-                </tr>
-
-                {% set rank = rank + 1 %}
-                {% endfor %}
-            </table>
+    <div class="col-sm-12 col-lg-4">
+        <div class="card shadow-sm mb-2">
+            <div class="card-body">
+                <div class="rounded-circle bg-primary float-right stat-icon">
+                    <i class="fal fa-user fa-lg mt-1 text-white"></i>
+                </div>
+                <small class="text-uppercase text-muted mb-0">Users</small>
+                <h5 class="font-weight-bold mb-0 text-primary">2,356</h5>
+            </div>
         </div>
+
+        <div class="card shadow-sm mb-2">
+            <div class="card-body">
+                <div class="rounded-circle bg-danger float-right stat-icon">
+                    <i class="fal fa-server fa-lg mt-1 text-white"></i>
+                </div>
+                <small class="text-uppercase text-muted mb-0">Servers</small>
+                <h5 class="font-weight-bold mb-0 text-danger">2,356</h5>
+            </div>
+        </div>
+
+        <div class="card shadow-sm mb-2">
+            <div class="card-body">
+                <div class="rounded-circle bg-info float-right stat-icon">
+                    <i class="fal fa-vote-yea fa-lg mt-1 text-white"></i>
+                </div>
+                <small class="text-uppercase text-muted mb-0">Votes</small>
+                <h5 class="font-weight-bold mb-0 text-info">2,356</h5>
+            </div>
+        </div>
+
     </div>
 </div>
-
-<div class="mb-5">
-    {% set game_seo = game.id~'-'~str_replace(" ", "-", game.title|lowercase) %}
-
-    {% if servers.total_pages > 0 %}
-    <nav aria-label="...">
-        <ul class="pagination justify-content-center">
-            <li class="page-item">
-                {{ link_to('game/'~game_seo~'/'~servers.first,
-                    '<i class="fal fa-angle-double-left"></i>',
-                    'class' : 'page-link') }}
-            </li>
-            <li class="page-item mr-3">
-                {{ link_to('game/'~game_seo~'/'~servers.before,
-                '<i class="fal fa-angle-left"></i>',
-                'class' : 'page-link') }}
-            </li>
-
-            {% for i in 1..servers.total_pages %}
-            <li class="page-item {{ i is servers.current ? 'active' : ''}}">
-                <a class="page-link" href="#">{{ i }}</a>
-            </li>
-            {% endfor %}
-
-            <li class="page-item ml-3">
-                {{ link_to('game/'~game_seo~'/'~servers.next,
-                '<i class="fal fa-angle-right"></i>',
-                'class' : 'page-link') }}
-            </li>
-            <li class="page-item">
-                {{ link_to('game/'~game_seo~'/'~servers.last,
-                '<i class="fal fa-angle-double-right"></i>',
-                'class' : 'page-link') }}
-            </li>
-        </ul>
-    </nav>
-
-    {% endif %}
-</div>
-
-<hr>
-
-<div id="stats">
-    <div class="text-center">
-        <p><i class="fal fa-spinner fa-spin fa-pulse fa-4x text-primary"></i></p>
-        <h4 class="text-primary">Loading Statistics</h4>
-    </div>
-</div>
-
-<script>
-    setTimeout(function() {
-        $.post("{{ url('index/stats') }}", function(data) {
-            $('#stats').html(data);
-        })
-    }, 1000);
-</script>

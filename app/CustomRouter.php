@@ -22,71 +22,22 @@ class CustomRouter extends RouterGroup {
         [
             "route" => "/report",
             "params" => [
-                "controller" 	=> "index",
+                "controller" 	=> "servers",
                 "action"     	=> "report"
             ]
         ],
-        [
-            "route" => "/game/{id:[0-9]+}",
-            "params" => [
-                "controller" 	=> "index",
-                "action"     	=> "index"
-            ]
-        ],
-        [
-            "route" => "/game/{game:[A-Za-z0-9\-]+}",
-            "params" => [
-                "controller" 	=> "index",
-                "action"     	=> "index"
-            ]
-        ],
 		[
-			"route" => "/game/{id:[0-9]+}-{game:[A-Za-z0-9\-]+}",
+			"route" => "/servers/{id:[0-9]+}-{game:[A-Za-z0-9\-]+}",
 			"params" => [
-				"controller" 	=> "index",
+				"controller" 	=> "servers",
 				"action"     	=> "index"
 			]
 		],
         [
-            "route" => "/game/{id:[0-9]+}/{page:[0-9]+}",
+            "route" => "/servers/{id:[0-9]+}-{game:[A-Za-z0-9\-]+}/{page:[0-9]+}",
             "params" => [
-                "controller" 	=> "index",
+                "controller" 	=> "servers",
                 "action"     	=> "index"
-            ]
-        ],
-        [
-            "route" => "/game/{game:[A-Za-z0-9\-]+}/{page:[0-9]+}",
-            "params" => [
-                "controller" 	=> "index",
-                "action"     	=> "index"
-            ]
-        ],
-        [
-            "route" => "/game/{id:[0-9]+}-{game:[A-Za-z0-9\-]+}/{page:[0-9]+}",
-            "params" => [
-                "controller" 	=> "index",
-                "action"     	=> "index"
-            ]
-        ],
-        [
-            "route" => "/view/{id:[0-9]+}-{server:[A-Za-z0-9\-]+}",
-            "params" => [
-                "controller" 	=> "index",
-                "action"     	=> "view"
-            ]
-        ],
-        [
-            "route" => "/view/{id:[0-9]+}",
-            "params" => [
-                "controller" 	=> "index",
-                "action"     	=> "view"
-            ]
-        ],
-        [
-            "route" => "/like",
-            "params" => [
-                "controller" 	=> "index",
-                "action"     	=> "like"
             ]
         ],
         [
@@ -122,13 +73,6 @@ class CustomRouter extends RouterGroup {
             "params" => [
                 "controller" 	=> "pages",
                 "action"     	=> "privacy"
-            ]
-        ],
-        [
-            "route" => "/discord",
-            "params" => [
-                "controller" 	=> "index",
-                "action"     	=> "discord"
             ]
         ]
     ];

@@ -1,4 +1,7 @@
 <?php
+
+use Phalcon\Tag;
+
 /**
  * Created by PhpStorm.
  * User: foxtr
@@ -61,6 +64,10 @@ class Games extends \Phalcon\Mvc\Model {
     public function getTitle()
     {
         return $this->title;
+    }
+
+    public function getSeoTitle($includeId = false) {
+        return ($includeId ? $this->getId().'-' : '').Tag::friendlyTitle($this->getTitle());
     }
 
     /**

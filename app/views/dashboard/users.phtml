@@ -1,0 +1,33 @@
+<div class="row">
+    <div class="col-sm-12 col-lg-3">
+        {{ partial('dashboard/sidebar') }}
+    </div>
+
+    <div class="col-sm-12 col-lg-9">
+        {{ content() }}
+
+        <div class="card border-0 shadow-sm mb-3">
+            <div class="card-header bg-gradient-primary">
+                <h5 class="text-white mb-0">Add Premium</h5>
+                <p class="small mb-0 text-white-50">
+                    This will add days to an existing member, and upgrade them if their
+                    current package is lower.
+                </p>
+            </div>
+            <div class="card-body">
+                {{ form('dashboard', 'method' : 'post', 'autocomplete' : 'off', 'class' : 'form-inline') }}
+                <div class="form-group mr-2">
+                    {{ text_field('user_id', 'class' : 'form-control', 'placeholder' : 'User ID') }}
+                </div>
+                <div class="form-group mr-2">
+                    {{ select("package", packages, 'using': ['id', 'title'], 'class' : 'form-control') }}
+                </div>
+                <div class="form-group">
+                    {{ submit_button('Apply', 'class' : 'btn btn-primary') }}
+                    {{ hidden_field(security.getTokenKey(), 'value' : security.getToken()) }}
+                </div>
+                {{ end_form() }}
+            </div>
+        </div>
+    </div>
+</div>

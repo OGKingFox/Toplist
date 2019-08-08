@@ -9,14 +9,12 @@
     --scroll-thumb-color: #727cf5;
     --scroll-bg-color: #dedede;
 }
-
-
 body {
     font-family: 'OpenSans-Regular', sans-serif;
     background-color: #f1f1f1;
 }
 header {
-    height: 350px;
+    height: 450px;
     position: relative;
     width: 100%;
     overflow:hidden;
@@ -27,7 +25,7 @@ header:before {
     background-position: top -20px center;
     position: absolute;
     overflow: hidden;
-    height: 370px;
+    height: 470px;
     top: -10px;
     left: -10px;
     right: -10px;
@@ -38,7 +36,7 @@ header:before {
 }
 header .overlay h1 {
     font-family: "Montserrat-Bold", sans-serif;
-    padding-top: 100px;
+    padding-top: 170px;
     font-size: 90px;
     line-height:1em;
     color: white;
@@ -105,30 +103,6 @@ a:hover {
 }*/
 .bg-gradient {
     background: #3bafda linear-gradient(135deg,#3bafda 0,#727cf5 70%);
-}
-.alert {
-    color: rgba(0,0,0,0.6);
-}
-.alert-danger {
-    background: #FF7878;
-    border-color: #FF7878;
-}
-.alert-warning {
-    background: #FEBF97;
-    border-color: #FEBF97;
-}
-.bg-warning {
-    background: #FFFFCC !important;
-}
-.alert-info {
-    background: #727cf5;
-    border-color: #727cf5;
-    color:#FFF;
-    text-shadow: 1px 1px 1px rgba(0,0,0,0.3);
-}
-.alert-success {
-    background: #BDECB6;
-    border-color: #BDECB6;
 }
 .navbar-dark .navbar-nav .nav-link {
     color: rgba(255,255,255,.7);
@@ -332,4 +306,10 @@ button {
     background-clip: padding-box;
     border: 3px solid transparent;
     border-radius: 10px;
+}
+.stat-icon {
+    width:50px;
+    height:50px;
+    text-align:center;
+    line-height:50px;
 }

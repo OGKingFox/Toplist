@@ -6,7 +6,7 @@
             <div class="list-group list-group-flush">
                 <div class="list-group-item">Newest Servers</div>
                 {% for newest in newest %}
-                <a class="list-group-item  text-primary" style="line-height:1.0em;" href="{{ url('view/'~getSeoTitle(newest)) }}">
+                <a class="list-group-item  text-primary" style="line-height:1.0em;" href="{{ url('servers/view/'~getSeoTitle(newest)) }}">
                     {{ newest.title }}<br>
                     <small class="text-muted">Created {{ elapsed(newest.date_created) }}</small>
                 </a>
@@ -20,7 +20,7 @@
             <div class="list-group list-group-flush">
                 <div class="list-group-item">Most Liked Servers</div>
                 {% for liked in mostLiked %}
-                <a class="list-group-item text-primary" style="line-height:1.0em;" href="{{ url('view/'~getSeoTitle(liked.server)) }}">
+                <a class="list-group-item text-primary" style="line-height:1.0em;" href="{{ url('servers/view/'~getSeoTitle(liked.server)) }}">
                     {{ liked.server.title }}<br>
                     <small class="text-muted">{{ liked.likes|number_format }} likes</small>
                 </a>
@@ -34,7 +34,7 @@
             <div class="list-group list-group-flush">
                 <div class="list-group-item">Most Votes (Accumulative)</div>
                 {% for votedOn in mostVotes %}
-                <a class="list-group-item text-primary" style="line-height:1.0em;" href="{{ url('view/'~getSeoTitle(votedOn)) }}">
+                <a class="list-group-item text-primary" style="line-height:1.0em;" href="{{ url('servers/view/'~getSeoTitle(votedOn)) }}">
                     {{ votedOn.title }}<br>
                     <small class="text-muted">{{ votedOn.votes|number_format }} Votes</small>
                 </a>

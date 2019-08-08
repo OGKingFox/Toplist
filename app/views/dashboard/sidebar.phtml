@@ -1,0 +1,34 @@
+<div class="card border-0 shadow-sm mb-3">
+    <div class="card-body text-center">
+        {% set avatar = avatar(user.user_id, user.avatar) %}
+
+        <div class="mb-3">{{ image(avatar, 'class' : 'rounded-circle', 'width' : '125') }}</div>
+
+        <div class="text-truncate m-auto h5 text-primary" style="max-width: 200px;">
+            {{ filter.sanitize(user.username, 'string') }}
+        </div>
+        <p class="small text-muted">ID: {{ user.user_id }}</p>
+
+        {{ role|capitalize }}
+    </div>
+
+    {% set action = router.getActionName() %}
+
+    <div class="list-group list-group-flush">
+        <a href="{{ url('dashboard') }}" class="list-group-item {{ action is '' ? 'active' : '' }}">
+            Dashboard Home
+        </a>
+        <a href="{{ url('dashboard/news') }}" class="list-group-item {{ action is 'news' ? 'active' : '' }}">
+            News Articles
+        </a>
+        <a href="{{ url('dashboard/users') }}" class="list-group-item {{ action is 'users' ? 'active' : '' }}">
+            User Management
+        </a>
+        <a href="{{ url('dashboard/reports') }}" class="list-group-item {{ action is 'reports' ? 'active' : '' }}">
+            Reports
+        </a>
+        <a href="{{ url('dashboard/premium') }}" class="list-group-item {{ action is 'premium' ? 'active' : '' }}">
+            Premium Options
+        </a>
+    </div>
+</div>

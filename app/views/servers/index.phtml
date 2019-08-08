@@ -1,0 +1,121 @@
+{{ content() }}
+<div class="row">
+    <div class="col-sm-12">
+        <div class="card border-0 shadow-sm mb-3">
+            <div class="card-body">
+                <div class="float-right">
+                    {% if user is defined %}
+                    {{ link_to('profile', '<i class="fal fa-server fa-fw"></i> My Servers', 'class' : 'btn btn-primary') }}
+                    {{ link_to('servers/add', '<i class="fal fa-plus-circle fa-fw"></i> Add Server', 'class' : 'btn btn-primary') }}
+                    {% endif %}
+                </div>
+
+                <div class="btn-group" role="group">
+                    <button id="btnGroupDrop1" type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <i class="fal fa-list-alt fa-fw"></i> {{ game.title }}
+                    </button>
+                    <div class="dropdown-menu dropdown-menu-left" aria-labelledby="btnGroupDrop1">
+                        {% for g in games %}
+                        {% set seo_title = g.id~'-'~str_replace(" ", "-", g.title|lowercase) %}
+                        {{ link_to('servers/'~seo_title, g.title, 'class' : 'dropdown-item', 'rel' : 'nofollow') }}
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-sm-12 col-lg-12">
+        <div class="card shadow-sm mb-3 border-0 text-secondary">
+            <table class="table mb-0 tab" style="line-height: 1.2em">
+                {% set rank = servers.current == 1 ? 1 : (servers.current * 30)-29 %}
+
+                {% for server in servers.items %}
+                {% set is_premium = server.user.premium_expires > time() %}
+
+                <tr class="{{ is_premium ? 'bg-primary' : '' }}">
+                    <td class="text-center px-4" style="width:120px;">
+                        <h6 class="mb-0 text-muted">{{ rank }}</h6>
+                    </td>
+                    <td class="text-truncate" style="max-width:250px;">
+                        <p class="text-muted my-0 small text-uppercase">Server</p>
+                        <h6 class="my-0 text-primary text-truncate">
+                            {{ link_to('servers/view/'~getSeoTitle(server), server.title, 'class' : 'text-primary') }}
+                        </h6>
+                    </td>
+                    <td class="d-md-none d-lg-table-cell">
+                        {% if server.banner_url is not 'img/banner_dark.png' %}
+                        {{  link_to('servers/view/'~getSeoTitle(server), image(server.banner_url, 'class' : 'server-banner')) }}
+                        {% else %}
+                        <div class="text-center text-muted banner-holder server-banner">
+                            NO BANNER
+                        </div>
+                        {% endif %}
+                    </td>
+                    <td class="text-center px-4" style="width:100px;">
+                        <h6 class="mb-0 text-primary">{{ server.votes }}</h6>
+                        <small class="text-muted">Vote{{ server.votes > 1 or server.votes is 0 ? 's' : '' }}</small>
+                    </td>
+                </tr>
+
+                {% set rank = rank + 1 %}
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+</div>
+
+<div class="mb-5">
+    {% set game_seo = game.id~'-'~str_replace(" ", "-", game.title|lowercase) %}
+
+    {% if servers.total_pages > 0 %}
+    <nav aria-label="...">
+        <ul class="pagination justify-content-center">
+            <li class="page-item">
+                {{ link_to('servers/'~game_seo~'/'~servers.first,
+                '<i class="fal fa-angle-double-left"></i>',
+                'class' : 'page-link') }}
+            </li>
+            <li class="page-item mr-3">
+                {{ link_to('servers/'~game_seo~'/'~servers.before,
+                '<i class="fal fa-angle-left"></i>',
+                'class' : 'page-link') }}
+            </li>
+            {% for i in 1..servers.total_pages %}
+            <li class="page-item {{ i is servers.current ? 'active' : ''}}">
+                <a class="page-link" href="#">{{ i }}</a>
+            </li>
+            {% endfor %}
+            <li class="page-item ml-3">
+                {{ link_to('servers/'~game_seo~'/'~servers.next,
+                '<i class="fal fa-angle-right"></i>',
+                'class' : 'page-link') }}
+            </li>
+            <li class="page-item">
+                {{ link_to('servers/'~game_seo~'/'~servers.last,
+                '<i class="fal fa-angle-double-right"></i>',
+                'class' : 'page-link') }}
+            </li>
+        </ul>
+    </nav>
+    {% endif %}
+</div>
+
+<hr>
+
+<div id="stats">
+    <div class="text-center">
+        <p><i class="fal fa-spinner fa-spin fa-pulse fa-4x text-primary"></i></p>
+        <h4 class="text-primary">Loading Statistics</h4>
+    </div>
+</div>
+
+<script>
+    setTimeout(function() {
+        $.post("{{ url('servers/stats') }}", function(data) {
+            $('#stats').html(data);
+        });
+    }, 1000);
+</script>

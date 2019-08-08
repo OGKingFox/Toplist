@@ -1,9 +1,9 @@
+{% set seo_title = getSeoTitle(server) %}
+
 <div class="row my-5">
     <div class="col-sm-12 text-center">
         <h5 class="mb-0 text-uppercase text-muted">Voting for</h5>
         <h2 class="mb-4 bold-font text-primary">{{ server.title|uppercase }}</h2>
-
-        <?php $seo_link = Servers::genSeoTitle($server); ?>
 
         <p id="content">&nbsp;</p>
 
@@ -12,7 +12,7 @@
             {{ submit_button('Vote Now', 'class' : 'btn btn-primary') }}
             {{ hidden_field('server', 'value' : server.id) }}
             {{ hidden_field('incentive', 'value' : incentive) }}
-            {{ link_to('view/'~seo_link, 'View Server', 'class' : 'btn btn-outline-primary', 'target' : '_blank') }}
+            {{ link_to('servers/view/'~seo_title, 'View Server', 'class' : 'btn btn-outline-primary', 'target' : '_blank') }}
         </div>
         {{ end_form() }}
 
@@ -20,7 +20,7 @@
         <div class="text-center">
             <p class="mb-2">Do you like this server? Feel free to show some love, and click the like button below!</p>
             <p id="likeStatus">&nbsp;</p>
-            <a href="https://foxtrot-studios.co" id="like"
+            <a href="#" id="like"
                class="btn btn-primary btn-sm"
                target="_blank" data-id="{{ server.id }}" data-toggle="tooltip"
                title="" data-original-title="Like this Server"><i class="fal fa-thumbs-up fa-fw"></i> Like</a>
@@ -88,7 +88,7 @@
 
         var id = $(this).data("id");
 
-        $.post('{{ url("like") }}', {
+        $.post('{{ url("servers/like") }}', {
             id: id
         }, function(data) {
             locked = false;
