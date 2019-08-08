@@ -52,7 +52,7 @@ $(document).ready(function() {
         input.val('');
 
         $.ajax({
-            url: '/toplist/servers/images',
+            url: '/servers/images',
             type: 'post',
             data: data,
             contentType: false,
