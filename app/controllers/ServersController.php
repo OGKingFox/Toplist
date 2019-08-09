@@ -9,7 +9,7 @@ use Phalcon\Text;
 class ServersController extends BaseController {
 
     public function indexAction($gameId = 1) {
-        $this->tag->setTitle("Home");
+        $this->tag->setTitle("Server List");
 
         $gameId = $this->filter->sanitize($gameId, is_numeric($gameId) ? 'int' : 'string');
         $game   = Games::getGameByIdOrName($gameId);

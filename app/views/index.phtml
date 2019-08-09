@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8" />
     {% if get_title(false) is not '' %}
-    <title>Rune-Nexus | {{ get_title(false) }}</title>
+    <title>{{ get_title(false) }} | Rune-Nexus</title>
     {% else %}
     <title>Rune-Nexus</title>
     {% endif %}
@@ -48,7 +48,7 @@
         </div>
     </header>
 
-    <nav class="navbar navbar-expand-lg navbar-dark sticky-top" style="margin-top: -85px;">
+    <nav class="navbar navbar-expand-lg navbar-dark sticky-top" style="margin-top: -85.4px;">
         <div class="container">
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#global-nav"
                     aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -124,11 +124,17 @@
         </div>
     </nav>
 
+    {% set controller = router.getControllerName() %}
+
+    {% if controller is '' or controller is 'index' %}
+    {{ content() }}
+    {% else %}
     <section class="content py-5">
         <div class="container">
             {{ content() }}
         </div>
     </section>
+    {% endif %}
 
     <footer class="bg-dark py-5">
         <div class="container">

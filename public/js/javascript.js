@@ -19,10 +19,13 @@ $(document).ready(function() {
     });
 
     var windowTop = $(window).scrollTop();
+
     var navbar = $('.navbar:first');
 
-    let navpos = navbar.position()['top'];
-    let height = navbar.outerHeight();
+    let head_height = $('header').outerHeight();
+    let nav_height = navbar.outerHeight();
+
+    let nav_start = (head_height - nav_height);
 
     updateNavbar();
 
@@ -32,7 +35,7 @@ $(document).ready(function() {
 
     function updateNavbar() {
         windowTop = $(window).scrollTop();
-        if (windowTop > (navpos - height)) {
+        if (windowTop > nav_start) {
             navbar.addClass("bg-dark shadow");
         } else {
             navbar.removeClass("bg-dark shadow")
