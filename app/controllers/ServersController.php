@@ -288,7 +288,7 @@ class ServersController extends BaseController {
 
         $valid_types = ['jpg' => 'image/jpeg', 'png' => 'image/png', 'gif' => 'image/gif'];
         $maxDims = [1600, 900];
-        $maxSize = 3145728;
+        $maxSize = 5242880;
 
         $count = 0;
         $links = [];
@@ -367,7 +367,7 @@ class ServersController extends BaseController {
 
         $valid_types = ['jpg' => 'image/jpeg', 'png' => 'image/png', 'gif' => 'image/gif'];
         $maxDims = [468, 60];
-        $maxSize = 3145728;
+        $maxSize = 5242880;
 
         if (!in_array($type, array_values($valid_types)) || !in_array($ext, array_keys($valid_types))) {
             $this->printStatus(false, "Invalid type. Allowed: ".implode(',', $valid_types));
