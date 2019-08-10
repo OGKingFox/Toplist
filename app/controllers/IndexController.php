@@ -8,7 +8,13 @@ use Phalcon\Tag;
 class IndexController extends BaseController {
 
     public function indexAction() {
+        $articles = Articles::getArticles();
 
+        $this->view->articles = $articles;
+
+        $this->view->users   = Users::count();
+        $this->view->servers = Servers::count();
+        $this->view->votes   = Votes::count();
     }
 
     public function logoutAction() {

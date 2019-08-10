@@ -23,10 +23,7 @@
     $("#postform").on("submit", function (event) {
         event.preventDefault();
         var body  = $(this).find(".ql-editor").html();
-
         $(this).find("#editor-form").html(body);
-
         $(this)[0].submit();
     });
-
 </script>

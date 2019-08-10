@@ -1,0 +1,20 @@
+{{ form('dashboard/news', 'method' : 'post', 'id' : 'editform') }}
+<div class="form-group">
+    <label for="title">Article Title</label>
+    {{ text_field('title', 'class' : 'form-control', 'value' : article.title) }}
+</div>
+{{ hidden_field('id', 'value' : article.id) }}
+<div class="form-group">
+    <label for="editor-form" class="mb-0">Information</label>
+    <?php $body = Functions::getPurifier()->purify($article->news_body); ?>
+    <div id="editor" class="mb-3">{{ body }}</div>
+    <textarea name='news_body' id='editor-form' style='display:none'></textarea>
+</div>
+<hr>
+<div class="form-group">
+    {{ submit_button('Save Changes', 'class' : 'btn btn-primary') }}
+    <span id="notice"></span>
+</div>
+{{ end_form() }}
+
+{{ partial('partials/quilljs') }}

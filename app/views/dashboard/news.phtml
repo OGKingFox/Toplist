@@ -2,14 +2,17 @@
     <div class="col-sm-12 col-lg-3">
         {{ partial('dashboard/sidebar') }}
     </div>
+
     <div class="col-sm-12 col-lg-9">
         {{ content() }}
 
         <div class="card border-0 shadow-sm mb-3">
             <div class="card-header bg-gradient-primary justify-content-between">
-                {{ link_to('', 'Add Post', 'class' : 'btn btn-primary btn-sm float-right') }}
+                {{ link_to('', 'Add Post', 'class' : 'btn btn-primary btn-sm float-right',
+                    'data-toggle' : 'modal', 'data-target' : '#addModal') }}
                 <h5 class="mb-0 text-white">Announcements</h5>
             </div>
+
             <table class="table mb-0">
             {% for article in articles %}
             <tr>
@@ -25,7 +28,10 @@
                 </td>
                 <td>{{ date('M. d, Y', article.date_posted) }}</td>
                 <td class="text-right">
-                    {{ link_to('', 'Edit', 'class' : 'btn btn-primary btn-sm', 'id' : 'edit', 'data-id' : article.id) }}
+                    {{ link_to('', 'Edit', 'class' : 'btn btn-primary btn-sm',
+                        'id' : 'edit', 'data-id' : article.id) }}
+                    {{ link_to('', 'Delete', 'class' : 'btn btn-danger btn-sm',
+                        'id' : 'edit', 'data-id' : article.id) }}
                 </td>
             </tr>
             {% endfor %}
@@ -33,3 +39,139 @@
         </div>
     </div>
 </div>
+
+<div class="modal fade" id="articleModal" tabindex="-1" role="dialog" aria-labelledby="articleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-body" id="data">
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="addModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-body">
+                {{ form('dashboard/news', 'method' : 'post', 'id' : 'addform') }}
+                <div class="form-group">
+                    <label for="title">Article Title</label>
+                    {{ text_field('title', 'class' : 'form-control') }}
+                </div>
+                {{ hidden_field('id', 'value' : article.id) }}
+                <div class="form-group">
+                    <label for="editor-form" class="mb-0">Information</label>
+                    <div id="editor" class="mb-3"></div>
+                    <textarea name='news_body' id='editor-form' style='display:none'></textarea>
+                </div>
+                <hr>
+                <div class="form-group">
+                    {{ submit_button('Save Changes', 'class' : 'btn btn-primary') }}
+                    <span id="notice"></span>
+                </div>
+                {{ end_form() }}
+            </div>
+        </div>
+    </div>
+</div>
+
+{{ partial('partials/quilljs') }}
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
+
+<script>
+    $(document).on("submit", "#editform", function(event) {
+        event.preventDefault();
+
+        let form   = $(this);
+        let id     = form.find("#id").val();
+        let title  = form.find("#title").val();
+        let body   = form.find(".ql-editor").html();
+        let notice = form.find("#notice");
+
+        notice.removeClass("text-danger")
+            .removeClass("text-success");
+
+        notice.html('<i class="fal fa-spinner fa-pulse"></i>');
+
+        $.post("{{ url('dashboard/newspost') }}", {
+            type: 'edit',
+            id: id,
+            title: title,
+            news_body: body
+        }, function(data) {
+            try {
+                let json = JSON.parse(data);
+                notice.addClass("text-"+ (json.success ? 'success' : 'danger'));
+                notice.html(json.message);
+            } catch (err) {
+                console.log(err);
+            }
+            console.log(data);
+        });
+    });
+
+    $(document).on("submit", "#addform", function(event) {
+        event.preventDefault();
+
+        let form   = $(this);
+        let title  = form.find("#title").val();
+        let body   = form.find(".ql-editor").html();
+        let notice = form.find("#notice");
+
+        notice.removeClass("text-danger")
+            .removeClass("text-success");
+
+        notice.html('<i class="fal fa-spinner fa-pulse"></i>');
+
+        $.post("{{ url('dashboard/newspost') }}", {
+            type: 'add',
+            title: title,
+            news_body: body
+        }, function(data) {
+            try {
+                let json = JSON.parse(data);
+
+                if (json.success) {
+                    let modal = $('#addModal');
+                    modal.hide();
+                }
+
+                Swal.fire({
+                    title: json.success ? 'Article Posted!' : 'Error',
+                    html: json.message,
+                    type: json.error ? 'error' : 'success',
+                    timer: 2000,
+                    showConfirmButton: false,
+                    allowOutsideClick: false,
+                    onBeforeOpen: () => {
+                        timerInterval = setInterval(() => {}, 100)
+                    },
+                    onClose: () => {
+                        clearInterval(timerInterval);
+                        setTimeout(function() {
+                            window.location.reload();
+                        }, 1000);
+                    }
+                });
+            } catch (err) {
+                console.log(err);
+            }
+        });
+    });
+
+    $(document).on('click', '#edit', function(event) {
+        event.preventDefault();
+
+        let id = $(this).data("id");
+        let modal = $('#articleModal');
+
+        $.post("{{ url('dashboard/newspost') }}", {
+            id : id,
+            type: 'form',
+        }, function(data) {
+            modal.find("#data").html(data);
+            modal.modal();
+        })
+    })
+</script>
