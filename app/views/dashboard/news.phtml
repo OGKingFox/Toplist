@@ -1,11 +1,35 @@
 <div class="row">
     <div class="col-sm-12 col-lg-3">
         {{ partial('dashboard/sidebar') }}
-
     </div>
-
     <div class="col-sm-12 col-lg-9">
         {{ content() }}
 
+        <div class="card border-0 shadow-sm mb-3">
+            <div class="card-header bg-gradient-primary justify-content-between">
+                {{ link_to('', 'Add Post', 'class' : 'btn btn-primary btn-sm float-right') }}
+                <h5 class="mb-0 text-white">Announcements</h5>
+            </div>
+            <table class="table mb-0">
+            {% for article in articles %}
+            <tr>
+                {% set avatar = avatar(article.user_id, article.avatar) %}
+                <td class="text-center" style="width:40px;">
+                    {{ image(avatar, 'style' : 'height:30px', 'class' : 'rounded-circle') }}
+                </td>
+                <td>
+                    <p class="mb-0" style="line-height:1.2em;">
+                        {{ article.title }}<br>
+                        <small>Posted by <strong>{{ article.username }}#{{ article.discriminator }}</strong></small>
+                    </p>
+                </td>
+                <td>{{ date('M. d, Y', article.date_posted) }}</td>
+                <td class="text-right">
+                    {{ link_to('', 'Edit', 'class' : 'btn btn-primary btn-sm', 'id' : 'edit', 'data-id' : article.id) }}
+                </td>
+            </tr>
+            {% endfor %}
+            </table>
+        </div>
     </div>
 </div>

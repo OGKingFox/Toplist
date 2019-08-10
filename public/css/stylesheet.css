@@ -4,7 +4,6 @@
 @font-face { font-family: "OpenSans-Light"; src: url('../fonts/OpenSans-Light.ttf'); }
 @font-face { font-family: "OpenSans-Regular"; src: url('../fonts/OpenSans-Regular.ttf'); }
 
-
 :root {
     --scroll-thumb-color: #727cf5;
     --scroll-bg-color: #dedede;
@@ -315,4 +314,7 @@ button {
 }
 #screenshot:hover {
     cursor: pointer;
+}
+.ql-align-center {
+    text-align: center !important;
 }

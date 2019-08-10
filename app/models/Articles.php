@@ -1,9 +1,10 @@
 <?php
 use Phalcon\Mvc\Model;
 
-class Announcements extends Model {
+class Articles extends Model {
 
     private $user_id;
+    private $title;
     private $news_body;
     private $date_posted;
 
@@ -15,19 +16,20 @@ class Announcements extends Model {
             ])->execute()->getFirst();
     }
 
-    public static function getAnnouncements() {
+    public static function getArticles() {
         return self::query()
             ->columns([
-                'Announcements.id',
-                'Announcements.user_id',
-                'Announcements.news_body',
-                'Announcements.date_posted',
+                'Articles.id',
+                'Articles.user_id',
+                'Articles.news_body',
+                'Articles.title',
+                'Articles.date_posted',
                 'user.username',
                 'user.discriminator',
                 'user.role',
                 'user.avatar',
             ])
-            ->leftJoin("Users", "user.user_id = Announcements.user_id", "user")
+            ->leftJoin("Users", "user.user_id = Articles.user_id", "user")
             ->execute();
     }
 
@@ -41,7 +43,7 @@ class Announcements extends Model {
 
     /**
      * @param mixed $user_id
-     * @return Announcements
+     * @return Articles
      */
     public function setUserId($user_id)
     {
@@ -59,7 +61,7 @@ class Announcements extends Model {
 
     /**
      * @param mixed $news_body
-     * @return Announcements
+     * @return Articles
      */
     public function setNewsBody($news_body)
     {
@@ -77,13 +79,32 @@ class Announcements extends Model {
 
     /**
      * @param mixed $date_posted
-     * @return Announcements
+     * @return Articles
      */
     public function setDatePosted($date_posted)
     {
         $this->date_posted = $date_posted;
         return $this;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getTitle()
+    {
+        return $this->title;
+    }
+
+    /**
+     * @param mixed $title
+     * @return Articles
+     */
+    public function setTitle($title)
+    {
+        $this->title = $title;
+        return $this;
+    }
+
 
 
 }

@@ -1,4 +1,7 @@
 <?php
+
+use Phalcon\Mvc\View;
+
 class DashboardController extends BaseController {
 
     private $user;
@@ -37,8 +40,20 @@ class DashboardController extends BaseController {
         $this->view->packages = Packages::find();
     }
 
-    public function newsAction($page = 1) {
+    public function newsAction($page = 1, $id = null) {
+        $article = Articles::getArticles();
 
+        if ($page == "edit") {
+            $this->view->pick("dashboard/news/edit");
+        } else if ($page == "delete") {
+            $this->view->setRenderLevel(View::LEVEL_NO_RENDER);
+            $article = Articles::getArticle($id);
+            if ($article->delete()) {
+                $this->printStatus(true, "Article delete!");
+            }
+        }
+
+        $this->view->articles = $article;
     }
 
     public function usersAction() {

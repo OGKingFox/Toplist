@@ -8,6 +8,8 @@ use Phalcon\Text;
 
 class ServersController extends BaseController {
 
+    private static $max_size = (1024 * 1024 * 5); // max size in bytes
+
     public function indexAction($gameId = 1) {
         $this->tag->setTitle("Server List");
 
@@ -167,7 +169,7 @@ class ServersController extends BaseController {
             $this->session->remove('notice');
         }
 
-        if ($this->request->isPost() && $this->security->checkToken()) {
+        if ($this->request->isPost() /*&& $this->security->checkToken()*/) {
             $owner  = $this->getUser();
 
             $server->assign($this->request->getPost());
@@ -288,7 +290,7 @@ class ServersController extends BaseController {
 
         $valid_types = ['jpg' => 'image/jpeg', 'png' => 'image/png', 'gif' => 'image/gif'];
         $maxDims = [1600, 900];
-        $maxSize = 5242880;
+        $maxSize = self::$max_size;
 
         $count = 0;
         $links = [];
@@ -367,7 +369,7 @@ class ServersController extends BaseController {
 
         $valid_types = ['jpg' => 'image/jpeg', 'png' => 'image/png', 'gif' => 'image/gif'];
         $maxDims = [468, 60];
-        $maxSize = 5242880;
+        $maxSize = self::$max_size;
 
         if (!in_array($type, array_values($valid_types)) || !in_array($ext, array_keys($valid_types))) {
             $this->printStatus(false, "Invalid type. Allowed: ".implode(',', $valid_types));

@@ -22,14 +22,23 @@
                 <h4 class="mb-0 text-white">{{ server.title }}</h4>
             </div>
             <div class="card-body" id="server-info">
-                <div class="custom-scroll pr-3" style="max-height: 700px;">
                 {{ server.info }}
-                </div>
 
                 <hr>
                 {{ link_to(server.website, '<i class="fal fa-flag fa-fw"></i> Report', false, 'target' : '_blank',
                 'class' : 'btn btn-danger btn-sm',
                 'data-toggle' : 'modal', 'data-target' : '#reportModal') }}
+            </div>
+        </div>
+
+        <div class="card border-0 shadow-sm mb-3">
+            <div class="card-body">
+                {% set images = server.images|json_decode %}
+                {% for image in images %}
+                <div class="img-holder d-inline-block mb-0" style="width:100px;height:75px;overflow: hidden;">
+                    {{ image(image, 'class' : 'img-fluid', 'id' : 'screenshot') }}
+                </div>
+                {% endfor %}
             </div>
         </div>
 
@@ -126,22 +135,6 @@
         </div>
 
         <div id="discord"></div>
-
-
-        {% set images = server.images|json_decode %}
-        {% if images %}
-        <div class="card border-0 shadow-sm mb-3">
-            <div class="card-body custom-scroll">
-                {% for image in images %}
-                {{ image(image, 'class' : 'img-fluid mb-2', 'id' : 'screenshot') }}
-                {% endfor %}
-            </div>
-        </div>
-        {% endif %}
-
-        <p class="small text-muted text-center">
-            All server data is cached for up to 15 seconds, so updates may not appear instantly.
-        </p>
     </div>
 </div>
 
@@ -209,6 +202,10 @@
 
     info.find('a').each(function() {
         $(this).attr('target', '_blank');
+    });
+
+    info.find('img').each(function() {
+        $(this).addClass("img-fluid");
     });
 
     $(document).on('click', '#like', function(event) {
