@@ -25,6 +25,28 @@ class BaseController extends Controller {
         ]
     ];
 
+    public function getDiscordData() {
+        $data = [];
+        $data['server'] = (new RestClient())
+            ->setEndpoint("guilds/".server_id."")
+            ->submitBot(true);
+        $data['members'] = (new RestClient())
+            ->setEndpoint("guilds/".server_id."/members")
+            ->setData(['limit' => 300])
+            ->submitBot(true);
+        $data['invite'] = (new RestClient())
+            ->setEndpoint("guilds/".server_id."/invites")
+            ->submitBot(true)[0];
+        $data['bans'] = (new RestClient())
+            ->setEndpoint("guilds/".server_id."/bans")
+            ->submitBot(true);
+        $data['roles'] = (new RestClient())
+            ->setEndpoint("guilds/".server_id."/roles")
+            ->submitBot(true);
+
+        return $data;
+    }
+
     public function printData($data) {
         echo "<pre>".json_encode($data, JSON_PRETTY_PRINT, JSON_UNESCAPED_SLASHES)."</pre>";
     }

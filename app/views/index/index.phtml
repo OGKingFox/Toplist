@@ -1,5 +1,51 @@
-<section class="section section-lg">
+<section class="section">
     <div class="container">
+        <div class="row mb-4">
+            <div class="col-sm-12 col-lg-3">
+                <div class="card shadow-sm mb-2">
+                    <div class="card-body">
+                        <div class="rounded-circle bg-primary float-right stat-icon">
+                            <i class="fal fa-user fa-lg mt-1 text-white"></i>
+                        </div>
+                        <small class="text-uppercase text-muted mb-0">Users</small>
+                        <h5 class="font-weight-bold mb-0 text-primary">{{ users|number_format(0) }}</h5>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-12 col-lg-3">
+                <div class="card shadow-sm mb-2">
+                    <div class="card-body">
+                        <div class="rounded-circle bg-danger float-right stat-icon">
+                            <i class="fal fa-server fa-lg mt-1 text-white"></i>
+                        </div>
+                        <small class="text-uppercase text-muted mb-0">Servers</small>
+                        <h5 class="font-weight-bold mb-0 text-danger">{{ servers|number_format(0) }}</h5>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-12 col-lg-3">
+                <div class="card shadow-sm mb-2">
+                    <div class="card-body">
+                        <div class="rounded-circle bg-info float-right stat-icon">
+                            <i class="fal fa-vote-yea fa-lg mt-1 text-white"></i>
+                        </div>
+                        <small class="text-uppercase text-muted mb-0">Votes</small>
+                        <h5 class="font-weight-bold mb-0 text-info">{{ votes|number_format(0) }}</h5>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-12 col-lg-3">
+                <div class="card shadow-sm mb-2">
+                    <div class="card-body">
+                        <div class="rounded-circle bg-primary float-right stat-icon">
+                            <i class="fal fa-user fa-lg mt-1 text-white"></i>
+                        </div>
+                        <small class="text-uppercase text-muted mb-0">Users</small>
+                        <h5 class="font-weight-bold mb-0 text-primary">{{ users|number_format(0) }}</h5>
+                    </div>
+                </div>
+            </div>
+        </div>
         <div class="row">
             <div class="col-sm-12 col-lg-8">
 
@@ -7,7 +53,7 @@
 
                 {% for article in articles %}
                 {% set avatar = avatar(article.user_id, article.avatar) %}
-                <div class="card shadow-sm">
+                <div class="card shadow-sm mb-3">
                     <div class="card-header" style="line-height: 0.8em;">
                         {{ image(avatar, 'class' : 'float-left rounded-circle mr-3', 'width' : '60px') }}
 
@@ -26,35 +72,7 @@
             </div>
 
             <div class="col-sm-12 col-lg-4">
-                <div class="card shadow-sm mb-2">
-                    <div class="card-body">
-                        <div class="rounded-circle bg-primary float-right stat-icon">
-                            <i class="fal fa-user fa-lg mt-1 text-white"></i>
-                        </div>
-                        <small class="text-uppercase text-muted mb-0">Users</small>
-                        <h5 class="font-weight-bold mb-0 text-primary">{{ users|number_format(0) }}</h5>
-                    </div>
-                </div>
-
-                <div class="card shadow-sm mb-2">
-                    <div class="card-body">
-                        <div class="rounded-circle bg-danger float-right stat-icon">
-                            <i class="fal fa-server fa-lg mt-1 text-white"></i>
-                        </div>
-                        <small class="text-uppercase text-muted mb-0">Servers</small>
-                        <h5 class="font-weight-bold mb-0 text-danger">{{ servers|number_format(0) }}</h5>
-                    </div>
-                </div>
-
-                <div class="card shadow-sm mb-2">
-                    <div class="card-body">
-                        <div class="rounded-circle bg-info float-right stat-icon">
-                            <i class="fal fa-vote-yea fa-lg mt-1 text-white"></i>
-                        </div>
-                        <small class="text-uppercase text-muted mb-0">Votes</small>
-                        <h5 class="font-weight-bold mb-0 text-info">{{ votes|number_format(0) }}</h5>
-                    </div>
-                </div>
+                <div id="discord"></div>
 
             </div>
         </div>
@@ -80,3 +98,11 @@
         </div>
     </div>
 </section>
+
+<script>
+    setTimeout(function() {
+        $.post('{{ url("index/discord") }}', function(data) {
+            $('#discord').html(data);
+        });
+    }, 1000);
+</script>

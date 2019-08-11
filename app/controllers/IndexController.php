@@ -17,6 +17,24 @@ class IndexController extends BaseController {
         $this->view->votes   = Votes::count();
     }
 
+    public function discordAction() {
+        $this->view->setRenderLevel(View::LEVEL_ACTION_VIEW);
+
+        $cache  = new BackFile(new FrontData(['lifetime' => 0]), ['cacheDir' => "../app/compiled/"]);
+        $data = $cache->get("rn.discord.cache");
+
+        if (!$data) {
+            $data = $this->getDiscordData();
+            $cache->save("rn.discord.cache", $data);
+        }
+
+        $this->view->server  = $data['server'];
+        $this->view->members = $data['members'];
+        $this->view->invite  = $data['invite'];
+
+        //$this->debug($data);
+    }
+
     public function logoutAction() {
         $this->cookies->set("access_token", '', time() - 1000, base_url);
         $this->session->destroy();
