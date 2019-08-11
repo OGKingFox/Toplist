@@ -2,14 +2,12 @@
 
 use Phalcon\Cache\Backend\File as BackFile;
 use Phalcon\Cache\Frontend\Data as FrontData;
-use Phalcon\Mvc\Controller;
-use Phalcon\Paginator\Adapter\Model as PaginatorModel;
+use Phalcon\Mvc\View;
 use Phalcon\Paginator\Adapter\NativeArray;
 
 class ToolsController extends BaseController {
 
     public function itemsAction($page = 1) {
-        $dir  = dirname(__FILE__);
         $data = $this->getList('items-complete');
 
         $itemList = (new NativeArray([
@@ -18,30 +16,34 @@ class ToolsController extends BaseController {
             'page'  => $page
         ]))->getPaginate();
 
-        $this->debug($itemList);
+        $this->view->itemList = $itemList;
     }
 
     public function searchAction() {
-        $this->view->setRenderLevel(\Phalcon\Mvc\View::LEVEL_ACTION_VIEW);
+        $this->view->setRenderLevel(View::LEVEL_ACTION_VIEW);
 
-        $data   = json_decode($this->getList('items-complete'), true);
+        $data   = $this->getList('items-complete');
         $search = $this->request->getPost("search", "string");
         $found  = [];
 
-        if ($search != null) {
+        if ($search != null && $search != '') {
             foreach ($data as $key => $value) {
                 $itemName = $value['name'];
                 if (stripos(strtolower($itemName), strtolower($search)) !== false) {
                     $found[] = $value;
                 }
             }
+        } else {
+            $found = $data;
         }
 
         $itemList = (new NativeArray([
             'data'  => $found,
             'limit' => 50,
-            'page'  => $this->dispatcher->getPost("page", "int", 1)
+            'page'  => $this->request->getPost("page", "int", 1)
         ]))->getPaginate();
+
+        $this->view->itemList = $itemList;
     }
 
     private function getList($name) {

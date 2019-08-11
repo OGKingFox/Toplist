@@ -328,3 +328,17 @@ button {
         padding-bottom: 10px !important;
     }
 }
+.search-box {
+    max-width: 350px;
+}
+.search-box .inline-form {
+    position: relative;
+}
+.search-box .inline-form input.form-control {
+    padding-right: 120px;
+}
+.search-box .inline-form .btn {
+    position: absolute;
+    top: 3.7px;
+    right: 3.7px;
+}

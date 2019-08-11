@@ -1,0 +1,72 @@
+<div class="row">
+    <div class="col-sm-12">
+        <div class="card border-0 shadow-sm mb-3">
+            <div class="card-body">
+                <div class="search-box">
+                    {{ form('tools/items', 'class' : 'inline-form', 'id' : 'searchform') }}
+                        {{ text_field("search", 'class' : 'form-control mr-3 rounded-pill py-4 pl-4 input-lg', 'placeholder' : 'Search by item name') }}
+                        {{ submit_button('Search', 'id' : 'search', 'class' : 'btn btn-primary rounded-pill') }}
+                    {{ end_form() }}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-sm-12">
+        <div class="card border-0 shadow-sm mb-3">
+            <div id="results">
+                <table class="table mb-0">
+                    <thead>
+                    <tr>
+                        <th style="width:80px">Id</th>
+                        <th style="width:40px"></th>
+                        <th>Name</th>
+                        <th class="text-center">Tradeable</th>
+                        <th class="text-center">Stackable</th>
+                    </tr>
+                    </thead>
+                    {% for item in itemList.items %}
+                    <tr>
+                        <td class="text-center">{{ item['id'] }}</td>
+                        <td>{{ image('img/items/'~item['id']~'.png') }}</td>
+                        <td style="line-height:1em;">
+                            {{ item['name'] }}<br>
+                            <small>{{ item['examine'] }}</small>
+                        </td>
+                        <td class="text-center">
+                            <i class="fal fa-{{ item['tradeable'] ? 'check text-success' : 'times text-danger' }}"></i>
+                        </td>
+                        <td class="text-center">
+                            <i class="fal fa-{{ item['stackable'] ? 'check text-success' : 'times text-danger' }}"></i>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    let page = 1;
+    let search = '';
+
+    $('#searchform').submit(function(event) {
+       event.preventDefault();
+
+       search = $(this).find("#search").val();
+
+       $.post("{{ url('tools/search') }}", {
+           search: search,
+           page: page
+       }, function(data) {
+           $('#results').html(data);
+       });
+
+       console.log("posted");
+    });
+</script>
+
+{{ content() }}
