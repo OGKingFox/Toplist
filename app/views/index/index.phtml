@@ -17,7 +17,7 @@
                                 <h5 class="mb-0 text-white">{{ article.username }}</h5>
                                 <p class="text-white-50 mb-0">{{ article.role }}</p>
                             </div>
-                            <div class="flex-fill w-100 p-5">
+                            <div class="flex-fill w-100 py-5 px-4">
                                 <h4 class="mb-0 text-primary">{{ article.title }}</h4>
                                 <p class="small text-muted">
                                     {{ date("M. d | g:i A", article.date_posted) }}
@@ -49,8 +49,26 @@
         </div>
     </div>
 </section>
+{#
+<section class="section section-primary">
+    <div class="container">
+        <div class="row row-grid justify-content-center">
+            <div class="col-lg-8 text-center">
+                <h2 class="display-3">Do you like this project? <span class="text-success">Fork us on Github!</span></h2>
+                <p class="lead">
+                    Feel free to fork us on github and submit any issues you come across!
+                </p>
+                <div class="btn-wrapper">
+                    <a href="https://github.com/OGKingFox/Toplist" class="btn btn-primary mb-3 mb-sm-0">
+                        Fork on Github
+                    </a>
+                </div>
 
-
+            </div>
+        </div>
+    </div>
+</section>
+#}
 <section class="section bg-white section-sm">
     <div class="container">
         <div class="row">
