@@ -319,3 +319,12 @@ button {
 .ql-align-center {
     text-align: center !important;
 }
+.card-author {
+    min-width: 190px;
+}
+@media (max-width: 996px) {
+    .card-author {
+        padding-top: 10px !important;
+        padding-bottom: 10px !important;
+    }
+}
