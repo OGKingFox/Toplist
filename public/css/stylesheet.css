@@ -311,6 +311,7 @@ button {
     height:50px;
     text-align:center;
     line-height:50px;
+    margin: auto;
 }
 #screenshot:hover {
     cursor: pointer;

@@ -15,6 +15,7 @@ class IndexController extends BaseController {
         $this->view->users   = Users::count();
         $this->view->servers = Servers::count();
         $this->view->votes   = Votes::count();
+        $this->view->likes   = Likes::count();
     }
 
     public function discordAction() {
