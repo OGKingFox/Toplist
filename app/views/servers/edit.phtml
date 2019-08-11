@@ -87,7 +87,13 @@
                 </div>
                 <div class="form-group">
                     <label for="meta_info" class="mb-0">Meta Tags</label>
-                    <?php $tags = implode(",", json_decode($server->meta_tags, true)); ?>
+                    <?php
+                        if ($server->meta_tags && is_array($sever->meta_tags)) {
+                            $tags = implode(",", json_decode($server->meta_tags, true));
+                        } else {
+                            $tags = "";
+                        }
+                    ?>
                     <p class="small text-muted">Comma separated. Max 15. <a href="https://www.w3schools.com/tags/tag_meta.asp" target="_blank">https://www.w3schools.com/tags/tag_meta.asp</a></p>
                     {{ text_field('meta_tags', 'class' : 'form-control', 'value' : tags) }}
                 </div>
