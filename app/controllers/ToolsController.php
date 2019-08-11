@@ -24,7 +24,7 @@ class ToolsController extends BaseController {
     public function searchAction() {
         $this->view->setRenderLevel(\Phalcon\Mvc\View::LEVEL_ACTION_VIEW);
 
-        $data   = json_decode($this->getItemList(), true);
+        $data   = json_decode($this->getList('items-complete'), true);
         $search = $this->request->getPost("search", "string");
         $found  = [];
 
@@ -49,12 +49,7 @@ class ToolsController extends BaseController {
         $itemList = $cache->get("$name.cache");
 
         if (!$itemList) {
-            $ch = curl_init();
-            curl_setopt($ch, CURLOPT_URL, "http://localhost".base_url."resources/$name.json");
-            curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-            $itemList = json_decode(curl_exec($ch), true);
-            curl_close($ch);
-
+            $itemList = json_decode(file_get_contents("../resources/$name.json"), true);
             $cache->save("$name.cache", $itemList);
         }
 
