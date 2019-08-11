@@ -7,6 +7,10 @@ use Phalcon\Paginator\Adapter\NativeArray;
 
 class ToolsController extends BaseController {
 
+    public function indexAction() {
+
+    }
+
     public function itemsAction($page = 1) {
         $data = $this->getList('items-complete');
 

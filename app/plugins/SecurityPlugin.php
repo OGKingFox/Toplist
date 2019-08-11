@@ -45,7 +45,7 @@ class SecurityPlugin extends Plugin {
             'errors'     => ['show401', 'show404', 'show500'],
             'pages'      => ['docs', 'advertising', 'faq', 'terms', 'privacy'],
             'premium'    => ['index'],
-            'tools'      => ['items', 'search']
+            'tools'      => ['index', 'items', 'search']
         ];
 
         $private = [

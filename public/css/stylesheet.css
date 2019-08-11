@@ -342,3 +342,10 @@ button {
     top: 3.7px;
     right: 3.7px;
 }
+.tool-icon {
+    width: 75px;
+    height: 75px;
+    line-height: 75px;
+    margin: auto;
+    color: white;
+}
