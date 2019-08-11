@@ -44,7 +44,8 @@ class SecurityPlugin extends Plugin {
             'vote'       => ['index', 'verify'],
             'errors'     => ['show401', 'show404', 'show500'],
             'pages'      => ['docs', 'advertising', 'faq', 'terms', 'privacy'],
-            'premium'    => ['index']
+            'premium'    => ['index'],
+            'tools'      => ['items']
         ];
 
         $private = [

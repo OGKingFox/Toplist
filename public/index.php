@@ -42,6 +42,7 @@
 	$loader->registerDirs([
 		"../app/controllers/",
 		"../app/models/",
+        "../app/models/tools/",
 		"../app/plugins/",
 		"../Library/"
 	]);
