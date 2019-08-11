@@ -50,24 +50,6 @@
     </div>
 </section>
 
-<section class="section section-primary">
-    <div class="container">
-        <div class="row row-grid justify-content-center">
-            <div class="col-lg-8 text-center">
-                <h2 class="display-3">Do you like this project? <span class="text-success">Fork us on Github!</span></h2>
-                <p class="lead">
-                    Feel free to fork us on github and submit any issues you come across!
-                </p>
-                <div class="btn-wrapper">
-                    <a href="https://github.com/OGKingFox/Toplist" class="btn btn-primary mb-3 mb-sm-0">
-                        Fork on Github
-                    </a>
-                </div>
-
-            </div>
-        </div>
-    </div>
-</section>
 
 <section class="section bg-white section-sm">
     <div class="container">
@@ -97,7 +79,7 @@
                     <div class="card-body text-center">
                         <i class="fal fa-vote-yea fa-lg mt-1 text-white rounded-circle bg-info stat-icon mb-3"></i>
 
-                        <p class="text-uppercase text-muted mb-0 text-center">Votes</p>
+                        <p class="text-uppercase text-muted mb-0 small">Votes</p>
                         <h5 class="font-weight-bold mb-0 text-info">{{ votes|number_format(0) }}</h5>
                     </div>
                 </div>
@@ -107,7 +89,7 @@
                     <div class="card-body text-center">
                         <i class="fal fa-thumbs-up fa-lg text-white rounded-circle bg-warning stat-icon mb-3"></i>
 
-                        <p class="text-uppercase text-muted mb-0 text-center">Likes</p>
+                        <p class="text-uppercase text-muted mb-0 small">Likes</p>
                         <h5 class="font-weight-bold mb-0 text-warning">{{ likes|number_format(0) }}</h5>
                     </div>
                 </div>
