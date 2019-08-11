@@ -20,7 +20,7 @@ class IndexController extends BaseController {
     public function discordAction() {
         $this->view->setRenderLevel(View::LEVEL_ACTION_VIEW);
 
-        $cache  = new BackFile(new FrontData(['lifetime' => 0]), ['cacheDir' => "../app/compiled/"]);
+        $cache  = new BackFile(new FrontData(['lifetime' => 600]), ['cacheDir' => "../app/compiled/"]);
         $data = $cache->get("rn.discord.cache");
 
         if (!$data) {
@@ -32,7 +32,7 @@ class IndexController extends BaseController {
         $this->view->members = $data['members'];
         $this->view->invite  = $data['invite'];
 
-        //$this->debug($data);
+       // $this->debug($data);
     }
 
     public function logoutAction() {

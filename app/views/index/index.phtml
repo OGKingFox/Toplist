@@ -47,8 +47,28 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-sm-12 col-lg-8">
+            <div class="col-sm-12 col-lg-4">
+                <div id="discord">
 
+                    <div class="card shadow-sm bg-gradient border-0 mb-3">
+                        <div class="card-body text-white text-center">
+                            <i class="fal fa-spinner fa-pulse fa-4x mr-2 mb-3"></i>
+                            <h3 class="text-white mb-0 mt-1" style="line-height:1em;">
+                                Loading Server
+                            </h3>
+                            <p>Please Wait</p>
+
+                            <a class="btn btn-link text-white" href="#" target="_blank">
+                                Join Server
+                            </a>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="col-sm-12 col-lg-8">
                 {{ content() }}
 
                 {% for article in articles %}
@@ -71,10 +91,6 @@
                 {% endfor %}
             </div>
 
-            <div class="col-sm-12 col-lg-4">
-                <div id="discord"></div>
-
-            </div>
         </div>
     </div>
 </section>
