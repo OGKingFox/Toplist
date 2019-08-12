@@ -51,7 +51,7 @@ class ToolsController extends BaseController {
     }
 
     private function getList($name) {
-        $cache    = new BackFile(new FrontData(['lifetime' => 1440 ]), [ 'cacheDir' =>  "../app/compiled/" ]);
+        $cache    = new BackFile(new FrontData(['lifetime' => 86400 ]), [ 'cacheDir' =>  "../app/compiled/" ]);
         $itemList = $cache->get("$name.cache");
 
         if (!$itemList) {
@@ -59,7 +59,7 @@ class ToolsController extends BaseController {
             $cache->save("$name.cache", $itemList);
         }
 
-        return $itemList;
+        return json_decode(file_get_contents("../resources/$name.json"), true);
     }
 
 }
