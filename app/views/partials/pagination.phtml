@@ -13,15 +13,20 @@
             'class' : 'page-link', 'id' : 'pageBtn', 'data-page' : data.before) }}
         </li>
 
-        {% set start = data.current < 3 ? 1 : data.current - 2 %}
-        {% set end   = start < 4 ? start + 4 : data.current + 2 %}
+        {% if data.total_pages > 5 %}
+            {% set start = data.current < 3 ? 1 : data.current - 2 %}
+            {% set end   = start < 4 ? start + 4 : data.current + 2 %}
 
-        {% if end > data.total_pages %}
-            {% set end = data.total_pages %}
-        {% endif %}
+            {% if end > data.total_pages %}
+                {% set end = data.total_pages %}
+            {% endif %}
 
-        {% if start + 4 >= data.total_pages %}
-            {% set start = data.total_pages - 4 %}
+            {% if start + 4 >= data.total_pages %}
+                {% set start = data.total_pages - 4 %}
+            {% endif %}
+        {% else %}
+            {% set start = data.first %}
+            {% set end   = data.last %}
         {% endif %}
 
         {% for i in start..end %}
