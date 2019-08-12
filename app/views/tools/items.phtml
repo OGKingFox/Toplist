@@ -1,72 +1,64 @@
 <div class="row">
     <div class="col-sm-12">
-        <div class="card border-0 shadow-sm mb-3">
-            <div class="card-body">
-                <div class="search-box">
-                    {{ form('tools/items', 'class' : 'inline-form', 'id' : 'searchform') }}
-                        {{ text_field("search", 'class' : 'form-control mr-3 rounded-pill py-4 pl-4 input-lg', 'placeholder' : 'Search by item name') }}
-                        {{ submit_button('Search', 'id' : 'search', 'class' : 'btn btn-primary rounded-pill') }}
-                    {{ end_form() }}
-                </div>
-            </div>
+        <div class="search-box mb-5">
+            {{ form('tools/items', 'class' : 'inline-form', 'id' : 'searchform') }}
+                {{ text_field("search", 'class' : 'form-control mr-3 rounded-pill py-4 pl-4 input-lg', 'placeholder' : 'Search by item name') }}
+                {{ submit_button('Search', 'id' : 'search', 'class' : 'btn btn-primary rounded-pill') }}
+            {{ end_form() }}
         </div>
     </div>
 </div>
 
 <div class="row">
     <div class="col-sm-12">
-        <div class="card border-0 shadow-sm mb-3">
-            <div id="results">
-                <table class="table mb-0">
-                    <thead>
-                    <tr>
-                        <th style="width:80px">Id</th>
-                        <th style="width:40px"></th>
-                        <th>Name</th>
-                        <th class="text-center">Tradeable</th>
-                        <th class="text-center">Stackable</th>
-                    </tr>
-                    </thead>
-                    {% for item in itemList.items %}
-                    <tr>
-                        <td class="text-center">{{ item['id'] }}</td>
-                        <td>{{ image('img/items/'~item['id']~'.png') }}</td>
-                        <td style="line-height:1em;">
-                            {{ item['name'] }}<br>
-                            <small>{{ item['examine'] }}</small>
-                        </td>
-                        <td class="text-center">
-                            <i class="fal fa-{{ item['tradeable'] ? 'check text-success' : 'times text-danger' }}"></i>
-                        </td>
-                        <td class="text-center">
-                            <i class="fal fa-{{ item['stackable'] ? 'check text-success' : 'times text-danger' }}"></i>
-                        </td>
-                    </tr>
-                    {% endfor %}
-                </table>
-            </div>
-        </div>
+        <div id="results"></div>
     </div>
 </div>
 
 <script>
     let page = 1;
     let search = '';
+    let locked = true;
+
+    setTimeout(function() {
+        loadItems(search, page);
+    }, 1000);
 
     $('#searchform').submit(function(event) {
-       event.preventDefault();
+        event.preventDefault();
 
-       search = $(this).find("#search").val();
+        if (locked) {
+            return;
+        }
 
-       $.post("{{ url('tools/search') }}", {
-           search: search,
-           page: page
-       }, function(data) {
-           $('#results').html(data);
-       });
+        locked = true;
+        search = $(this).find("#search").val();
+        page   = 1;
 
-       console.log("posted");
+        loadItems(search, page);
     });
+
+    $(document).on('click', '#pageBtn', function(event) {
+        event.preventDefault();
+
+        if (locked) {
+            return;
+        }
+
+        locked = true;
+        page   = $(this).data('page');
+        loadItems(search, page);
+    });
+
+    function loadItems(search, page) {
+        $.post("{{ url('tools/search') }}", {
+            search: search,
+            page: page
+        }, function(data) {
+            $('#results').html(data);
+            locked = false;
+        });
+    }
 </script>
 
 {{ content() }}

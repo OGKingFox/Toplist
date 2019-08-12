@@ -1,0 +1,47 @@
+{% if data.total_pages > 0 %}
+<nav aria-label="...">
+    <ul class="pagination justify-content-center pagination-lg">
+        <li class="page-item">
+            {{ link_to(link~data.first,
+            '<i class="fal fa-angle-double-left"></i>',
+            'class' : 'page-link', 'id' : 'pageBtn', 'data-page' : data.first) }}
+        </li>
+
+        <li class="page-item mr-3">
+            {{ link_to(link~data.before,
+            '<i class="fal fa-angle-left"></i>',
+            'class' : 'page-link', 'id' : 'pageBtn', 'data-page' : data.before) }}
+        </li>
+
+        {% set start = data.current < 3 ? 1 : data.current - 2 %}
+        {% set end   = start < 4 ? start + 4 : data.current + 2 %}
+
+        {% if end > data.total_pages %}
+            {% set end = data.total_pages %}
+        {% endif %}
+
+        {% if start + 4 >= data.total_pages %}
+            {% set start = data.total_pages - 4 %}
+        {% endif %}
+
+        {% for i in start..end %}
+        <li class="page-item {{ i is itemList.current ? 'active' : '' }}">
+            {{ link_to(link~i,
+                i, 'class' : 'page-link', 'id' : 'pageBtn', 'data-page' : i) }}
+        </li>
+        {% endfor %}
+
+        <li class="page-item ml-3">
+            {{ link_to(link~data.next,
+            '<i class="fal fa-angle-right"></i>',
+            'class' : 'page-link', 'id' : 'pageBtn', 'data-page' : data.next) }}
+        </li>
+
+        <li class="page-item">
+            {{ link_to(link~data.last,
+            '<i class="fal fa-angle-double-right"></i>',
+            'class' : 'page-link', 'id' : 'pageBtn', 'data-page' : data.last) }}
+        </li>
+    </ul>
+</nav>
+{% endif %}

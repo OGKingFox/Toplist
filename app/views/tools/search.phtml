@@ -1,8 +1,11 @@
+{{ partial('partials/pagination', ['data' : itemList, 'link' : 'tools/items/']) }}
+
+<div class="card border-0 shadow-sm mb-3">
 <table class="table mb-0">
     <thead>
     <tr>
         <th style="width:80px">Id</th>
-        <th style="width:40px"></th>
+        <th style="width:34px;"></th>
         <th>Name</th>
         <th class="text-center">Tradeable</th>
         <th class="text-center">Stackable</th>
@@ -11,7 +14,9 @@
     {% for item in itemList.items %}
     <tr>
         <td class="text-center">{{ item['id'] }}</td>
-        <td>{{ image('img/items/'~item['id']~'.png') }}</td>
+        <td class="text-center">
+            <img data-src="{{ url('img/items/'~item['id']~'.png') }}" height="32">
+        </td>
         <td style="line-height:1em;">
             {{ item['name'] }}<br>
             <small>{{ item['examine'] }}</small>
@@ -25,3 +30,15 @@
     </tr>
     {% endfor %}
 </table>
+</div>
+
+{{ partial('partials/pagination', ['data' : itemList, 'link' : 'tools/items/']) }}
+
+<script>
+    $('img').each(function() {
+        if ($(this).data("src")) {
+            var source = $(this).data("src");
+            $(this).attr("src", source);
+        }
+    });
+</script>
