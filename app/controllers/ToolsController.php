@@ -12,8 +12,21 @@ class ToolsController extends BaseController {
     }
 
     public function itemsAction($page = 1) {
-        $data = $this->getList('items-complete');
+        $data    = $this->getList('items-complete');
+        $newData = [];
 
+        foreach ($data as $item) {
+            $newData[] = [
+                'id'      => $item['id'],
+                'name'    => $item['name'],
+                'examine' => $item['examine'],
+                'stackable' => $item['stackable'],
+                'tradeable' => $item['tradeable']
+            ];
+        } 
+
+        file_put_contents('item-data.json', json_encode($newData, JSON_PRETTY_PRINT));
+        
         $itemList = (new NativeArray([
             'data'  => $data,
             'limit' => 50,
@@ -26,7 +39,7 @@ class ToolsController extends BaseController {
     public function searchAction() {
         $this->view->setRenderLevel(View::LEVEL_ACTION_VIEW);
 
-        $data   = $this->getList('items-complete');
+        $data   = $this->getList('item-data');
         $search = $this->request->getPost("search", "string");
         $found  = [];
 
