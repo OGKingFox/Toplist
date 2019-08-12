@@ -11,29 +11,8 @@ class ToolsController extends BaseController {
 
     }
 
-    public function itemsAction($page = 1) {
-        $data    = $this->getList('items-complete');
-        $newData = [];
+    public function itemsAction() {
 
-        foreach ($data as $item) {
-            $newData[] = [
-                'id'      => $item['id'],
-                'name'    => $item['name'],
-                'examine' => $item['examine'],
-                'stackable' => $item['stackable'],
-                'tradeable' => $item['tradeable']
-            ];
-        } 
-
-        file_put_contents('item-data.json', json_encode($newData, JSON_PRETTY_PRINT));
-        
-        $itemList = (new NativeArray([
-            'data'  => $data,
-            'limit' => 50,
-            'page'  => $page
-        ]))->getPaginate();
-
-        $this->view->itemList = $itemList;
     }
 
     public function searchAction() {
