@@ -122,6 +122,7 @@ class LoginController extends BaseController {
                 }
             }
 
+            $this->debug($userInfo);
             $this->debug($server_info);
 
             $user->setRole($role);
