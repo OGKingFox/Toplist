@@ -122,7 +122,7 @@ class Servers extends \Phalcon\Mvc\Model {
             ->conditions('Servers.id = :id:')
             ->leftJoin("Games", 'g.id = Servers.game', 'g')
             ->leftJoin("Users", 'user.user_id = Servers.owner_id', 'user')
-            ->leftJoin("Screenshots", 'user.user_id = ss.owner_id', 'ss')
+            ->leftJoin("Screenshots", 'user.user_id = ss.owner_id AND ss.server_id = Servers.id', 'ss')
             ->bind([
                 'id' => $id,
                 'time' => time()
