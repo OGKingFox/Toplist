@@ -168,7 +168,6 @@ class DashboardController extends BaseController {
 
                     $this->println($unban);
                     break;
-
                 case "kick":
                     $kick = (new UserActions($user))->kick();
 

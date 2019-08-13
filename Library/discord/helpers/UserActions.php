@@ -22,6 +22,10 @@ class UserActions extends NexusBot {
     public function ban() {
         $response = $this->setEndpoint("guilds/".server_id."/bans/".$this->user->getUserId())
             ->setType("put")
+            ->setData([
+                'delete-message-days' => 7,
+                'reason' => 'Ban from website.',
+            ])
             ->setIsBot(true)
             ->submit();
 
