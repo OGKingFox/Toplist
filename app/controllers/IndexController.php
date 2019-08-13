@@ -32,27 +32,12 @@ class IndexController extends BaseController {
         $this->view->server  = $data['server'];
         $this->view->members = $data['members'];
         $this->view->invite  = $data['invite'];
-
-        $this->debug($data);
     }
 
     public function logoutAction() {
         $this->cookies->set("access_token", '', time() - 1000, base_url);
         $this->session->destroy();
         return $this->response->redirect("");
-    }
-
-    function apiRequest($url, $token, $post=FALSE, $headers=array()) {
-        $ch = curl_init($url);
-        curl_setopt($ch, CURLOPT_IPRESOLVE, CURL_IPRESOLVE_V4);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
-        if($post)
-            curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($post));
-        $headers[] = 'Accept: application/json';
-            $headers[] = 'Authorization: Bearer ' . $token;
-        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-        $response = curl_exec($ch);
-        return json_decode($response);
     }
 
 }
