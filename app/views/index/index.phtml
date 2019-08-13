@@ -30,20 +30,10 @@
                 {% endfor %}
             </div>
             <div class="col-sm-12 col-lg-3">
-                <div id="discord">
-                    <div class="card shadow-sm bg-primary border-0 mb-3">
-                        <div class="card-body text-white text-center">
-                            <i class="fal fa-spinner fa-pulse fa-spin fa-4x mr-2 mb-3"></i>
-                            <h3 class="text-white mb-0 mt-1" style="line-height:1em;">
-                                Loading
-                            </h3>
-                            <p>Plis wait</p>
-
-                            <a class="btn btn-link text-white" href="#">
-                                Join Server
-                            </a>
-                        </div>
-                    </div>
+                <div class="card border-0 shadow-sm overflow-hidden">
+                    <a href="https://discord.gg/bmFN9A8" target="_blank">
+                    <img src="https://discordapp.com/api/guilds/198682930338463744/widget.png?style=banner4" class="img-fluid" alt="https://discord.gg/bmFN9A8">
+                    </a>
                 </div>
             </div>
         </div>
@@ -117,9 +107,9 @@
 </section>
 
 <script>
-    setTimeout(function() {
+    /*setTimeout(function() {
         $.post('{{ url("index/discord") }}', function(data) {
             $('#discord').html(data);
         });
-    }, 1000);
+    }, 1000);8*/
 </script>
