@@ -45,6 +45,7 @@ class VoteController extends BaseController {
         $server_id = $this->request->getPost("server", 'int');
         $incentive = $this->request->getPost("incentive", "string");
         $token     = $this->request->getPost("token");
+
         $server    = Servers::getServerById($server_id);
 
         if (!$server) {
@@ -59,7 +60,7 @@ class VoteController extends BaseController {
             ->conditions("server_id = :sid: AND (ip_address = :ip: OR incentive = :inc:) AND :time: - voted_on < 43000")
             ->bind([
                 'time' => time(),
-                'sid'  => $server->id,
+                'sid'  => $server->servers->id,
                 'ip'   => $this->getRealIp(),
                 'inc'  => $incentive
             ])
@@ -83,7 +84,7 @@ class VoteController extends BaseController {
         $vote = new Votes;
         $vote->setIpAddress($this->getRealIp());
         $vote->setVotedOn(time());
-        $vote->setServerId($server->id);
+        $vote->setServerId($server->servers->id);
         $vote->setIncentive($incentive);
 
         if (!$vote->save()) {
@@ -94,10 +95,10 @@ class VoteController extends BaseController {
             return true;
         }
 
-        $server->setVotes($server->getVotes() + 1);
-        $server->update();
+        $server->servers->votes = $server->servers->votes + 1;
+        $server->servers->save();
 
-        $callback = $this->sendIncentive($server->getCallback(), $incentive);
+        $callback = $this->sendIncentive($server->info->callback, $incentive);
 
         if (is_array($callback)) {
             $response = $callback['response'];

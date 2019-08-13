@@ -16,6 +16,27 @@ class Servers extends \Phalcon\Mvc\Model {
     private $game;
     private $date_created;
 
+    /**
+     * Like above, but doesn't join the games column so it can be updated or removed.
+     * @param $serverId
+     * @param $ownerId
+     * @return bool|ModelInterface|Servers
+     */
+    public static function getServerById($id) {
+        return self::query()
+            ->columns([
+                'Servers.*',
+                'user.*',
+                'info.*',
+            ])
+            ->conditions('Servers.id = :id:')
+            ->leftJoin("ServersInfo", 'info.server_id = Servers.id', 'info')
+            ->leftJoin("Users", 'user.user_id = Servers.owner_id', 'user')
+            ->bind([
+                'id' => $id
+            ])->execute()->getFirst();
+    }
+
     public static function getNewestServers() {
         return self::query()
             ->columns([
@@ -163,19 +184,6 @@ class Servers extends \Phalcon\Mvc\Model {
             ->bind([
                 'id' => $oid
             ])->execute();
-    }
-
-    /**
-     * Like above, but doesn't join the games column so it can be updated or removed.
-     * @param $id
-     * @return bool|ModelInterface|Servers
-     */
-    public static function getServerById($id) {
-        return self::query()
-            ->conditions('id = :id:')
-            ->bind([
-                'id' => $id
-            ])->execute()->getFirst();
     }
 
     /**
