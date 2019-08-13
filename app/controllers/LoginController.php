@@ -69,7 +69,9 @@ class LoginController extends BaseController {
                 return false;
             }
 
-            if (!$user = Users::getUser($userInfo->id)) {
+            $user = Users::getUser($userInfo->id);
+
+            if (!$user) {
                 $user = new Users;
             }
 

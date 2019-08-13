@@ -11,24 +11,20 @@ class Servers extends \Phalcon\Mvc\Model {
 
     private $owner_id;
     private $owner_tag;
-    private $game;
     private $title;
-    private $api_key;
-    private $website;
-    private $banner_url;
     private $votes;
-    private $callback;
-    private $discord_id;
-    private $meta_info;
-    private $meta_tags;
-    private $info;
-    private $likes;
-    private $images;
+    private $game;
     private $date_created;
 
     public static function getNewestServers() {
         return self::query()
-            ->conditions("website != ''")
+            ->columns([
+                'Servers.id',
+                'Servers.title',
+                'Servers.date_created',
+                'info.*',
+            ])
+            ->leftJoin("ServersInfo", 'info.server_id = Servers.id AND info.website != \'\'', 'info')
             ->orderBy("date_created DESC")
             ->limit(5)
             ->execute();
@@ -43,9 +39,11 @@ class Servers extends \Phalcon\Mvc\Model {
             ->columns([
                 'Servers.id',
                 'Servers.title',
+                'info.*',
                 'IF(user.premium_expires > :time:, Servers.votes + (user.premium_level * 100), Servers.votes) AS votes'
             ])
             ->leftJoin("Users", 'user.user_id = Servers.owner_id', 'user')
+            ->leftJoin("ServersInfo", 'info.server_id = Servers.id AND info.website != \'\'', 'info')
             ->bind([
                 'time' => time()
             ])
@@ -60,33 +58,24 @@ class Servers extends \Phalcon\Mvc\Model {
      * @return ResultsetInterface
      */
     public static function getServers($gameId = null) {
-        $query =
-            self::query()->columns([
+        $query = self::query()->columns(
+            [
                 'Servers.id',
                 'Servers.owner_id',
                 'Servers.owner_tag',
-                'Servers.game',
                 'Servers.title',
-                'Servers.website',
-                'Servers.callback',
-                'Servers.discord_id',
-                'Servers.banner_url',
-                'Servers.meta_info',
-                'Servers.meta_tags',
                 'IF(user.premium_expires > :time:, Servers.votes + (user.premium_level * 100), Servers.votes) AS votes',
-                'Servers.info',
-                'g.id AS game_id',
-                'g.title AS game_title',
+                'info.*',
                 'user.*'
             ])
-                ->conditions('Servers.game = :gid: AND Servers.website != \'\'')
-                ->bind([
+            ->conditions('Servers.game = :gid: AND info.website != \'\'')
+            ->bind([
                     'gid' => $gameId,
                     'time' => time()
-                ])
-                ->leftJoin("Games", 'g.id = Servers.game', 'g')
-                ->leftJoin("Users", 'user.user_id = Servers.owner_id', 'user')
-                ->orderBy("votes DESC")
+            ])
+            ->leftJoin("ServersInfo", 'info.server_id = Servers.id AND info.website != \'\'', 'info')
+            ->leftJoin("Users", 'user.user_id = Servers.owner_id', 'user')
+            ->orderBy("votes DESC")
             ->execute();
         return $query;
     }
@@ -104,23 +93,14 @@ class Servers extends \Phalcon\Mvc\Model {
                 'Servers.owner_tag',
                 'Servers.game',
                 'Servers.title',
-                'Servers.website',
-                'Servers.callback',
-                'Servers.discord_id',
-                'Servers.images',
-                'Servers.meta_info',
-                'Servers.meta_tags',
-                'Servers.info',
                 'Servers.date_created',
-                'Servers.likes',
                 'IF(user.premium_expires > :time:, Servers.votes + (user.premium_level * 100), Servers.votes) AS votes',
-                'g.id AS game_id',
-                'g.title AS game_title',
                 'user.*',
+                'info.*',
                 'ss.images'
             ])
             ->conditions('Servers.id = :id:')
-            ->leftJoin("Games", 'g.id = Servers.game', 'g')
+            ->leftJoin("ServersInfo", 'info.server_id = Servers.id AND info.website != \'\'', 'info')
             ->leftJoin("Users", 'user.user_id = Servers.owner_id', 'user')
             ->leftJoin("Screenshots", 'user.user_id = ss.owner_id AND ss.server_id = Servers.id', 'ss')
             ->bind([
@@ -132,15 +112,22 @@ class Servers extends \Phalcon\Mvc\Model {
     /**
      * Like above, but doesn't join the games column so it can be updated or removed.
      * @param $serverId
-     * @param $oid
+     * @param $ownerId
      * @return bool|ModelInterface|Servers
      */
-    public static function getServerByOwner($serverId, $oid) {
+    public static function getServerByOwner($serverId, $ownerId) {
         return self::query()
-            ->conditions('id = :sid: AND owner_id = :id:')
+            ->columns([
+                'Servers.*',
+                'user.*',
+                'info.*',
+            ])
+            ->conditions('Servers.id = :id: AND Servers.owner_id = :owner:')
+            ->leftJoin("ServersInfo", 'info.server_id = Servers.id', 'info')
+            ->leftJoin("Users", 'user.user_id = Servers.owner_id', 'user')
             ->bind([
-                'sid' => $serverId,
-                'id' => $oid
+                'id' => $serverId,
+                'owner' => $ownerId
             ])->execute()->getFirst();
     }
 
@@ -216,46 +203,11 @@ class Servers extends \Phalcon\Mvc\Model {
     /**
      * @return mixed
      */
-    public function getGame()
-    {
-        return $this->game;
-    }
-
-    /**
-     * @param mixed $game
-     * @return Servers
-     */
-    public function setGame($game)
-    {
-        $this->game = $game;
-        return $this;
-    }
-
-    /**
-     * @return mixed
-     */
     public function getTitle()
     {
         return $this->title;
     }
 
-    /**
-     * @return string
-     */
-    public function getSeoTitle() {
-        return self::genSeoTitle($this);
-    }
-
-    /**
-     * Generates an SEO friendly title
-     * @param $server
-     * @param $isArr
-     * @return string
-     */
-    public static function genSeoTitle($server, $isArr = false) {
-        return ($isArr ? $server['id'] : $server->id).'-'.Tag::friendlyTitle(($isArr ? $server['title'] : $server->title));
-
-    }
     /**
      * @param mixed $title
      * @return Servers
@@ -263,132 +215,6 @@ class Servers extends \Phalcon\Mvc\Model {
     public function setTitle($title)
     {
         $this->title = $title;
-        return $this;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getWebsite()
-    {
-        return $this->website;
-    }
-
-    /**
-     * @param mixed $website
-     * @return Servers
-     */
-    public function setWebsite($website)
-    {
-        $this->website = $website;
-        return $this;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getCallback()
-    {
-        return $this->callback;
-    }
-
-    /**
-     * @param mixed $callback
-     * @return Servers
-     */
-    public function setCallback($callback)
-    {
-        $this->callback = $callback;
-        return $this;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getDiscordId()
-    {
-        return $this->discord_id;
-    }
-
-    /**
-     * @param mixed $discord_id
-     * @return Servers
-     */
-    public function setDiscordId($discord_id)
-    {
-        $this->discord_id = $discord_id;
-        return $this;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getInfo()
-    {
-        return $this->info;
-    }
-
-    /**
-     * @param mixed $info
-     * @return Servers
-     */
-    public function setInfo($info)
-    {
-        $this->info = $info;
-        return $this;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getDateCreated()
-    {
-        return $this->date_created;
-    }
-
-    /**
-     * @param mixed $date_created
-     */
-    public function setDateCreated($date_created)
-    {
-        $this->date_created = $date_created;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getLikes()
-    {
-        return $this->likes;
-    }
-
-    /**
-     * @param mixed $likes
-     */
-    public function setLikes($likes)
-    {
-        $this->likes = $likes;
-    }
-
-    public static function getLike($serverId, $user_id) {
-
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getApiKey()
-    {
-        return $this->api_key;
-    }
-
-    /**
-     * @param mixed $api_key
-     * @return Servers
-     */
-    public function setApiKey($api_key)
-    {
-        $this->api_key = $api_key;
         return $this;
     }
 
@@ -413,101 +239,62 @@ class Servers extends \Phalcon\Mvc\Model {
     /**
      * @return mixed
      */
-    public function getBannerUrl()
+    public function getGame()
     {
-        return $this->banner_url;
+        return $this->game;
     }
 
     /**
-     * @param mixed $banner_url
+     * @param mixed $game
      * @return Servers
      */
-    public function setBannerUrl($banner_url)
+    public function setGame($game)
     {
-        $this->banner_url = $banner_url;
+        $this->game = $game;
         return $this;
     }
 
     /**
      * @return mixed
      */
-    public function getMetaInfo()
+    public function getDateCreated()
     {
-        return $this->meta_info;
+        return $this->date_created;
     }
 
     /**
-     * @param mixed $meta_info
+     * @param mixed $date_created
      * @return Servers
      */
-    public function setMetaInfo($meta_info)
+    public function setDateCreated($date_created)
     {
-        $this->meta_info = $meta_info;
+        $this->date_created = $date_created;
         return $this;
     }
 
     /**
-     * @return mixed
+     * @return string
      */
-    public function getMetaTags()
-    {
-        return $this->meta_tags;
+    public function getSeoTitle() {
+        return self::genSeoTitle($this);
     }
 
     /**
-     * @param mixed $meta_tags
-     * @return Servers
+     * Generates an SEO friendly title
+     * @param $server
+     * @param $isArr
+     * @return string
      */
-    public function setMetaTags($meta_tags)
-    {
-        $this->meta_tags = $meta_tags;
-        return $this;
+    public static function genSeoTitle($server, $isArr = false) {
+        return ($isArr ? $server['id'] : $server->id).'-'.Tag::friendlyTitle(($isArr ? $server['title'] : $server->title));
+
     }
-
-    /**
-     * @return mixed
-     */
-    public function getImages() {
-        return json_decode($this->images, true);
-    }
-
-    /**
-     * @param mixed $images
-     * @return Servers
-     */
-    public function setImages($images) {
-        $this->images = $images;
-        return $this;
-    }
-
-
 
     public function validation() {
         $validator = new Validation();
 
         $validator->add("title", new Uniqueness([
             "message" => "A server by that name is already registered.",
-        ]));
-
-        $validator->add("discord_id", new Callback([
-            "callback" => function() {
-                return preg_match('/^[0-9]+$/i', $this->discord_id) !== false;
-            },
-            "message" => "Invalid discord id format."
-        ]));
-
-        $validator->add("website", new Callback([
-            "callback" => function() {
-                return !$this->website || ($this->website && filter_var($this->website, FILTER_VALIDATE_URL) == true);
-            },
-            "message" => "Invalid website address."
-        ]));
-
-        $validator->add("callback", new Callback([
-            "callback" => function() {
-                return !$this->callback || ($this->callback && filter_var($this->callback, FILTER_VALIDATE_URL) == true);
-            },
-            "message" => "Invalid callback url."
         ]));
 
         $validator->add("game", new Callback([
@@ -527,20 +314,6 @@ class Servers extends \Phalcon\Mvc\Model {
                 return preg_match('/^[A-Za-z0-9 \-]+$/i', $this->title) !== false;
             },
             "message" => "Invalid title. May only contain letters, numbers, spaces, and dashes."
-        ]));
-
-        $validator->add("meta_info", new Callback([
-            "callback" => function() {
-                return strlen($this->meta_info) <= 160;
-            },
-            "message" => "Meta description can not be longer than 160 characters."
-        ]));
-
-        $validator->add("meta_tags", new Callback([
-            "callback" => function() {
-                return count(json_decode($this->meta_tags, true)) < 15;
-            },
-            "message" => "You can not have more than 15 meta tags."
         ]));
 
         return $this->validate($validator) == true;

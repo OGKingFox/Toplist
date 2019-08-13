@@ -1,10 +1,9 @@
 <div class="row">
     <div class="col-sm-12 col-lg-8">
         {{ content() }}
-
         <div class="card border-0 shadow-sm mb-3">
             <div class="card-body text-center">
-                {{ image(server.banner_url, 'id' : 'server-banner', 'class' : 'img-fluid') }}
+                {{ image(info.banner_url, 'id' : 'server-banner', 'class' : 'img-fluid') }}
             </div>
             <div class="card-footer text-center">
                 <button class="btn btn-primary" data-toggle="modal" data-target="#bannerModal">Upload Banner</button>
@@ -28,7 +27,7 @@
                 <div class="form-group">
                     <label for="website" class="mb-0">Website URL</label>
                     <p class="small text-muted">A link to your server's homepage. Leaving this blank will hide your listing.</p>
-                    {{ text_field('website', 'class' : 'form-control', 'value' : server.website) }}
+                    {{ text_field('website', 'class' : 'form-control', 'value' : info.website) }}
                 </div>
                 <div class="form-group mb-0">
                     {{ submit_button('Update', 'class' : 'btn btn-outline-primary') }}
@@ -45,7 +44,7 @@
                     <label for="callback" class="mb-0">Callback URL</label>
                     <p class="small text-muted">Optional. Used for voting systems like MotiVote or FoxVote to send data
                         when a user makes a vote.</p>
-                    {{ text_field('callback', 'class' : 'form-control', 'value' : server.callback) }}
+                    {{ text_field('callback', 'class' : 'form-control', 'value' : info.callback) }}
                 </div>
                 <div class="form-group mb-0">
                     {{ submit_button('Update', 'class' : 'btn btn-outline-primary') }}
@@ -65,7 +64,7 @@
                         <a target="_blank" href="https://support.discordapp.com/hc/en-us/articles/206346498-Where-can-I-find-my-User-Server-Message-ID-">here</a> for more info.
                         This will enable a discord block on your listing showing members and a join link automatically. It's basically sorcery.
                     </p>
-                    {{ numeric_field('discord_id', 'class' : 'form-control', 'value' : server.discord_id) }}
+                    {{ numeric_field('discord_id', 'class' : 'form-control', 'value' : info.discord_id) }}
                 </div>
                 <div class="form-group mb-0">
                     {{ submit_button('Update', 'class' : 'btn btn-outline-primary') }}
@@ -83,13 +82,13 @@
                     <p class="small text-muted">
                         A short description of your server. <a href="https://yoast.com/meta-descriptions/" target="_blank">https://yoast.com/meta-descriptions/</a>
                     </p>
-                    {{ text_field('meta_info', 'class' : 'form-control', 'value' : server.meta_info, 'maxlength' : '155') }}
+                    {{ text_field('meta_info', 'class' : 'form-control', 'value' : info.meta_info, 'maxlength' : '155') }}
                 </div>
                 <div class="form-group">
                     <label for="meta_info" class="mb-0">Meta Tags</label>
                     <?php
-                        if ($server->meta_tags && is_array($sever->meta_tags)) {
-                            $tags = implode(",", json_decode($server->meta_tags, true));
+                        if ($info->meta_tags) {
+                            $tags = implode(",", json_decode($info->meta_tags, true));
                         } else {
                             $tags = "";
                         }
@@ -111,7 +110,7 @@
                 <div class="form-group">
                     <label for="editor-form" class="mb-0">Information</label>
                     <p class="small text-muted">A more detailed overview of your server.</p>
-                    <?php $desc = Functions::getPurifier()->purify($server->info); ?>
+                    <?php $desc = Functions::getPurifier()->purify($info->info); ?>
                     <div id="editor" class="mb-3">{{ desc }}</div>
                     <textarea name='info' id='editor-form' style='display:none'></textarea>
                 </div>

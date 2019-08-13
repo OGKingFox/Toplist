@@ -10,11 +10,11 @@
         <div class="card border-0 shadow-sm mb-3">
             <div class="card-header bg-gradient-primary">
                 <div class="float-right mt-1">
-                    {{ link_to(server.website, '<i class="fal fa-globe fa-fw"></i> Website', false, 'target' : '_blank',
+                    {{ link_to(server.info.website, '<i class="fal fa-globe fa-fw"></i> Website', false, 'target' : '_blank',
                         'class' : 'btn btn-primary btn-sm',
                         'data-toggle' : 'tooltip', 'title' : 'Visit Website') }}
 
-                    {{ link_to(server.website, '<i class="fal fa-thumbs-up fa-fw"></i> Like', false, 'target' : '_blank',
+                    {{ link_to('', '<i class="fal fa-thumbs-up fa-fw"></i> Like', false, 'target' : '_blank',
                         'class' : 'btn btn-primary btn-sm',
                         'id' : 'like', 'data-id' : server.id,
                         'data-toggle' : 'tooltip', 'title' : 'Like this Server') }}
@@ -22,10 +22,10 @@
                 <h4 class="mb-0 text-white">{{ server.title }}</h4>
             </div>
             <div class="card-body" id="server-info">
-                {{ server.info }}
+                {{ server.info.info }}
 
                 <hr>
-                {{ link_to(server.website, '<i class="fal fa-flag fa-fw"></i> Report', false, 'target' : '_blank',
+                {{ link_to('', '<i class="fal fa-flag fa-fw"></i> Report', false, 'target' : '_blank',
                 'class' : 'btn btn-danger btn-sm',
                 'data-toggle' : 'modal', 'data-target' : '#reportModal') }}
             </div>
@@ -196,7 +196,7 @@
 
     setTimeout(function() {
         $.post('{{ url("servers/discord") }}', {
-            server_id: '{{ server.discord_id }}'
+            server_id: '{{ server.info.discord_id }}'
         }, function(data) {
             $('#discord').html(data);
         });

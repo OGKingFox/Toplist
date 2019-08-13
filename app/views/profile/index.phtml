@@ -56,10 +56,6 @@
                         <p class="mb-0">{{ server.votes|number_format }}</p>
                         <small class="text-muted">Votes</small>
                     </td>
-                    <td>
-                        <p class="mb-0">{{ server.likes|number_format }}</p>
-                        <small class="text-muted">Likes</small>
-                    </td>
                     <td>{{ date("M. d, Y", server.date_created) }}</td>
                     <td class="text-right">
                         {{ link_to('servers/edit/'~server.id, 'Edit', 'class' : 'btn btn-outline-primary btn-sm') }}

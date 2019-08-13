@@ -52,12 +52,12 @@ class ServersController extends BaseController {
 
         $this->tag->setTitle($server->title);
 
-        if ($server->meta_info) {
-            $this->view->description = $server->meta_info;
+        if ($server->info->meta_info) {
+            $this->view->description = $server->info->meta_info;
         }
 
-        if ($server->meta_tags) {
-            $tags = implode(",", json_decode($server->meta_tags, true));
+        if ($server->info->meta_tags) {
+            $tags = implode(",", json_decode($server->info->meta_tags, true));
             $this->view->meta_tags = $this->filter->sanitize($tags, 'string');
         }
 
@@ -119,19 +119,24 @@ class ServersController extends BaseController {
                 $server = new Servers($this->request->getPost());
                 $server->setOwnerId($this->getUser()->id);
                 $server->setOwnerTag($this->getUser()->username.'#'.$this->getUser()->discriminator);
-                $server->setInfo(Functions::getPurifier()->purify($server->getInfo()));
                 $server->setDateCreated(time());
-                $server->setApiKey(Text::random(Text::RANDOM_ALNUM, 15));
 
                 if (!$server->save()) {
                     $this->flash->error($server->getMessages());
                 } else {
-                    if ($server->getWebsite()) {
+                    $sinfo = new ServersInfo();
+                    $sinfo->setServerId($server->getId());
+                    $sinfo->setWebsite($this->request->getPost("website", "url"));
+                    $sinfo->setDiscordId($this->request->getPost("discord_id", "int"));
+                    $sinfo->setCallback($this->request->getPost("callback", "url"));
+                    $sinfo->setInfo(Functions::getPurifier()->purify($this->request->getPost("info")));
+                    $sinfo->save();
+
+                    if ($sinfo->getWebsite()) {
                         $seo  = Servers::genSeoTitle($server);
 
                         $bot = new NexusBot();
-                        $bot->setMessage("{$this->getUser()->username}, has listed a new server: 
-                            [{$server->getTitle()}](http://rune-nexus.com/servers/view/{$seo})");
+                        $bot->setMessage("{$this->getUser()->username}, has listed a new server: [{$server->getTitle()}](http://rune-nexus.com/servers/view/{$seo})");
                         $bot->send();
                     }
                     return $this->response->redirect("servers/view/".$server->getSeoTitle());
@@ -169,36 +174,51 @@ class ServersController extends BaseController {
             $this->session->remove('notice');
         }
 
+        $mainInfo = $server->servers;
+        $user     = $server->user;
+        $details  = ServersInfo::getServerInfo($mainInfo->id);
+
         if ($this->request->isPost() /*&& $this->security->checkToken()*/) {
-            $owner  = $this->getUser();
+            $owner = $this->getUser();
 
-            $server->assign($this->request->getPost());
-            $server->setOwnerTag($owner->username.'#'.$owner->discriminator);
-            $server->setInfo(Functions::getPurifier()->purify($server->getInfo()));
+            $mainInfo->title = $this->request->getPost("title", 'string', $mainInfo->title);
+            $mainInfo->game  = $this->request->getPost("game", "int", $mainInfo->game);
 
-            $update = true;
+            if (!$mainInfo->update()) {
+                $this->flash->error($mainInfo->getMessages());
+            }
+
+            $infoBox = $this->request->getPost("info", "string", $details->info);
+            $infoBox = Functions::getPurifier()->purify($infoBox);
+
+            $details = $details ? $details : new ServersInfo();
+            $details->server_id  = $mainInfo->id;
+            $details->website    = $this->request->getPost("website",    "url",    $details->website);
+            $details->callback   = $this->request->getPost("callback",   "url",    $details->callback);
+            $details->discord_id = $this->request->getPost("discord_id", "int",    $details->discord_id);
+            $details->meta_info  = $this->request->getPost("meta_info",  "string", $details->meta_info);
+            $details->info       = $infoBox;
 
             if ($this->request->hasPost("meta_tags")) {
                 $meta_tags = explode(",", $this->request->getPost("meta_tags", 'string'));
-                $server->setMetaTags(json_encode($meta_tags));
+                $details->meta_tags = json_encode($meta_tags);
             }
 
-            if ($update) {
-                if (!$server->update()) {
-                    $this->flash->error($server->getMessages());
-                } else {
-                    $this->session->set("notice", [
-                        'type' => 'success',
-                        'message' => 'Your changes have been saved.'
-                    ]);
-                    return $this->response->redirect("servers/edit/".$server->getId());
-                }
+            if (!$details->save()) {
+                $this->flash->error($details->getMessages());
+            } else {
+                $this->session->set("notice", [
+                    'type' => 'success',
+                    'message' => 'Your server has been updated.'
+                ]);
+                return $this->response->redirect("servers/edit/".$mainInfo->id);
             }
         }
 
         $this->view->games  = Games::find();
-        $this->view->server = $server;
-        $this->view->serverImages = Screenshots::getScreenshots($server->getId(), $user_id);
+        $this->view->server = $mainInfo;
+        $this->view->info   = $details;
+        $this->view->serverImages = Screenshots::getScreenshots($mainInfo->id, $user_id);
         return true;
     }
 
@@ -218,7 +238,9 @@ class ServersController extends BaseController {
             return false;
         }
 
-        $server->delete();
+        $server->info->delete();
+        $server->servers->delete();
+
         $this->printStatus(true, 'This server has been removed.');
         return true;
     }
@@ -270,11 +292,11 @@ class ServersController extends BaseController {
             return false;
         }
 
-        $screenshots = Screenshots::getScreenshots($server->getId(), $server->getOwnerId());
+        $screenshots = Screenshots::getScreenshots($server->servers->id, $userId);
 
         if (!$screenshots) {
             $screenshots = new Screenshots;
-            $screenshots->setServerId($server->getId());
+            $screenshots->setServerId($server->servers->id);
             $screenshots->setOwnerId($userId);
             $screenshots->setImages('[]');
         }
@@ -344,7 +366,7 @@ class ServersController extends BaseController {
 
         $this->println([
             'success'   => true,
-            'server_id' => $server->getId(),
+            'server_id' => $server->servers->id,
             'message'   => $links
         ]);
         return true;
@@ -395,16 +417,17 @@ class ServersController extends BaseController {
             return false;
         }
 
-        $upload = $this->uploadImage($file);
+        $details = ServersInfo::getServerInfo($server->servers->id);
+        $upload  = $this->uploadImage($file);
 
         if (isset($upload['error'])) {
             $this->printStatus(true, $upload['error']);
             return false;
         }
 
-        $server->setBannerUrl($upload['link']);
+        $details->banner_url = $upload['link'];
 
-        if (!$server->update()) {
+        if (!$details->save()) {
             $this->printStatus(false, $server->getMessages()[0]);
             return false;
         }

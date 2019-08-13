@@ -46,8 +46,8 @@
                         </h6>
                     </td>
                     <td class="d-md-none d-lg-table-cell">
-                        {% if server.banner_url is not null %}
-                        {{  link_to('servers/view/'~getSeoTitle(server), image(server.banner_url, 'class' : 'server-banner')) }}
+                        {% if server.info.banner_url is not null %}
+                        {{  link_to('servers/view/'~getSeoTitle(server), image(server.info.banner_url, 'class' : 'server-banner')) }}
                         {% else %}
                         <div class="text-center text-muted banner-holder server-banner">
                             NO BANNER

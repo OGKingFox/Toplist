@@ -51,7 +51,7 @@ class ToolsController extends BaseController {
             $cache->save("$name.cache", $itemList);
         }
 
-        return json_decode(file_get_contents("../resources/$name.json"), true);
+        return $itemList;
     }
 
 }
