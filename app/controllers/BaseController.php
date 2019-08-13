@@ -43,7 +43,6 @@ class BaseController extends Controller {
         $data['roles'] = (new RestClient())
             ->setEndpoint("guilds/".server_id."/roles")
             ->submitBot(true);
-
         return $data;
     }
 

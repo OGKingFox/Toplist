@@ -441,7 +441,6 @@ class ServersController extends BaseController {
         $this->view->setRenderLevel(View::LEVEL_ACTION_VIEW);
 
         if (!$this->request->isAjax()) {
-            echo 'uhh';
             return false;
         }
 

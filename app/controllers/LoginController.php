@@ -61,8 +61,6 @@ class LoginController extends BaseController {
                 ->setUseKey(true)
                 ->submit();
 
-            $this->debug($userInfo);
-
             if (!$userInfo || isset($userInfo->code)) {
                 $this->logout();
                 $this->response->redirect("");
@@ -89,9 +87,19 @@ class LoginController extends BaseController {
                 $user->setRole("Member");
                 $user->save();
 
+
+                $this->dispatcher->forward([
+                    'conntroller' => 'errors',
+                    'action' => 'show500'
+                ]);
+
+                $this->debug($server_info);
+                /*
                 $this->cookies->set("access_token", $token, time() + $expires, base_url);
                 $this->session->set("user", $userInfo);
                 return $this->response->redirect("");
+                */
+                return false;
             }
 
             $user_roles = $server_info['roles'];
@@ -114,6 +122,8 @@ class LoginController extends BaseController {
                 }
             }
 
+            $this->debug($server_info);
+
             $user->setRole($role);
             $user->save();
 
@@ -121,7 +131,8 @@ class LoginController extends BaseController {
             $this->session->set("user", $userInfo);
         }
 
-        return $this->response->redirect("");
+
+        return false;
     }
 
 }
