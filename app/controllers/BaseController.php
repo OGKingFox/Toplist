@@ -27,22 +27,27 @@ class BaseController extends Controller {
 
     public function getDiscordData() {
         $data = [];
-        $data['server'] = (new RestClient())
+        $data['server'] = (new NexusBot())
+            ->setIsBot(true)
             ->setEndpoint("guilds/".server_id."")
-            ->submitBot(true);
-        $data['members'] = (new RestClient())
+            ->submit();
+        $data['members'] = (new NexusBot())
+            ->setIsBot(true)
             ->setEndpoint("guilds/".server_id."/members")
             ->setData(['limit' => 300])
-            ->submitBot(true);
-        $data['invite'] = (new RestClient())
+            ->submit();
+        $data['invite'] = (new NexusBot())
+            ->setIsBot(true)
             ->setEndpoint("guilds/".server_id."/invites")
-            ->submitBot(true)[0];
-        $data['bans'] = (new RestClient())
+            ->submit();
+        $data['bans'] = (new NexusBot())
+            ->setIsBot(true)
             ->setEndpoint("guilds/".server_id."/bans")
-            ->submitBot(true);
-        $data['roles'] = (new RestClient())
+            ->submit();
+        $data['roles'] = (new NexusBot())
+            ->setIsBot(true)
             ->setEndpoint("guilds/".server_id."/roles")
-            ->submitBot(true);
+            ->submit();
         return $data;
     }
 
@@ -89,7 +94,7 @@ class BaseController extends Controller {
             return false;
         }
 
-        $userInfo = (new RestClient())
+        $userInfo = (new NexusBot())
             ->setEndpoint("oauth2/token/revoke")
             ->setType('post')
             ->setContentType("x-www-form-urlencoded")
@@ -98,8 +103,7 @@ class BaseController extends Controller {
                 'client_id'     => OAUTH2_CLIENT_ID,
                 'client_secret' => OAUTH2_CLIENT_SECRET,
             ])
-            ->setUseKey(false)
-            ->submit(true);
+            ->submit();
 
         if (isset($userInfo['code']) && $userInfo['code'] == 0) {
             $this->cookies->delete("access_token");

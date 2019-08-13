@@ -39,9 +39,10 @@ class LoginController extends BaseController {
             return $this->response->redirect("");
         }
 
-        $response = (new RestClient())
+        $response = (new NexusBot())
             ->setEndpoint("oauth2/token")
             ->setType("post")
+            ->setContentType("x-www-form-urlencoded")
             ->setData([
                 "grant_type"    => "authorization_code",
                 'client_id'     => OAUTH2_CLIENT_ID,
@@ -55,10 +56,9 @@ class LoginController extends BaseController {
             $expires = $response->expires_in;
             $token   = $response->access_token;
 
-            $userInfo = (new RestClient())
+            $userInfo = (new NexusBot())
                 ->setEndpoint("users/@me")
                 ->setAccessToken($token)
-                ->setUseKey(true)
                 ->submit();
 
             if (!$userInfo || isset($userInfo->code)) {
@@ -79,11 +79,12 @@ class LoginController extends BaseController {
             $user->setDiscriminator($userInfo->discriminator);
             $user->setAvatar($userInfo->avatar);
 
-            $server_info = (new RestClient())
+            $server_info = (new NexusBot())
+                ->setIsBot(true)
                 ->setEndpoint("guilds/".server_id."/members/".$userInfo->id)
-                ->submitBot(true);
+                ->submit();
 
-            if (!$server_info || isset($server_info['code'])) {
+            if (!$server_info || isset($server_info->code)) {
                 $user->setRole("Member");
                 $user->save();
 
@@ -92,7 +93,7 @@ class LoginController extends BaseController {
                 return $this->response->redirect("");
             }
 
-            $user_roles = $server_info['roles'];
+            $user_roles = $server_info->roles;
 
             $roles = [
                 '569975210409984009' => 'Owner',

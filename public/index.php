@@ -14,14 +14,13 @@
 	use Phalcon\Mvc\Url as UrlProvider;
 	use Phalcon\Db\Adapter\Pdo\Mysql as DbAdapter;
 	use Phalcon\Flash\Direct as FlashDirect;
-	use Phalcon\Flash\Session as FlashSession;
 	use Phalcon\Events\Manager as EventsManager;
 	use Phalcon\Mvc\Dispatcher as MvcDispatcher;
-	use Phalcon\Session\Adapter\Database as Database;
 	use Phalcon\Mvc\View\Engine\Volt;
 	use Phalcon\Mvc\Router;
+    use Phalcon\Session\Adapter\Files;
 
-	$loader = new Loader();
+    $loader = new Loader();
 
 	$loader->registerNamespaces([
 		'RobThree\Auth' => "../Library/auth/",
@@ -29,7 +28,10 @@
 
 	$loader->registerFiles([
 		'config.php',
-        '../Library/HTMLPurifier/HTMLPurifier.standalone.php'
+        '../Library/HTMLPurifier/HTMLPurifier.standalone.php',
+        '../Library/discord/NexusBot.php',
+        '../Library/discord/helpers/BotMessage.php',
+        '../Library/discord/helpers/UserActions.php'
     ]);
 
 	$loader->registerClasses([
@@ -156,7 +158,7 @@
     });
 
     $di->set('session', function(){
-        $session = new \Phalcon\Session\Adapter\Files();
+        $session = new Files();
         $session->start(); // we need to start session
         return $session;
     });
@@ -166,6 +168,6 @@
 	try {
 		$response = $application->handle();
 		$response->send();
-	} catch (\Exception $e) {
+	} catch (Exception $e) {
 		echo "Exception: ", $e->getMessage();
 	}

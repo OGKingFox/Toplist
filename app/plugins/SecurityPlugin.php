@@ -139,8 +139,9 @@ class SecurityPlugin extends Plugin {
             $verified     = $this->verifyUser($access_token);
 
             if (!$verified) {
-                $this->cookies->delete("access_token");
-                $this->session->remove("user");
+                $this->cookies->set("access_token", '', time() - 1000, base_url);
+                $this->session->destroy();
+                $this->response->redirect("");
                 return false;
             }
 
@@ -148,8 +149,9 @@ class SecurityPlugin extends Plugin {
             $user = Users::getUser($user_id);
 
             if (!$user) {
-                $this->cookies->delete("access_token");
-                $this->session->remove("user");
+                $this->cookies->set("access_token", '', time() - 1000, base_url);
+                $this->session->destroy();
+                $this->response->redirect("");
                 return false;
             }
 
@@ -186,37 +188,10 @@ class SecurityPlugin extends Plugin {
         return true;
     }
 
-    public function logout() {
-        if (!$this->cookies->has("access_token")) {
-            return false;
-        }
-
-        $userInfo = (new RestClient())
-            ->setEndpoint("oauth2/token/revoke")
-            ->setType('post')
-            ->setContentType("x-www-form-urlencoded")
-            ->setData([
-                "token"         => $this->cookies->get("access_token"),
-                'client_id'     => OAUTH2_CLIENT_ID,
-                'client_secret' => OAUTH2_CLIENT_SECRET,
-            ])
-            ->setUseKey(false)
-            ->submit(true);
-
-        if (isset($userInfo['code']) && $userInfo['code'] == 0) {
-            return false;
-        }
-
-        $this->cookies->reset();
-        $this->session->destroy();
-        return true;
-    }
-
     private function verifyUser($access_token) {
-        $userInfo = (new RestClient())
+        $userInfo = (new NexusBot())
             ->setEndpoint("users/@me")
             ->setAccessToken($access_token)
-            ->setUseKey(true)
             ->submit();
 
         if (!$userInfo || isset($userInfo->code)) {

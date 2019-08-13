@@ -9,10 +9,6 @@
         <div class="card border-0 shadow-sm mb-3">
             <div class="card-header bg-gradient-primary">
                 <h5 class="text-white mb-0">Add Premium</h5>
-                <p class="small mb-0 text-white-50">
-                    This will add days to an existing member, and upgrade them if their
-                    current package is lower.
-                </p>
             </div>
             <div class="card-body">
                 {{ form('dashboard', 'method' : 'post', 'autocomplete' : 'off', 'class' : 'form-inline') }}
@@ -29,5 +25,82 @@
                 {{ end_form() }}
             </div>
         </div>
+
+        <div class="card border-0 shadow-sm mb-3">
+            <div class="card-header bg-gradient-primary">
+                <h5 class="text-white mb-0">Users</h5>
+            </div>
+            <table class="table mb-0" style="line-height: 1em;">
+                {% for user in users.items %}
+                <tr>
+                    <td class="text-right" style="width:70px;">
+                        {% if user.avatar %}
+                        {% set avatar = avatar(user.user_id, user.avatar) %}
+                        {{ image(avatar, 'class' : 'rounded-circle', 'width' : '30px') }}
+                        {% endif %}
+                    </td>
+                    <td>
+                        {{ user.username }}#{{ user.discriminator }}<br>
+                        <small class="text-muted">ID: {{ user.user_id }}</small>
+                    </td>
+                    <td>
+                        {% if user.premium_expires > time() %}
+                            <small class="text-muted text-uppercase">Premium</small><br>
+                            {{ date('m/d/y g:i A', user.premium_expires-18000) }}
+                        {% endif %}
+                    </td>
+                    <td class="text-right">
+                        <div class="dropdown">
+                            <button class="btn btn-primary dropdown-toggle btn-sm" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Options
+                            </button>
+                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
+                                <a class="dropdown-item" href="#" id="userAction"
+                                   data-type="revoke" data-id="{{ user.user_id }}">
+                                    Revoke Premium
+                                </a>
+                                <a class="dropdown-item" href="#" id="userAction"
+                                   data-type="ban" data-id="{{ user.user_id }}">
+                                    Ban
+                                </a>
+
+                                <a class="dropdown-item" href="#" id="userAction"
+                                   data-type="unban" data-id="{{ user.user_id }}">
+                                    Unban
+                                </a>
+
+                                <a class="dropdown-item" href="#" id="userAction"
+                                   data-type="kick" data-id="{{ user.user_id }}">
+                                    Kick from Server
+                                </a>
+
+                                <a class="dropdown-item" href="#" id="userAction"
+                                   data-type="delete" data-id="{{ user.user_id }}">
+                                    Delete
+                                </a>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
     </div>
 </div>
+
+<script>
+    $(document).on('click', '#userAction', function(event) {
+        event.preventDefault();
+
+        let id = $(this).data("id");
+        let type = $(this).data("type");
+
+        $.post("{{ url('dashboard/users') }}", {
+            id : id,
+            type : type
+        }, function(data) {
+            console.log(data);
+        })
+
+    });
+</script>

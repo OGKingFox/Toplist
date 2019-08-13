@@ -132,6 +132,27 @@ class Servers extends \Phalcon\Mvc\Model {
     }
 
     /**
+     * Like above, but doesn't join the games column so it can be updated or removed.
+     * @param $serverId
+     * @param $ownerId
+     * @return bool|ModelInterface|Servers
+     */
+    public static function getServerByOwner2($ownerId) {
+        return self::query()
+            ->columns([
+                'Servers.*',
+                'user.*',
+                'info.*',
+            ])
+            ->conditions('Servers.owner_id = :owner:')
+            ->leftJoin("ServersInfo", 'info.server_id = Servers.id', 'info')
+            ->leftJoin("Users", 'user.user_id = Servers.owner_id', 'user')
+            ->bind([
+                'owner' => $ownerId
+            ])->execute()->getFirst();
+    }
+
+    /**
      * Like above, but grabs all servers
      * @param $oid
      * @return ResultsetInterface|Servers

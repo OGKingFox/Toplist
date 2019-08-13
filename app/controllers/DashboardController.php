@@ -95,7 +95,7 @@ class DashboardController extends BaseController {
         return true;
     }
 
-    public function usersAction() {
+    public function usersAction($page = 1) {
         if ($this->request->isPost() && $this->security->checkToken()) {
             $user_id = $this->request->getPost("user_id", 'string');
             $pid = $this->request->getPost("package", "int");
@@ -125,7 +125,80 @@ class DashboardController extends BaseController {
                 }
             }
         }
+
+        if ($this->request->isPost()) {
+            $this->view->setRenderLevel(View::LEVEL_NO_RENDER);
+
+            $id   = $this->request->getPost("id", "int");
+            $type = $this->request->getPost("type", "string");
+            $user = Users::getUser($id);
+
+            switch ($type) {
+                case "revoke":
+                    $user->setPremiumLevel(0);
+                    $user->setPremiumExpires(-1);
+                    $user->update();
+                    $this->printStatus(true, $user->getUsername().' no longer has premium.');
+                    break;
+                case "ban":
+                    $ban = (new UserActions($user))->ban();
+
+                    if ($ban['success']) {
+                        (new BotMessage([
+                            'channel' => '610038623743639559',
+                            'title' => 'User Banned',
+                            'message' => "<@{$this->getUser()->id}> has banned <@{$user->getUserId()}> from the server",
+                            'is_rich' => true
+                        ]))->send();
+                    }
+
+                    $this->println($ban);
+                    break;
+                case "unban":
+                    $unban = (new UserActions($user))->unban();
+
+                    if ($unban['success']) {
+                        (new BotMessage([
+                            'channel' => '610038623743639559',
+                            'title' => 'User Unbanned',
+                            'message' => "<@{$this->getUser()->id}> unbanned <@" . $user->getUserId() . ">.",
+                            'is_rich' => true
+                        ]))->send();
+                    }
+
+                    $this->println($unban);
+                    break;
+
+                case "kick":
+                    $kick = (new UserActions($user))->kick();
+
+                    if ($kick['success']) {
+                        (new BotMessage([
+                            'channel' => '514876434720882688',
+                            'title' => 'User Kicked',
+                            'message' => "<@{$this->getUser()->id}> has kicked <@{$user->getUserId()}> from the server.",
+                            'is_rich' => true
+                        ]))->send();
+                    }
+
+                    $this->println($kick);
+                    break;
+            }
+
+            return true;
+        }
+
+        $users = Users::find();
+
+        $paginator = (new \Phalcon\Paginator\Adapter\Model([
+            'data' => $users,
+            'limit' => 20,
+            'page' => $page
+        ]))->getPaginate();
+
+        $this->view->users    = $paginator;
         $this->view->packages = Packages::find();
+        return true;
     }
 
     public function premiumAction() {
