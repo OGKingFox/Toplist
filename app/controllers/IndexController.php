@@ -33,7 +33,7 @@ class IndexController extends BaseController {
         $this->view->members = $data['members'];
         $this->view->invite  = $data['invite'];
 
-       // $this->debug($data);
+        $this->debug($data);
     }
 
     public function logoutAction() {

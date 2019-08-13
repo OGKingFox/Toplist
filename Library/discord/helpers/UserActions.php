@@ -57,12 +57,9 @@ class UserActions extends NexusBot {
             $this->user->setPremiumExpires(-1);
             $this->user->setRole("Member");
             $this->user->update();
-        }
-
-        if ($response) {
-            $message = $response->message;
-        } else {
             $message = $this->user->getUsername()." has been unbanned.";
+        } else {
+            $message = $response->message;
         }
 
         return [
@@ -72,6 +69,15 @@ class UserActions extends NexusBot {
     }
 
     public function kick() {
+        $member = $this->getMember();
+
+        if (isset($member->message)) {
+            return [
+                'success' => false,
+                'message' => $member->message
+            ];
+        }
+
         $response = $this->setEndpoint("guilds/".server_id."/members/".$this->user->getUserId())
             ->setType("delete")
             ->setIsBot(true)
@@ -85,7 +91,7 @@ class UserActions extends NexusBot {
         if ($response) {
             $message = $response->message;
         } else {
-            $message = $this->user->getUsername()." has been unbanned.";
+            $message = $member;
         }
 
         return [
@@ -95,7 +101,11 @@ class UserActions extends NexusBot {
     }
 
     public function getMember() {
+        $response = $this->setEndpoint("guilds/".server_id."/members/".$this->user->getUserId())
+            ->setIsBot(true)
+            ->submit();
 
+        return $response;
     }
 
 
