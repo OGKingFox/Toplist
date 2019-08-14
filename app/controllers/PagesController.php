@@ -18,5 +18,9 @@ class PagesController extends BaseController {
 
     }
 
+    public function advertisingAction() {
+        echo 'Coming Soon<sup>TM</sup>';
+    }
+
 
 }
