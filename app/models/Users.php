@@ -1,13 +1,5 @@
 <?php
-
 use Phalcon\Mvc\ModelInterface;
-
-/**
- * Created by PhpStorm.
- * User: foxtr
- * Date: 5/25/19
- * Time: 4:55 PM
- */
 
 class Users extends \Phalcon\Mvc\Model {
 

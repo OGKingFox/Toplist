@@ -181,4 +181,20 @@ class Functions {
         }
         return $headers;
     }
+
+    public static function getLastNDays($days, $format = 'n j'){
+        date_default_timezone_set(timezone);
+
+        $m  = date("m");
+        $de = date("d");
+        $y  = date("Y");
+
+        $dateArray = [];
+
+        for($i = 0; $i <= $days - 1; $i++){
+            $dateArray[] = date($format, mktime(0,0,0,$m,($de-$i),$y));
+        }
+
+        return array_reverse($dateArray);
+    }
 }

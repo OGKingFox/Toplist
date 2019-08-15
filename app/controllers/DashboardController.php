@@ -7,37 +7,40 @@ class DashboardController extends BaseController {
     private $user;
 
     public function indexAction() {
-        if ($this->request->isPost() && $this->security->checkToken()) {
-            $user_id = $this->request->getPost("user_id", 'string');
-            $pid = $this->request->getPost("package", "int");
+        $this->view->users   = Users::count();
+        $this->view->votes   = Votes::count();
+        $this->view->likes   = Likes::count();
+        $this->view->servers = Servers::count();
+        $this->view->graph = $this->getGraphData(14);
+        $this->view->days  = Functions::getLastNDays(14, 'd');
+    }
 
-            $package = Packages::getPackage($pid);
+    public static function getGraphData($days) {
+        $timeInSecs = (60 * 60 * 24 * $days);
 
-            if (!$package) {
-                $this->flash->error("Invalid package id.");
-            } else {
-                $user = Users::getUser($user_id);
+        $votes = Votes::query()
+            ->conditions(":current: - voted_on < $timeInSecs")
+            ->bind(['current' => time() ])
+            ->execute();
 
-                if (!$user) {
-                    $this->flash->error("User '$user_id' could not be found.");
-                } else {
-                    $expires = $user->getPremiumExpires();
-                    $user->setPremiumExpires(($expires ? $expires : time()) + $package->getLength());
+        $lastNdays = Functions::getLastNDays($days, 'n j');
+        $data      = array_fill_keys($lastNdays, 0);
 
-                    if ($package->id > $user->getPremiumLevel()) {
-                        $user->setPremiumLevel($package->id);
-                    }
+        foreach ($votes as $vote) {
+            $day  = date("n j", $vote->voted_on); // minus 18000 because of SQL timezone difference.
 
-                    if ($user->update()) {
-                        $this->flash->success("{$user->getUsername()} has been given {$package->getTitle()}");
-                    } else {
-                        $this->flash->error("An error occurred: ".$user->getMessages()[0]);
-                    }
-                }
+            if (!isset($data[$day])) {
+                $data[$day] = 0;
             }
+
+            $data[$day] += 1;
         }
 
-        $this->view->packages = Packages::find();
+        foreach ($data as $key => $value) {
+            $data[$key] = round($value, 2);
+        }
+
+        return $data;
     }
 
     public function newsAction($page = 1) {
@@ -96,7 +99,9 @@ class DashboardController extends BaseController {
     }
 
     public function usersAction($page = 1) {
-        if ($this->request->isPost() && $this->security->checkToken()) {
+        if ($this->request->isPost()
+                && $this->request->hasPost("user_id")
+                && $this->security->checkToken()) {
             $user_id = $this->request->getPost("user_id", 'string');
             $pid = $this->request->getPost("package", "int");
 
