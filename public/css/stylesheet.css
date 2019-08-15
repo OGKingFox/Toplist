@@ -373,3 +373,8 @@ button {
     font-size: 120px;
     font-family: 'Montserrat-Light', sans-serif;;
 }
+@media(max-width: 991.98px) {
+    .errimg {
+        display: none;
+    }
+}
