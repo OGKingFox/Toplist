@@ -4,9 +4,10 @@ include 'db_connect.php';
 
 $stmt = $pdo->prepare("UPDATE servers SET votes = 0");
 $stmt->execute();
-$stmt = $pdo->prepare("TRUNCATE TABLE votes");
+
+/*$stmt = $pdo->prepare("TRUNCATE TABLE votes");
 $stmt->execute();
-$end = microtime(true);
+$end = microtime(true);*/
 
 $updated = $stmt->rowCount();
 $elapsed = number_format($end - $start, 4);
