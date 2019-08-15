@@ -50,12 +50,10 @@
 <script>
     let chartBox = $('#chartjs');
 
-    setTimeout(function() {
         $.post("{{ url('dashboard/graph') }}", {
             days: 14
         }, function(response) {
             console.log(response);
             chartBox.html(response.toString());
         })
-    }, 1000)
 </script>
