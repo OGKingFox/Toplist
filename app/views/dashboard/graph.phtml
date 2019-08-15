@@ -1,0 +1,94 @@
+<div class="card border-0 shadow-sm mb-3">
+    <div class="card-body p-2">
+        <canvas id="voteChart" height="200px"></canvas>
+    </div>
+</div>
+
+{{ javascript_include("js/chart.min.js") }}
+{{ javascript_include("js/chart.extension.js") }}
+<script>
+    Chart.plugins.register({
+        beforeDraw: function(chartInstance) {
+            var ctx = chartInstance.chart.ctx;
+            ctx.fillStyle = "rgba(0,0,0,0)";
+            ctx.fillRect(0, 0, chartInstance.chart.width, chartInstance.chart.height);
+        }
+    });
+
+    window.chartColors = {
+        red:    'rgb(255, 99, 132)',
+        orange: 'rgb(255, 159, 64)',
+        yellow: 'rgb(255, 205, 86)',
+        green:  'rgb(75, 192, 192)',
+        blue:   'rgb(54, 162, 235)',
+        purple: 'rgb(94, 114, 228)',
+        purpleLight: 'rgb(107, 129, 255)',
+        grey:   'rgb(201, 203, 207)'
+    };
+
+    var options = {};
+
+    options.maintainAspectRatio = false;
+    options.response = true;
+    options.elements = {};
+    options.elements.line = {};
+    options.elements.point = {};
+    options.scales = {};
+    options.title = {};
+    options.tooltips = {mode: 'x-axis'};
+    options.tooltips.callbacks = {};
+    options.legend = {};
+    options.legend.labels = {};
+    options.elements.line.fill = false;
+    options.elements.line.borderWidth = 4;
+    options.elements.point.radius = 0;
+    options.title.display = true;
+    options.legend.display = false;
+    options.legend.position = "top";
+    options.animation = false;
+
+    options.legend.labels.fontColor = 'red';
+
+    options.scales.xAxes = [{
+        barPercentage: 0.2,
+        ticks: {
+            display: true,
+            fontColor: "#AAA"
+        },
+        gridLines: {
+            color: "rgba(0, 255, 0, 0)",
+            drawBorder: false,
+        }
+    }];
+
+    options.scales.yAxes = [{
+        ticks: {
+            display: true,
+            fontColor: "#AAA"
+        },
+        gridLines: {
+            drawBorder: false,
+            color: "rgba(94, 114, 228, 0.2)"
+        }
+    }];
+
+    let ctx2 = document.getElementById("voteChart").getContext('2d');
+
+    let chart = new Chart(ctx2, {
+        type: 'bar',
+        data: {
+            labels: [<?= implode(',', $days) ?>],
+            datasets: [
+                {
+                    label: 'Votes',
+                    data: <?= json_encode(array_values($graph)) ?>,
+                    borderColor: window.chartColors.purple,
+                    backgroundColor:  window.chartColors.purple,
+                    hoverBackgroundColor: window.chartColors.purpleLight,
+                    barWidth: 1,
+                }
+            ]
+        },
+        options: options
+    });
+</script>
