@@ -5,7 +5,11 @@
         {{ content() }}
         <div id="alerts"></div>
 
-        <div id="chart"></div>
+        <div class="card border-0 shadow-sm mb-3 bg-default">
+            <div class="card-body p-2" style="height:210px;">
+                <canvas id="voteChart" height="200px"></canvas>
+            </div>
+        </div>
 
         <div class="card border-0 shadow-sm mb-3">
             <div class="card-header bg-gradient-primary">
@@ -179,7 +183,7 @@
     </div>
 </div>
 
-{{ javascript_include("js/chart.min.js") }}
+{{ partial('servers/graph') }}
 
 <script>
     var locked = false;

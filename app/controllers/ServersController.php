@@ -4,6 +4,7 @@ use Phalcon\Cache\Frontend\Data as FrontData;
 use Phalcon\Http\Request\File;
 use Phalcon\Mvc\View;
 use Phalcon\Paginator\Adapter\Model as PaginatorModel;
+use Phalcon\Tag;
 use Phalcon\Text;
 
 class ServersController extends BaseController {
@@ -90,11 +91,16 @@ class ServersController extends BaseController {
             'page'  => $this->request->getQuery("page", "int", 1)
         ]);
 
+        $days = 28;
+
         $this->view->server    = $server;
         $this->view->days      = range(1, date('t'));
         $this->view->likes     = Likes::count(['conditions' => 'server_id = '.$server->id]);
         $this->view->comments  = $paginator->getPaginate();
         $this->view->resetIn   = Functions::timeLeft('Y-m-t 23:59:59', '%dd %hh %im %ss');
+
+        $this->view->graphData = $this->getGraphData($server, $days);
+        $this->view->days      = Functions::getLastNDays($days, 'd');
         return true;
     }
 
@@ -606,5 +612,43 @@ class ServersController extends BaseController {
         } else {
             return ['link' => $output['data']['link']];
         }
+    }
+
+    /**
+     * @param Servers $server
+     * @param $days
+     * @return array
+     */
+    public function getGraphData($server, $days = 28) {
+        $cache = $this->getCache(600, 'statistics');
+        $seo   = $server->id.'-'.Tag::friendlyTitle($server->title);
+        $data  = $cache->get($seo.'.cache');
+
+        if (!$data) {
+            $timeInSecs = (60 * 60 * 24 * $days);
+
+            $votes = Votes::query()
+                ->conditions("server_id = :sid: AND :current: - voted_on < $timeInSecs")
+                ->bind(['sid' => $server->id, 'current' => time()])
+                ->execute();
+
+            $lastNdays = Functions::getLastNDays($days, 'n j');
+            $data = array_fill_keys($lastNdays, 0);
+
+            foreach ($votes as $vote) {
+                $day = date("n j", $vote->voted_on);
+                if (!isset($data[$day])) {
+                    $data[$day] = 0;
+                }
+                $data[$day] += 1;
+            }
+
+            foreach ($data as $key => $value) {
+                $data[$key] = round($value, 2);
+            }
+
+            $cache->save($seo.'.cache', $data);
+        }
+        return $data;
     }
 }
