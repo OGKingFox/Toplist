@@ -91,7 +91,7 @@ class ServersController extends BaseController {
             'page'  => $this->request->getQuery("page", "int", 1)
         ]);
 
-        $days = 28;
+        $days = 14;
 
         $this->view->server    = $server;
         $this->view->days      = range(1, date('t'));
