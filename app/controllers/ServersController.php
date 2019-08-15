@@ -80,14 +80,14 @@ class ServersController extends BaseController {
                 if (!$comment->save()) {
                     $this->flash->error("Could not save comment: ".$comment->getMessages()[0]);
                 } else {
-                    return $this->response->redirect('servers/view/'.Servers::genSeoTitle($server));
+                    return $this->response->redirect('servers/view/'.Servers::genSeoTitle($server)."#comments");
                 }
             }
         }
 
         $paginator = new PaginatorModel([
             'data'  => Comments::getComments($server->id),
-            'limit' => 10,
+            'limit' => 5,
             'page'  => $this->request->getQuery("page", "int", 1)
         ]);
 
