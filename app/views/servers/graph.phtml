@@ -76,7 +76,7 @@
             datasets: [
                 {
                     label: 'Votes',
-                    data: <?= json_encode(array_values($graphData)) ?>,
+                    data: <?= json_encode(array_values($graphData['stats'])) ?>,
                     borderColor: window.chartColors.purple,
                     backgroundColor:  window.chartColors.purple,
                     hoverBackgroundColor: window.chartColors.purpleLight,

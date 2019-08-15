@@ -99,16 +99,11 @@ class ServersController extends BaseController {
         $this->view->comments  = $paginator->getPaginate();
         $this->view->resetIn   = Functions::timeLeft('Y-m-t 23:59:59', '%dd %hh %im %ss');
 
-        $this->view->graphData = $this->getGraphData($server, $days);
-        $this->view->days      = Functions::getLastNDays($days, 'd');
-        return true;
-    }
+        $graphData = $this->getGraphData($server, $days);
 
-    private function getCache($length, $directory = null) {
-        $path   = "../app/compiled/servers/".($directory ?  $directory.'/' : '');
-        $fCache = new FrontData(['lifetime' => $length]);
-        $cache  = new BackFile($fCache, [ 'cacheDir' => $path ]);
-        return $cache;
+        $this->view->graphData = $graphData;
+        $this->view->days      = $graphData['days'];
+        return true;
     }
 
     public function addAction() {
@@ -620,11 +615,17 @@ class ServersController extends BaseController {
      * @return array
      */
     public function getGraphData($server, $days = 28) {
-        $cache = $this->getCache(600, 'statistics');
         $seo   = $server->id.'-'.Tag::friendlyTitle($server->title);
-        $data  = $cache->get($seo.'.cache');
+        $cache = new BackFile(new FrontData(), ['cacheDir' => "../app/compiled/servers/statistics/"]);
+        $data  = $cache->get($seo.'.cache', 600);
 
         if (!$data) {
+            $daysArr = Functions::getLastNDays($days, 'n j');
+
+            $data['day_limit'] = $days;
+            $data['days']      = Functions::getLastNDays($days, 'd');
+            $data['stats']     = array_fill_keys($daysArr, 0);
+
             $timeInSecs = (60 * 60 * 24 * $days);
 
             $votes = Votes::query()
@@ -632,19 +633,12 @@ class ServersController extends BaseController {
                 ->bind(['sid' => $server->id, 'current' => time()])
                 ->execute();
 
-            $lastNdays = Functions::getLastNDays($days, 'n j');
-            $data = array_fill_keys($lastNdays, 0);
-
             foreach ($votes as $vote) {
                 $day = date("n j", $vote->voted_on);
-                if (!isset($data[$day])) {
-                    $data[$day] = 0;
+                if (!isset($data['stats'][$day])) {
+                    $data['stats'][$day] = 0;
                 }
-                $data[$day] += 1;
-            }
-
-            foreach ($data as $key => $value) {
-                $data[$key] = round($value, 2);
+                $data['stats'][$day] += 1;
             }
 
             $cache->save($seo.'.cache', $data);
