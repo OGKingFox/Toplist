@@ -351,6 +351,11 @@ button {
     margin: auto;
     color: white;
 }
+.server-title {
+    font-family: 'Montserrat-Light', sans-serif;
+    text-transform: uppercase;
+}
+
 
 .nav-item .nav-link {
     color:#FFF;
