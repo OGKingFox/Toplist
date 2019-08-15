@@ -1,11 +1,6 @@
-<div class="card border-0 shadow-sm mb-3">
-    <div class="card-body p-2">
-        <canvas id="voteChart" height="200px"></canvas>
-    </div>
-</div>
-
 {{ javascript_include("js/chart.min.js") }}
 {{ javascript_include("js/chart.extension.js") }}
+
 <script>
     Chart.plugins.register({
         beforeDraw: function(chartInstance) {

@@ -6,8 +6,10 @@
     <div class="col-sm-12 col-lg-9">
         {{ content() }}
 
-        <div id="chartBox">
-
+        <div class="card border-0 shadow-sm mb-3" style="height:210px;">
+            <div class="card-body p-2">
+                <canvas id="voteChart" height="200px"></canvas>
+            </div>
         </div>
 
         <div class="card border-0 shadow-sm mb-3">
@@ -43,13 +45,17 @@
     </div>
 </div>
 
-<script>
-    let chartBox = $('#chartBox');
+<div id="chartjs"></div>
 
-    $.post("{{ url('dashboard/graph') }}", {
-        days: 14
-    }, function(response) {
-        console.log(response);
-        chartBox.html(response.toString());
-    });
+<script>
+    let chartBox = $('#chartjs');
+
+    setTimeout(function() {
+        $.post("{{ url('dashboard/graph') }}", {
+            days: 14
+        }, function(response) {
+            console.log(response);
+            chartBox.html(response.toString());
+        })
+    }, 1000)
 </script>
