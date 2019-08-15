@@ -1,6 +1,7 @@
 @import "quill.snow.css";
 
 @font-face { font-family: "Montserrat-Bold"; src: url('../fonts/Montserrat-Bold.otf'); }
+@font-face { font-family: "Montserrat-Light"; src: url('../fonts/Montserrat-Light.otf'); }
 @font-face { font-family: "OpenSans-Light"; src: url('../fonts/OpenSans-Light.ttf'); }
 @font-face { font-family: "OpenSans-Regular"; src: url('../fonts/OpenSans-Regular.ttf'); }
 
@@ -366,4 +367,9 @@ button {
 .nav-tabs .nav-link.active:hover, .nav-tabs .nav-link.active:hover {
     background-color: white;
     color: #000;
+}
+
+.err-page h1 {
+    font-size: 120px;
+    font-family: 'Montserrat-Light', sans-serif;;
 }
