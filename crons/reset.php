@@ -6,8 +6,8 @@ $stmt = $pdo->prepare("UPDATE servers SET votes = 0");
 $stmt->execute();
 
 /*$stmt = $pdo->prepare("TRUNCATE TABLE votes");
-$stmt->execute();
-$end = microtime(true);*/
+$stmt->execute();*/
+$end = microtime(true);
 
 $updated = $stmt->rowCount();
 $elapsed = number_format($end - $start, 4);
