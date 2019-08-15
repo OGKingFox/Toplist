@@ -51,6 +51,17 @@
             <div class="tab-content">
                 <div class="tab-pane show active p-3" id="serverInfo" role="tabpanel" aria-labelledby="info-tab">
                     {{ server.info.info }}
+                    <hr>
+                    {% set images = server.images|json_decode %}
+                    {% if images is not null and images is not empty %}
+                        <div class="text-center">
+                            {% for image in images %}
+                            <div class="img-holder d-inline-block mb-0" style="width:100px;height:75px;overflow: hidden;">
+                                {{ image(image, 'class' : 'img-fluid', 'id' : 'screenshot') }}
+                            </div>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
                 </div>
                 <div class="tab-pane" id="comments" role="tabpanel" aria-labelledby="comments-tab">
                     {% if user is defined %}
@@ -123,21 +134,6 @@
         </nav>
 
         {% endif %}
-
-        {% set images = server.images|json_decode %}
-        {% if images is not null and images is not empty %}
-        <div class="card border-0 shadow-sm mb-3">
-            <div class="card-body">
-                {% for image in images %}
-                <div class="img-holder d-inline-block mb-0" style="width:100px;height:75px;overflow: hidden;">
-                    {{ image(image, 'class' : 'img-fluid', 'id' : 'screenshot') }}
-                </div>
-                {% endfor %}
-            </div>
-        </div>
-        {% endif %}
-
-
     </div>
 
     <div class="col-sm-12 col-lg-4">
