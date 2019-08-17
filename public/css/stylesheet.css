@@ -37,11 +37,14 @@ header:before {
 header .overlay h1 {
     font-family: "Montserrat-Bold", sans-serif;
     padding-top: 170px;
-    font-size: 90px;
+    font-size: 70px;
     line-height:1em;
     color: white;
     text-shadow: 1px 1px 2px #000;
     z-index: 1001;
+}
+header .overlay p {
+    font-size: 14px;
 }
 .search-form {
     position: absolute;

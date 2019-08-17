@@ -4,29 +4,18 @@
 <table class="table mb-0">
     <thead>
     <tr>
-        <th style="width:80px">Id</th>
-        <th style="width:34px;"></th>
+        <th class="text-center" style="width:80px">Id</th>
+        <th class="text-center" style="width:34px;"></th>
         <th>Name</th>
-        <th class="text-center">Tradeable</th>
-        <th class="text-center">Stackable</th>
     </tr>
     </thead>
     {% for item in itemList.items %}
     <tr>
         <td class="text-center">{{ item['id'] }}</td>
         <td class="text-center">
-            <img data-src="{{ url('img/items/'~item['id']~'.png') }}" height="32">
+            <img data-src="{{ url(icon_url~item['id']~'.png') }}" height="32">
         </td>
-        <td style="line-height:1em;">
-            {{ item['name'] }}<br>
-            <small>{{ item['examine'] }}</small>
-        </td>
-        <td class="text-center">
-            <i class="fal fa-{{ item['tradeable'] ? 'check text-success' : 'times text-danger' }}"></i>
-        </td>
-        <td class="text-center">
-            <i class="fal fa-{{ item['stackable'] ? 'check text-success' : 'times text-danger' }}"></i>
-        </td>
+        <td style="line-height:1em;">{{ item['name'] }}</td>
     </tr>
     {% endfor %}
 </table>

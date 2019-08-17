@@ -8,7 +8,7 @@ use Phalcon\Paginator\Adapter\NativeArray;
 class ToolsController extends BaseController {
 
     public function indexAction() {
-
+        $this->updateItems();
     }
 
     public function itemsAction() {
@@ -18,15 +18,15 @@ class ToolsController extends BaseController {
     public function searchAction() {
         $this->view->setRenderLevel(View::LEVEL_ACTION_VIEW);
 
-        $data   = $this->getList('item-data');
+        $data   = $this->getItemList();
         $search = $this->request->getPost("search", "string");
         $found  = [];
 
         if ($search != null && $search != '') {
-            foreach ($data as $key => $value) {
-                $itemName = $value['name'];
+            foreach ($data as $item) {
+                $itemName = $item['name'];
                 if (stripos(strtolower($itemName), strtolower($search)) !== false) {
-                    $found[] = $value;
+                    $found[] = $item;
                 }
             }
         } else {
@@ -39,19 +39,53 @@ class ToolsController extends BaseController {
             'page'  => $this->request->getPost("page", "int", 1)
         ]))->getPaginate();
 
+        $this->view->icon_url = 'https://www.osrsbox.com/osrsbox-db/items-icons/';
         $this->view->itemList = $itemList;
     }
 
-    private function getList($name) {
-        $cache    = new BackFile(new FrontData(['lifetime' => 86400 ]), [ 'cacheDir' =>  "../app/compiled/" ]);
-        $itemList = $cache->get("$name.cache");
+    private function getItemList() {
+        $cache = new BackFile(new FrontData(['lifetime' => 86400 ]), [
+            'cacheDir' =>  "../app/compiled/"
+        ]);
+
+        $itemList = $cache->get("items.data.cache");
 
         if (!$itemList) {
-            $itemList = json_decode(file_get_contents("../resources/$name.json"), true);
-            $cache->save("$name.cache", $itemList);
+            $itemList = $this->updateItems();
+            $cache->save("items.data.cache", $itemList);
         }
 
         return $itemList;
+    }
+
+    /**
+     * Grabs new items from OSRSBOX if the cache is expired. Falls back on the saved json file if fails.
+     * @return array|mixed
+     */
+    private function updateItems() {
+        $url  = "https://www.osrsbox.com/osrsbox-db/items-summary.json";
+        $file = file_get_contents($url);
+
+        if (!$file) {
+            return json_decode('../resources/item-data.json', true);
+        }
+
+        $list = json_decode($file, true);
+
+        if (!$list) {
+            return json_decode('../resources/item-data.json', true);
+        }
+
+        $new  = [];
+
+        foreach ($list as $key => $value) {
+            $itemId   = $value['id'];
+            $itemName = $value['name'];
+            $new[] = ['id' => $itemId, 'name' => $itemName];
+        }
+
+        file_put_contents('../resources/item-data.json', json_encode($new));
+        return $new;
     }
 
 }
