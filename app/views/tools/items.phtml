@@ -20,9 +20,7 @@
     let search = '';
     let locked = true;
 
-    setTimeout(function() {
-        loadItems(search, page);
-    }, 1000);
+    loadItems(search, page);
 
     $('#searchform').submit(function(event) {
         event.preventDefault();

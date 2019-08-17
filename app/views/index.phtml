@@ -138,46 +138,50 @@
     </section>
     {% endif %}
 
-    <footer class="bg-dark py-5">
+    <footer class="bg-dark">
         <div class="container">
-            <div class="row">
-                <div class="col-sm-12 text-center">
-                    <h4 class="mb-0">{{ image('img/logo_trans.png', 'height' : '100px', 'class' : 'my-3') }}</h4>
+            <div class="row pt-5 pb-4">
+                <div class="col-12 col-md text-center">
+                    {{ image('img/logo_trans.png', 'width' : '120') }}
 
-                    {{ link_to('', 'Home', 'class' : 'btn btn-link px-3 text-white') }}
-                    {{ link_to('advertise', 'advertising', 'class' : 'btn btn-link px-3 text-white') }}
-                    {{ link_to('tools', 'Tools', 'class' : 'btn btn-link px-3 text-white') }}
-                    {{ link_to('faq', 'FAQ', 'class' : 'btn btn-link px-3 text-white') }}
                 </div>
-            </div>
-            <div class="row my-3">
-                <div class="col-sm-12 text-center text-white-50">
-                    {{ link_to('https://facebook.com/RuneNexusOfficial',
-                        '<i class="fab fa-facebook-f fa-fw fa-2x"></i>', false,
-                        'class' : 'btn btn-link text-white', 'target' : '_blank') }}
+                <div class="col-6 offset-md-1 col-md">
+                    <h5 class="text-primary">Tools</h5>
+                    <ul class="list-unstyled text-small">
+                        <li>{{ link_to('tools/items', 'OSRS Item List', 'class' : 'text-muted') }}</li>
+                        <li><a class="text-muted" href="#">Coming Soon</a></li>
+                        <li><a class="text-muted" href="#">Coming Soon</a></li>
+                    </ul>
+                </div>
+                <div class="col-6 col-md">
+                    <h5 class="text-primary">Resources</h5>
+                    <ul class="list-unstyled text-small">
+                        <li>{{ link_to('', 'Community', 'class' : 'text-muted') }}</li>
+                        <li>{{ link_to('', 'Server Hosting', 'class' : 'text-muted') }}</li>
+                        <li>{{ link_to('', 'Web Hosting', 'class' : 'text-muted') }}</li>
+                    </ul>
+                </div>
+                <div class="col-6 col-md">
+                    <h5 class="text-primary">About</h5>
+                    <ul class="list-unstyled text-small">
+                        <li>{{ link_to('faq', 'Q&A', 'class' : 'text-muted') }}</li>
+                        <li>{{ link_to('terms', 'Terms of Service', 'class' : 'text-muted') }}</li>
+                        <li>{{ link_to('privacy', 'Privacy Policy', 'class' : 'text-muted') }}</li>
 
-                    {{ link_to('https://github.com/OGKingFox/Toplist/',
-                        '<i class="fab fa-github fa-fw fa-2x"></i>', false,
-                        'class' : 'btn btn-link text-white', 'target' : '_blank') }}
+                    </ul>
                 </div>
             </div>
         </div>
     </footer>
 
-    <footer class="bg-darker py-3">
-        <div class="container">
-            <div class="row">
-                <div class="col-sm-12 text-white-50">
-                    <span class="float-right">
-                        {{ link_to('terms', 'Terms of Service') }} |
-                    {{ link_to('privacy', 'Privacy Policy') }}
-                    </span>
-
-                    <p class="mb-0">Copyright &copy; {{ date("Y") }} Rune-Nexus | All Rights Reserved.</p>
-                </div>
+    <div class="copyright bg-darker">
+        <div class="row py-3">
+            <div class="col-12 col-md text-center">
+                <small class="text-muted">Copyright &copy; {{ date("Y") }} Rune-Nexus.com | All Rights Reserved.</small>
             </div>
         </div>
-    </footer>
+    </div>
+
 </body>
 </html>
 
