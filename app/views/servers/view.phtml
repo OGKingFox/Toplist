@@ -5,10 +5,7 @@
         {{ content() }}
         <div id="alerts"></div>
 
-        <div class="card border-0 shadow-sm mb-3 bg-default overflow-hidden">
-            <div class="text-white text-center server-title bg-white p-3">
-                <h3 class="mb-0 text-primary">{{ server.title }}</h3>
-            </div>
+        <div class="card border-0 shadow-sm mb-3 overflow-hidden">
             <div class="card-body p-2" style="height:210px;">
                 <canvas id="voteChart" height="200px"></canvas>
             </div>
@@ -29,6 +26,9 @@
         </div>
 
         <div class="card border=0 shadow-sm mb-3 overflow-hidden">
+            <div class="text-white text-center server-title bg-white p-3">
+                <h3 class="mb-0 text-primary">{{ server.title }}</h3>
+            </div>
             <ul class="nav nav-tabs pl-3 pt-3 bg-gradient-primary" id="myTab" role="tablist">
                 <li class="nav-item">
                     <a class="nav-link active" id="info-tab" data-toggle="tab" href="#serverInfo" role="tab"
