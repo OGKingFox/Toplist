@@ -72,11 +72,11 @@
     let chart = new Chart(ctx2, {
         type: 'bar',
         data: {
-            labels: [<?= implode(',', $days) ?>],
+            labels: ['<?= implode('\',\'', $days) ?>'],
             datasets: [
                 {
                     label: 'Votes',
-                    data: <?= json_encode(array_values($graph)) ?>,
+                    data: <?= json_encode($data) ?>,
                     borderColor: window.chartColors.purple,
                     backgroundColor:  window.chartColors.purple,
                     hoverBackgroundColor: window.chartColors.purpleLight,

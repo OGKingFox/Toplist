@@ -15,51 +15,32 @@ class DashboardController extends BaseController {
         $this->view->likes   = Likes::count();
         $this->view->servers = Servers::count();
 
-        $this->view->graph = $this->getGraphData(14);
-        $this->view->days  = Functions::getLastNDays(14, 'd');
-    }
+        $votes = $this->getGraphData(13);
 
-    public function graphAction() {
-        $this->view->setRenderLevel(View::LEVEL_ACTION_VIEW);
-
-        $days = $this->request->getPost("days", "int", 28);
-
-        $this->view->graph = $this->getGraphData($days);
-        $this->view->days  = Functions::getLastNDays($days, 'd');
+        $this->view->days = array_column($votes, 'time');
+        $this->view->data = array_column($votes, 'total');
     }
 
     /**
      * @param $days
      * @return array
      */
-    public function getGraphData($days = 28) {
+    public function getGraphData($days = 14) {
         $cache = new BackFile(new FrontData(), ['cacheDir' => "../app/compiled/servers/statistics/"]);
         $data  = $cache->get('global.cache', 600);
 
         if (!$data) {
             $timeInSecs = (60 * 60 * 24 * $days);
 
-            $votes = Votes::query()
-                ->conditions(":current: - voted_on < $timeInSecs")
-                ->bind(['current' => time() ])
-                ->execute();
-
-            $lastNdays = Functions::getLastNDays($days, 'n j');
-            $data      = array_fill_keys($lastNdays, 0);
-
-            foreach ($votes as $vote) {
-                $day  = date("n j", $vote->voted_on); // minus 18000 because of SQL timezone difference.
-
-                if (!isset($data[$day])) {
-                    $data[$day] = 0;
-                }
-
-                $data[$day] += 1;
-            }
-
-            foreach ($data as $key => $value) {
-                $data[$key] = round($value, 2);
-            }
+            $data = Votes::query()
+                ->columns([
+                    "FROM_UNIXTIME(voted_on, '%m/%d') AS time",
+                    'COUNT(*) AS total'
+                ])
+                ->conditions("UNIX_TIMESTAMP() - voted_on < $timeInSecs")
+                ->groupBy("time")
+                ->orderBy("ANY_VALUE(time) ASC")
+                ->execute()->toArray();
 
             $cache->save('global.cache', $data);
         }
