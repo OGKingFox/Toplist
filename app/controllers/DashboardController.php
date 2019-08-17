@@ -1,6 +1,9 @@
 <?php
 
+use Phalcon\Cache\Backend\File as BackFile;
+use Phalcon\Cache\Frontend\Data as FrontData;
 use Phalcon\Mvc\View;
+use Phalcon\Tag;
 
 class DashboardController extends BaseController {
 
@@ -25,31 +28,41 @@ class DashboardController extends BaseController {
         $this->view->days  = Functions::getLastNDays($days, 'd');
     }
 
-    public static function getGraphData($days) {
-        $timeInSecs = (60 * 60 * 24 * $days);
+    /**
+     * @param $days
+     * @return array
+     */
+    public function getGraphData($days = 28) {
+        $cache = new BackFile(new FrontData(), ['cacheDir' => "../app/compiled/servers/statistics/"]);
+        $data  = $cache->get('global.cache', 600);
 
-        $votes = Votes::query()
-            ->conditions(":current: - voted_on < $timeInSecs")
-            ->bind(['current' => time() ])
-            ->execute();
+        if (!$data) {
+            $timeInSecs = (60 * 60 * 24 * $days);
 
-        $lastNdays = Functions::getLastNDays($days, 'n j');
-        $data      = array_fill_keys($lastNdays, 0);
+            $votes = Votes::query()
+                ->conditions(":current: - voted_on < $timeInSecs")
+                ->bind(['current' => time() ])
+                ->execute();
 
-        foreach ($votes as $vote) {
-            $day  = date("n j", $vote->voted_on); // minus 18000 because of SQL timezone difference.
+            $lastNdays = Functions::getLastNDays($days, 'n j');
+            $data      = array_fill_keys($lastNdays, 0);
 
-            if (!isset($data[$day])) {
-                $data[$day] = 0;
+            foreach ($votes as $vote) {
+                $day  = date("n j", $vote->voted_on); // minus 18000 because of SQL timezone difference.
+
+                if (!isset($data[$day])) {
+                    $data[$day] = 0;
+                }
+
+                $data[$day] += 1;
             }
 
-            $data[$day] += 1;
-        }
+            foreach ($data as $key => $value) {
+                $data[$key] = round($value, 2);
+            }
 
-        foreach ($data as $key => $value) {
-            $data[$key] = round($value, 2);
+            $cache->save('global.cache', $data);
         }
-
         return $data;
     }
 
