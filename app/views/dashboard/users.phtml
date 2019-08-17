@@ -59,20 +59,24 @@
                                    data-type="revoke" data-id="{{ user.user_id }}">
                                     Revoke Premium
                                 </a>
-                                <a class="dropdown-item" href="#" id="userAction"
-                                   data-type="ban" data-id="{{ user.user_id }}">
-                                    Ban
-                                </a>
 
+                                {% if user.role is 'Banned' %}
                                 <a class="dropdown-item" href="#" id="userAction"
                                    data-type="unban" data-id="{{ user.user_id }}">
                                     Unban
                                 </a>
-
+                                {% else %}
+                                <a class="dropdown-item" href="#" id="userAction"
+                                   data-type="ban" data-id="{{ user.user_id }}">
+                                    Ban
+                                </a>
                                 <a class="dropdown-item" href="#" id="userAction"
                                    data-type="kick" data-id="{{ user.user_id }}">
                                     Kick from Server
                                 </a>
+                                {% endif %}
+
+
 
                                 <a class="dropdown-item" href="#" id="userAction"
                                    data-type="delete" data-id="{{ user.user_id }}">

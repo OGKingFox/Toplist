@@ -37,8 +37,12 @@
     {{ javascript_include("js/bootstrap.bundle.min.js") }}
     {{ javascript_include("js/javascript.js?v="~time()) }}
 
-    {{ javascript_include('js/aos.js?v='~time()) }}
-    {{ stylesheet_link("css/aos.css?v="~time()) }}
+    {% if router.getControllerName() is 'premium' %}
+        {{ javascript_include('js/aos.js?v='~time()) }}
+        {{ stylesheet_link("css/aos.css?v="~time()) }}
+    {% endif %}
+
+
 </head>
 
 <body>

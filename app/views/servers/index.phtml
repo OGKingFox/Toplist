@@ -102,20 +102,3 @@
     </nav>
     {% endif %}
 </div>
-
-<hr>
-
-<div id="stats">
-    <div class="text-center">
-        <p><i class="fal fa-spinner fa-spin fa-pulse fa-4x text-primary"></i></p>
-        <h4 class="text-primary">Loading Statistics</h4>
-    </div>
-</div>
-
-<script>
-    setTimeout(function() {
-        $.post("{{ url('servers/stats') }}", function(data) {
-            $('#stats').html(data);
-        });
-    }, 1000);
-</script>
