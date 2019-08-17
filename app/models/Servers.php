@@ -315,7 +315,7 @@ class Servers extends \Phalcon\Mvc\Model {
      * @return string
      */
     public static function genSeoTitle($server, $isArr = false) {
-        return ($isArr ? $server['id'] : $server->id).'-'.Tag::friendlyTitle(($isArr ? $server['title'] : $server->title));
+        return $server->id.'-'.Tag::friendlyTitle($server->title);
 
     }
 

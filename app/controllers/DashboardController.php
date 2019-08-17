@@ -104,6 +104,23 @@ class DashboardController extends BaseController {
         return true;
     }
 
+    public function reportsAction($page = 1) {
+        if ($this->request->hasQuery("delete")) {
+            $delete_id = $this->request->getQuery("delete", 'int');
+            $report = Reports::getReport($delete_id);
+            $report->delete();
+            return $this->response->redirect($this->request->getHTTPReferer());
+        }
+
+        $reports = (new PaginatorModel([
+            'data' => Reports::getReports(),
+            'limit' => 15,
+            'page' => $page
+        ]))->getPaginate();
+
+        $this->view->reports = $reports;
+    }
+
     public function premiumAction() {
 
     }

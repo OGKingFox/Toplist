@@ -70,35 +70,8 @@
 <div class="mb-5">
     {% set game_seo = game.id~'-'~str_replace(" ", "-", game.title|lowercase) %}
 
-    {% if servers.total_pages > 0 %}
-    <nav aria-label="...">
-        <ul class="pagination justify-content-center">
-            <li class="page-item">
-                {{ link_to('servers/'~game_seo~'/'~servers.first,
-                '<i class="fal fa-angle-double-left"></i>',
-                'class' : 'page-link') }}
-            </li>
-            <li class="page-item mr-3">
-                {{ link_to('servers/'~game_seo~'/'~servers.before,
-                '<i class="fal fa-angle-left"></i>',
-                'class' : 'page-link') }}
-            </li>
-            {% for i in 1..servers.total_pages %}
-            <li class="page-item {{ i is servers.current ? 'active' : ''}}">
-                <a class="page-link" href="#">{{ i }}</a>
-            </li>
-            {% endfor %}
-            <li class="page-item ml-3">
-                {{ link_to('servers/'~game_seo~'/'~servers.next,
-                '<i class="fal fa-angle-right"></i>',
-                'class' : 'page-link') }}
-            </li>
-            <li class="page-item">
-                {{ link_to('servers/'~game_seo~'/'~servers.last,
-                '<i class="fal fa-angle-double-right"></i>',
-                'class' : 'page-link') }}
-            </li>
-        </ul>
-    </nav>
-    {% endif %}
+    {{ partial('partials/pagination', [
+        'data' : servers,
+        'link' : 'servers/'~game_seo~'/'
+    ]) }}
 </div>

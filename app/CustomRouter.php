@@ -48,7 +48,7 @@ class CustomRouter extends RouterGroup {
             ]
         ],
         [
-            "route" => "/advertising",
+            "route" => "/advertise",
             "params" => [
                 "controller" 	=> "pages",
                 "action"     	=> "advertising"

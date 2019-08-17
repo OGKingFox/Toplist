@@ -9,6 +9,26 @@ class Reports extends \Phalcon\Mvc\Model {
     private $reason;
     private $date_submitted;
 
+    public static function getReport($id) {
+        return self::query()
+            ->conditions("id = :id:")
+            ->bind([
+                'id' => $id
+            ])->execute()->getFirst();
+    }
+    public static function getReports() {
+        return self::query()
+            ->columns([
+                'Reports.*',
+                'Servers.*',
+                'Users.*'
+            ])
+            ->leftJoin("Servers", "Servers.id = Reports.server_id")
+            ->leftJoin("Users", "Users.user_id = Reports.user_id")
+            ->orderBy("Reports.date_submitted DESC")
+            ->execute();
+    }
+
     public static function getRecentReport($userId, $serverId) {
         return self::query()
             ->conditions('user_id = :uid: AND server_id = :sid: AND :time: - date_submitted < 300')
