@@ -11,6 +11,9 @@ class DashboardController extends BaseController {
         $this->view->votes   = Votes::count();
         $this->view->likes   = Likes::count();
         $this->view->servers = Servers::count();
+
+        $this->view->graph = $this->getGraphData(14);
+        $this->view->days  = Functions::getLastNDays(14, 'd');
     }
 
     public function graphAction() {
