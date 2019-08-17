@@ -169,6 +169,18 @@ class BaseController extends Controller {
     }
 
     /**
+     * @param $success
+     * @param $message
+     * @return array
+     */
+    public function getStatus($success, $message) {
+        return [
+            'success' => $success,
+            'message' => $message
+        ];
+    }
+
+    /**
      * @param $msg array
      */
     public function debug($msg) {

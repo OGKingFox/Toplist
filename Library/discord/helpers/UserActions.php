@@ -45,7 +45,8 @@ class UserActions extends NexusBot {
 
         return [
             'success' => $response ? false : true,
-            'message' => $this->user->getUsername().' has '.($response ? 'not ' : '').'been banned.'
+            'message' => $this->user->getUsername().' has '.($response ? 'not ' : '').'been banned.',
+            'title'   => 'Banned'
         ];
     }
 
@@ -68,7 +69,8 @@ class UserActions extends NexusBot {
 
         return [
             'success' => $response ? false : true,
-            'message' => $message
+            'message' => $message,
+            'title'   => 'Ban Revoked'
         ];
     }
 
@@ -100,7 +102,8 @@ class UserActions extends NexusBot {
 
         return [
             'success' => $response ? false : true,
-            'message' => $message
+            'message' => $message,
+            'title'   => 'User Kicked'
         ];
     }
 

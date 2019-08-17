@@ -30,7 +30,7 @@
         {% endif %}
 
         {% for i in start..end %}
-        <li class="page-item {{ i is itemList.current ? 'active' : '' }}">
+        <li class="page-item {{ i is data.current ? 'active' : '' }}">
             {{ link_to(link~i,
                 i, 'class' : 'page-link', 'id' : 'pageBtn', 'data-page' : i) }}
         </li>

@@ -76,8 +76,6 @@
                                 </a>
                                 {% endif %}
 
-
-
                                 <a class="dropdown-item" href="#" id="userAction"
                                    data-type="delete" data-id="{{ user.user_id }}">
                                     Delete
@@ -89,8 +87,12 @@
                 {% endfor %}
             </table>
         </div>
+
+        {{ partial('partials/pagination', ['data' : users, 'link' : 'dashboard/users/']) }}
     </div>
 </div>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
 
 <script>
     $(document).on('click', '#userAction', function(event) {
@@ -103,6 +105,28 @@
             id : id,
             type : type
         }, function(data) {
+            try {
+                let json = JSON.parse(data);
+
+                Swal.fire({
+                    title: json.success ? json.title : 'Error',
+                    html: json.message,
+                    type: json.success ? 'success' : 'error',
+                    timer: 1500,
+                    showConfirmButton: false,
+                    onBeforeOpen: () => {
+                        timerInterval = setInterval(() => {}, 100)
+                    },
+                    onClose: () => {
+                        clearInterval(timerInterval);
+                        if (json.success) {
+                            window.location.reload();
+                        }
+                    }
+                });
+            } catch (err) {
+                console.log(err);
+            }
             console.log(data);
         })
 
