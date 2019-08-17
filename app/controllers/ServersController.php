@@ -51,16 +51,7 @@ class ServersController extends BaseController {
             return true;
         }
 
-        $this->tag->setTitle($server->title);
-
-        if ($server->info->meta_info) {
-            $this->view->description = $server->info->meta_info;
-        }
-
-        if ($server->info->meta_tags) {
-            $tags = implode(",", json_decode($server->info->meta_tags, true));
-            $this->view->meta_tags = $this->filter->sanitize($tags, 'string');
-        }
+        $this->setMetaInfo($server);
 
         if ($this->request->isPost() && $this->security->checkToken()) {
             $user_id  = $this->getUser()->id;
@@ -85,24 +76,20 @@ class ServersController extends BaseController {
             }
         }
 
-        $paginator = new PaginatorModel([
+        $comments = (new PaginatorModel([
             'data'  => Comments::getComments($server->id),
             'limit' => 5,
             'page'  => $this->request->getQuery("page", "int", 1)
-        ]);
-
-        $days = 14;
+        ]))->getPaginate();
 
         $this->view->server    = $server;
-        $this->view->days      = range(1, date('t'));
         $this->view->likes     = Likes::count(['conditions' => 'server_id = '.$server->id]);
-        $this->view->comments  = $paginator->getPaginate();
+        $this->view->comments  = $comments;
         $this->view->resetIn   = Functions::timeLeft('Y-m-t 23:59:59', '%dd %hh %im %ss');
 
-        $graphData = $this->getGraphData($server, $days);
-
-        $this->view->graphData = $graphData;
-        $this->view->days      = $graphData['days'];
+        $graphData = $this->getGraphData($server, 13);
+        $this->view->days = array_column($graphData, 'time');
+        $this->view->data = array_column($graphData, 'total');
         return true;
     }
 
@@ -609,37 +596,42 @@ class ServersController extends BaseController {
         }
     }
 
+    private function setMetaInfo($server) {
+        $this->tag->setTitle($server->title);
+
+        if ($server->info->meta_info) {
+            $this->view->description = $server->info->meta_info;
+        }
+
+        if ($server->info->meta_tags) {
+            $tags = implode(",", json_decode($server->info->meta_tags, true));
+            $this->view->meta_tags = $this->filter->sanitize($tags, 'string');
+        }
+    }
+
     /**
-     * @param Servers $server
-     * @param $days
-     * @return array
+     * @param $server
+     * @param int $days
+     * @return array|mixed|null
      */
-    public function getGraphData($server, $days = 28) {
+    public function getGraphData($server, $days = 14) {
         $seo   = $server->id.'-'.Tag::friendlyTitle($server->title);
         $cache = new BackFile(new FrontData(), ['cacheDir' => "../app/compiled/servers/statistics/"]);
         $data  = $cache->get($seo.'.cache', 600);
 
         if (!$data) {
-            $daysArr = Functions::getLastNDays($days, 'n j');
-
-            $data['day_limit'] = $days;
-            $data['days']      = Functions::getLastNDays($days, 'd');
-            $data['stats']     = array_fill_keys($daysArr, 0);
-
             $timeInSecs = (60 * 60 * 24 * $days);
 
-            $votes = Votes::query()
-                ->conditions("server_id = :sid: AND :current: - voted_on < $timeInSecs")
-                ->bind(['sid' => $server->id, 'current' => time()])
-                ->execute();
-
-            foreach ($votes as $vote) {
-                $day = date("n j", $vote->voted_on);
-                if (!isset($data['stats'][$day])) {
-                    $data['stats'][$day] = 0;
-                }
-                $data['stats'][$day] += 1;
-            }
+            $data = Votes::query()
+                ->columns([
+                    "FROM_UNIXTIME(voted_on, '%m/%d') AS time",
+                    'COUNT(*) AS total'
+                ])
+                ->conditions("server_id = :sid: AND UNIX_TIMESTAMP() - voted_on < $timeInSecs")
+                ->groupBy("time")
+                ->orderBy("ANY_VALUE(time) ASC")
+                ->bind(['sid' => $server->id])
+                ->execute()->toArray();
 
             $cache->save($seo.'.cache', $data);
         }
