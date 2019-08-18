@@ -559,8 +559,6 @@ class ServersController extends BaseController {
      * @return array
      */
     private function uploadImage($file) {
-        global $config;
-
         $handle = fopen($file->getTempName(), 'r');
         $encode = base64_encode(fread($handle, filesize($file->getTempName())));
         $query  = http_build_query(['image' => $encode]);
@@ -568,7 +566,7 @@ class ServersController extends BaseController {
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL,"https://api.imgur.com/3/image");
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
-        curl_setopt($ch, CURLOPT_HTTPHEADER, ['Authorization: Client-ID '.$config->path("imgur.api_key")]);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, ['Authorization: Client-ID '.$this->config->path("imgur.api_key")]);
         curl_setopt($ch, CURLOPT_POST, 1);
         curl_setopt($ch, CURLOPT_POSTFIELDS, $query);
 

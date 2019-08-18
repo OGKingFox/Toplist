@@ -64,28 +64,23 @@ class ToolsController extends BaseController {
      */
     private function updateItems() {
         $url  = "https://www.osrsbox.com/osrsbox-db/items-summary.json";
-        $file = file_get_contents($url);
+        $data = file_get_contents($url);
 
-        if (!$file) {
-            return json_decode('../resources/item-data.json', true);
+        if (!$data) {
+            $data = file_get_contents("../resources/item-data.json");
+        } else {
+            $oldData = json_decode($data, true);
+            $data    = [];
+
+            foreach ($oldData as $key => $value) {
+                $itemId   = $value['id'];
+                $itemName = $value['name'];
+                $data[] = ['id' => $itemId, 'name' => $itemName];
+            }
+
+            file_put_contents('../resources/item-data.json', json_encode($data));
         }
-
-        $list = json_decode($file, true);
-
-        if (!$list) {
-            return json_decode('../resources/item-data.json', true);
-        }
-
-        $new  = [];
-
-        foreach ($list as $key => $value) {
-            $itemId   = $value['id'];
-            $itemName = $value['name'];
-            $new[] = ['id' => $itemId, 'name' => $itemName];
-        }
-
-        file_put_contents('../resources/item-data.json', json_encode($new));
-        return $new;
+        return $data;
     }
 
 }

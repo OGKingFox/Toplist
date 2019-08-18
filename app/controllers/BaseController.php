@@ -4,6 +4,11 @@ use \Phalcon\Mvc\Dispatcher;
 
 class BaseController extends Controller {
 
+    /**
+     * @var Phalcon\Config
+     */
+    protected $config;
+
     private $page_meta = [
         "pages" => [
             "docs" => [
@@ -229,6 +234,8 @@ class BaseController extends Controller {
         $controller = $this->router->getControllerName();
         $action = $this->router->getActionName() ?: $controller;
 
+        $this->config = $this->getConfig();
+
         if (isset($this->page_meta[$controller], $this->page_meta[$controller][$action]) ) {
             $meta = $this->page_meta[$controller][$action];
 
@@ -243,5 +250,12 @@ class BaseController extends Controller {
         } else {
             $this->tag->setTitle(ucwords($action));
         }
+    }
+
+    /**
+     * @return mixed|Phalcon\Config
+     */
+    public function getConfig() {
+        return $this->getDI()->get("config");
     }
 }

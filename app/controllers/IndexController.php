@@ -19,7 +19,7 @@ class IndexController extends BaseController {
     }
 
     public function logoutAction() {
-        global $config;
+        $config = $this->getConfig();
 
         $this->cookies->set("access_token", '', time() - 1000, $config->path("core.base_url"));
         $this->session->destroy();

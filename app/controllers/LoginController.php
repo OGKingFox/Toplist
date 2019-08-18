@@ -6,11 +6,9 @@ use Phalcon\Mvc\View;
 class LoginController extends BaseController {
 
     public function indexAction() {
-        global $config;
-
         $params = array(
-            'client_id'     => $config->path("discord.oauth.client_id"),
-            'redirect_uri'  => $config->path("discord.oauth.redirect_uri"),
+            'client_id'     => $this->config->path("discord.oauth.client_id"),
+            'redirect_uri'  => $this->config->path("discord.oauth.redirect_uri"),
             'response_type' => 'code',
             'scope'         => 'identify guilds email'
         );
@@ -21,15 +19,13 @@ class LoginController extends BaseController {
     public function urlAction() {
         $this->view->setRenderLevel(View::LEVEL_NO_RENDER);
 
-        global $config;
-
         if (!$this->request->isAjax()) {
             return false;
         }
 
         $params = array(
-            'client_id'     => $config->path("discord.oauth.client_id"),
-            'redirect_uri'  => $config->path("discord.oauth.redirect_uri"),
+            'client_id'     => $this->config->path("discord.oauth.client_id"),
+            'redirect_uri'  => $this->config->path("discord.oauth.redirect_uri"),
             'response_type' => 'code',
             'scope'         => 'identify guilds email'
         );
@@ -39,8 +35,6 @@ class LoginController extends BaseController {
     }
 
     public function authAction() {
-        global $config;
-
         if (!$this->request->hasQuery("code")) {
             return $this->response->redirect("");
         }
@@ -51,9 +45,9 @@ class LoginController extends BaseController {
             ->setContentType("x-www-form-urlencoded")
             ->setData([
                 "grant_type"    => "authorization_code",
-                'client_id'     => $config->path("discord.oauth.client_id"),
-                'client_secret' => $config->path("discord.oauth.client_secret"),
-                'redirect_uri'  => $config->path("discord.oauth.redirect_uri"),
+                'client_id'     => $this->config->path("discord.oauth.client_id"),
+                'client_secret' => $this->config->path("discord.oauth.client_secret"),
+                'redirect_uri'  => $this->config->path("discord.oauth.redirect_uri"),
                 'code'          => $this->request->getQuery("code")
             ])
             ->submit();
@@ -85,7 +79,7 @@ class LoginController extends BaseController {
             $user->setDiscriminator($userInfo->discriminator);
             $user->setAvatar($userInfo->avatar);
 
-            $server_id = $config->path("discord.server_id");
+            $server_id = $this->config->path("discord.server_id");
 
             $server_info = (new NexusBot())
                 ->setIsBot(true)
@@ -96,7 +90,8 @@ class LoginController extends BaseController {
                 $user->setRole("Member");
                 $user->save();
 
-                $this->cookies->set("access_token", $token, time() + $expires, $config->path("core.base_url"));
+                $this->cookies->set("access_token", $token, time() + $expires,
+                    $this->config->path("core.base_url"));
                 $this->session->set("user", $userInfo);
                 return $this->response->redirect("");
             }
@@ -124,7 +119,8 @@ class LoginController extends BaseController {
             $user->setRole($role);
             $user->save();
 
-            $this->cookies->set("access_token", $token, time() + $expires, $config->path("core.base_url"));
+            $this->cookies->set("access_token", $token, time() + $expires,
+                $this->config->path("core.base_url"));
             $this->session->set("user", $userInfo);
         }
 
