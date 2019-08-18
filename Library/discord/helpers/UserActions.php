@@ -3,6 +3,8 @@
 
 class UserActions extends NexusBot {
 
+    private $server_id;
+
     /**
      * @var Users
      */
@@ -13,14 +15,16 @@ class UserActions extends NexusBot {
      * @param Users $user
      */
     public function __construct(Users $user) {
-        $this->user = $user;
+        global $config;
+        $this->user      = $user;
+        $this->server_id = $config->path("discord.server_id");
     }
 
     /**
      * @return mixed
      */
     public function ban() {
-        $response = $this->setEndpoint("guilds/".server_id."/bans/".$this->user->getUserId())
+        $response = $this->setEndpoint("guilds/".$this->server_id."/bans/".$this->user->getUserId())
             ->setType("put")
             ->setData([
                 'delete-message-days' => 7,
@@ -41,6 +45,12 @@ class UserActions extends NexusBot {
             $this->user->setPremiumExpires(-1);
             $this->user->setRole("Banned");
             $this->user->update();
+        } else {
+            return [
+                'success' => false,
+                'message' => $response,
+                'title' => 'Failed'
+            ];
         }
 
         return [
@@ -52,7 +62,7 @@ class UserActions extends NexusBot {
 
 
     public function unban() {
-        $response = $this->setEndpoint("guilds/".server_id."/bans/".$this->user->getUserId())
+        $response = $this->setEndpoint("guilds/".$this->server_id."/bans/".$this->user->getUserId())
             ->setType("delete")
             ->setIsBot(true)
             ->submit();
@@ -84,7 +94,7 @@ class UserActions extends NexusBot {
             ];
         }
 
-        $response = $this->setEndpoint("guilds/".server_id."/members/".$this->user->getUserId())
+        $response = $this->setEndpoint("guilds/".$this->server_id."/members/".$this->user->getUserId())
             ->setType("delete")
             ->setIsBot(true)
             ->submit();
@@ -108,7 +118,7 @@ class UserActions extends NexusBot {
     }
 
     public function getMember() {
-        $response = $this->setEndpoint("guilds/".server_id."/members/".$this->user->getUserId())
+        $response = $this->setEndpoint("guilds/".$this->server_id."/members/".$this->user->getUserId())
             ->setIsBot(true)
             ->submit();
 

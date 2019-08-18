@@ -12,6 +12,7 @@
 body {
     font-family: 'OpenSans-Regular', sans-serif;
     background-color: #f1f1f1;
+    overflow-x: hidden;
 }
 header {
     height: 450px;

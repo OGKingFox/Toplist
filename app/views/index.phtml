@@ -24,7 +24,7 @@
 
     <meta name="author" content="King Fox">
 	<meta name="viewport" content="width=device-width, initial-scale=0.86">
-	<link rel="shortcut icon" type="image/png" href="<?= base_url; ?>public/img/favicon.png"/>
+	<link rel="shortcut icon" type="image/png" href="{{ config.path('core.base_url') }}public/img/favicon.png"/>
 
     {{ stylesheet_link("css/fontawesome.min.css") }}
 
@@ -212,6 +212,7 @@
         $(this).html("<i class='fal fa-spinner fa-pulse fa-fw'></i>");
 
         $.get('{{ url("login/url") }}', function(data) {
+            console.log(data);
             let url = data.toString();
 
             setTimeout(function() {

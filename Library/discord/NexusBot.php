@@ -121,6 +121,8 @@ class NexusBot {
     }
 
     public function submit() {
+        global $config;
+
         $ch  = curl_init();
         $url = self::base_url.$this->getEndpoint();
 
@@ -148,10 +150,9 @@ class NexusBot {
             }
         }
 
-
         if ($this->isBot()) {
             $headers = [
-                "Authorization: Bot ".bot_key,
+                "Authorization: Bot ".$config->path("discord.bot_key"),
                 "Content-Type: ".$this->getContentType()
             ];
         } else {

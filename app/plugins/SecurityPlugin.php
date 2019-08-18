@@ -6,6 +6,8 @@ use Phalcon\Events\Event;
 use Phalcon\Mvc\User\Plugin;
 use Phalcon\Mvc\Dispatcher;
 use Phalcon\Acl\Adapter\Memory as AclList;
+use Phalcon\Mvc\View;
+
 /**
  * SecurityPlugin
  *
@@ -117,7 +119,7 @@ class SecurityPlugin extends Plugin {
         $role       = "guest";
 
         if ($controller == 'api') {
-            $this->view->setRenderLevel(\Phalcon\Mvc\View::LEVEL_NO_RENDER);
+            $this->view->setRenderLevel(View::LEVEL_NO_RENDER);
             return true;
         }
 
@@ -129,19 +131,23 @@ class SecurityPlugin extends Plugin {
             return true;
         }
 
+        global $config;
+        $base_url = $config->path("core.base_url");
+
         if ($this->cookies->has('access_token')) {
-            if ($this->dispatcher->getControllerName() == "login") {
+            /*if ($this->dispatcher->getControllerName() == "login") {
+                $this->cookies->set("access_token", '', time() - 1000, $base_url);
                 $this->response->redirect("");
                 return false;
-            }
+            }*/
 
             $access_token = $this->cookies->get("access_token");
             $verified     = $this->verifyUser($access_token);
 
             if (!$verified) {
-                $this->cookies->set("access_token", '', time() - 1000, base_url);
+                /*$this->cookies->set("access_token", '', time() - 1000, $base_url);
                 $this->session->destroy();
-                $this->response->redirect("");
+                $this->response->redirect("");*/
                 return false;
             }
 
@@ -149,7 +155,7 @@ class SecurityPlugin extends Plugin {
             $user = Users::getUser($user_id);
 
             if (!$user) {
-                $this->cookies->set("access_token", '', time() - 1000, base_url);
+                $this->cookies->set("access_token", '', time() - 1000, $base_url);
                 $this->session->destroy();
                 $this->response->redirect("");
                 return false;

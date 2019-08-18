@@ -7,7 +7,8 @@
     header('X-Content-Type-Options: nosniff');
     header("Strict-Transport-Security:max-age=63072000");
 
-	use Phalcon\Loader;
+    use Phalcon\Config;
+    use Phalcon\Loader;
 	use Phalcon\Mvc\View;
 	use Phalcon\Mvc\Application;
 	use Phalcon\Di\FactoryDefault;
@@ -21,50 +22,30 @@
     use Phalcon\Session\Adapter\Files;
 
     $loader = new Loader();
+    $di     = new FactoryDefault();
 
-	$loader->registerNamespaces([
-		'RobThree\Auth' => "../Library/auth/",
-	]);
+    require __DIR__.'/config.php';
+    $config = new Config($settings);
 
-	$loader->registerFiles([
-		'config.php',
-        '../Library/HTMLPurifier/HTMLPurifier.standalone.php',
-        '../Library/discord/NexusBot.php',
-        '../Library/discord/helpers/BotMessage.php',
-        '../Library/discord/helpers/UserActions.php'
-    ]);
+    $di->set('config', function () use ($config) {
+        return $config;
+    });
 
-	$loader->registerClasses([
-		"PHPMailer"	    => "../Library/PHPMailer/class.phpmailer.php",
-        "SMTP"	        => "../Library/PHPMailer/class.smtp.php",
-		"CustomRouter"  => "../app/CustomRouter.php",
-        "VoltExtension" => "../app/VoltExtension.php",
-    ]);
-
-	$loader->registerDirs([
-		"../app/controllers/",
-		"../app/models/",
-        "../app/models/tools/",
-		"../app/plugins/",
-		"../Library/"
-	]);
+	$loader->registerFiles($config->path("core.files")->toArray());
+	$loader->registerClasses($config->path("core.classes")->toArray());
+	$loader->registerDirs($config->path("core.paths")->toArray());
 
 	$loader->register();
 
-	$di = new FactoryDefault();
-
-	$di->set("url", function () {
+	$di->set("url", function () use ($config) {
 		$url = new UrlProvider();
-		$url->setBaseUri(base_url);
+		$url->setBaseUri($config->path("core.base_url"));
 		return $url;
 	});
 
-	$di->set('voltService', function ($view, $di) {
+	$di->set('voltService', function ($view, $di) use ($config) {
         $volt = new Volt($view, $di);
-        $volt->setOptions([
-            'compiledPath'      => '../app/compiled/templates/',
-            'compiledExtension' => '.compiled',
-        ]);
+        $volt->setOptions($config->path("core.volt_options")->toArray());
         $compiler = $volt->getCompiler();
         $compiler->addFilter('number_format', 'number_format');
         $compiler->addFilter('count', 'count');
@@ -92,21 +73,21 @@
         return $volt;
     });
 
-	$di->set("view", function () {
+	$di->set("view", function () use ($config) {
 		$view = new View();
-		$view->setViewsDir("../app/views/");
+		$view->setViewsDir($config->path("core.views.directory"));
 		$view->registerEngines([
         	'.phtml' => 'voltService',
     	]);
 		return $view;
 	});
 
-	$di->set('viewCache', function(){
+	$di->set('viewCache', function() use ($config) {
 	   $frontCache = new Phalcon\Cache\Frontend\Output(array(
-		   "lifetime" => 43200 // 12 hours
+		   "lifetime" => $config->path("core.views.expires")
 	   ));
 	   $cache = new Phalcon\Cache\Backend\File($frontCache, array(
-		   "cacheDir" => "../app/compiled/"
+		   "cacheDir" => $config->path("core.views.extension")
 	   ));
 	   return $cache;
 	});
@@ -142,22 +123,17 @@
         return $flash;
 	});
 
-	$di->set("db", function () {
-        return new DbAdapter([
-			"host"     => host,
-			"username" => username,
-			"password" => password,
-			"dbname"   => dbname,
-		]);
+	$di->set("db", function () use ($config) {
+        return new DbAdapter($config->path("database")->toArray());
     });
 
-    $di->set('crypt', function() {
+    $di->set('crypt', function() use ($config) {
         $crypt = new Phalcon\Crypt();
-        $crypt->setKey(encryption_key);
+        $crypt->setKey($config->path("core.cookie_key"));
         return $crypt;
     });
 
-    $di->set('session', function(){
+    $di->set('session', function() {
         $session = new Files();
         $session->start(); // we need to start session
         return $session;

@@ -7,7 +7,7 @@
     var statusBlock = $(document).find('#pp-notice');
 
     var buttonData = {
-        env: 'production',
+        env: '{{ config.path("paypal.mode") }}',
         style: {
             label: 'pay',
             size:  'large', // small | medium | large | responsive
@@ -113,8 +113,8 @@
     };
 
     buttonData.client = {
-        sandbox:    '{{ constant("sandbox_key") }}',
-        production: '{{ constant("production_key") }}'
+        sandbox:    '{{ config.path("paypal.sandbox") }}',
+        production: '{{ config.path("paypal.production") }}'
     };
 
     paypal.Button.render(buttonData, "#pp-btn");
