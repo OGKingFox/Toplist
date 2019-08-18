@@ -28,7 +28,7 @@
     </div>
 </div>
 
-<script src="https://www.google.com/recaptcha/api.js?render={{ constant('CAPTCHA_PUBLIC') }}"></script>
+<script src="https://www.google.com/recaptcha/api.js?render={{ config.path('recaptcha.public')  }}"></script>
 
 <script>
     let locked = false;
@@ -51,7 +51,7 @@
         content.html("<i class='fas fa-spinner fa-pulse'></i>");
 
         grecaptcha.ready(function() {
-            grecaptcha.execute('{{ constant("CAPTCHA_PUBLIC") }}', {
+            grecaptcha.execute("{{ config.path('recaptcha.public')  }}", {
                 action: 'homepage'
             }).then(function(token) {
                 $.post('{{ url("vote/verify") }}', {
@@ -93,9 +93,9 @@
         }, function(data) {
             locked = false;
             try {
-                let json = JSON.parse(data);
+                let json    = JSON.parse(data);
                 let success = json.success;
-                let msg = json.message;
+                let msg     = json.message;
 
                 status.removeClass("text-"+ (success ? "danger" : "success"));
                 status.addClass("text-" + (success ? 'success' : 'danger')).html(msg)
