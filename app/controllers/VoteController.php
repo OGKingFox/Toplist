@@ -113,7 +113,7 @@ class VoteController extends BaseController {
 
         $this->println([
             'success' => true,
-            'message' => $callback
+            'message' => 'Thank you, your vote has been recorded!'
         ]);
         return true;
     }
