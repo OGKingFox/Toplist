@@ -85,7 +85,8 @@
                         {{ link_to('docs', 'Documentation', 'class' : 'nav-link') }}
                     </li>
                     <li class="nav-item text-lg-center">
-                        {{ link_to('https://discord.gg/D5bQ4qG', 'Join our Discord!', 'class' : 'nav-link text-discord', false, 'target' : '_blank') }}
+                        {{ link_to('https://discord.gg/D5bQ4qG', 'Join our Discord!',
+                            'class' : 'nav-link text-discord', false, 'target' : '_blank', 'rel' : 'nofollow') }}
                     </li>
                 </ul>
 
@@ -149,8 +150,8 @@
                     <h5 class="text-primary">Resources</h5>
                     <ul class="list-unstyled text-small">
                         <li>{{ link_to('', 'Community', 'class' : 'text-muted') }}</li>
-                        <li>{{ link_to('', 'Server Hosting', 'class' : 'text-muted') }}</li>
-                        <li>{{ link_to('', 'Web Hosting', 'class' : 'text-muted') }}</li>
+                        <li>{{ link_to('pages/hosting', 'Server Hosting', 'class' : 'text-muted') }}</li>
+                        <li>{{ link_to('pages/hosting', 'Web Hosting', 'class' : 'text-muted') }}</li>
                     </ul>
                 </div>
                 <div class="col-6 col-md">
@@ -166,7 +167,7 @@
         </div>
     </footer>
 
-    <div class="copyright bg-darker">
+    <div class="copyright bg-dark">
         <div class="row py-3">
             <div class="col-12 col-md text-center">
                 <small class="text-muted">Copyright &copy; {{ date("Y") }} Rune-Nexus.com | All Rights Reserved.</small>

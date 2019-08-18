@@ -45,7 +45,7 @@ class SecurityPlugin extends Plugin {
             'recover'    => ['index'],
             'vote'       => ['index', 'verify'],
             'errors'     => ['show401', 'show404', 'show500'],
-            'pages'      => ['docs', 'advertising', 'faq', 'terms', 'privacy'],
+            'pages'      => ['docs', 'advertising', 'faq', 'terms', 'privacy', 'hosting'],
             'premium'    => ['index'],
             'tools'      => ['index', 'items', 'search']
         ];
@@ -145,9 +145,9 @@ class SecurityPlugin extends Plugin {
             $verified     = $this->verifyUser($access_token);
 
             if (!$verified) {
-                /*$this->cookies->set("access_token", '', time() - 1000, $base_url);
+                $this->cookies->set("access_token", '', time() - 1000, $base_url);
                 $this->session->destroy();
-                $this->response->redirect("");*/
+                $this->response->redirect("");
                 return false;
             }
 

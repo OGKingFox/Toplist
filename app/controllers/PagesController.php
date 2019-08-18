@@ -18,6 +18,10 @@ class PagesController extends BaseController {
 
     }
 
+    public function hostingAction() {
+
+    }
+
     public function advertisingAction() {
         echo 'Coming Soon<sup>TM</sup>';
     }
