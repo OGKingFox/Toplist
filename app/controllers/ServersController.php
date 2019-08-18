@@ -180,7 +180,7 @@ class ServersController extends BaseController {
                 $this->flash->error($mainInfo->getMessages());
             }
 
-            $infoBox = $this->request->getPost("info", "string", $details->info);
+            $infoBox = $this->request->getPost("info", null, $details->info);
             $infoBox = Functions::getPurifier()->purify($infoBox);
 
             $details = $details ? $details : new ServersInfo();
