@@ -162,7 +162,7 @@ class DashboardController extends BaseController {
         switch ($type) {
             case "revoke":
                 $user->setPremiumLevel(0);
-                $user->setPremiumExpires(-1);
+                $user->setPremiumExpires(0);
                 $user->update();
                 $this->printStatus(true, $user->getUsername().' no longer has premium.');
                 break;
