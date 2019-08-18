@@ -133,11 +133,11 @@
         return $crypt;
     });
 
-    $di->set('session', function(){
+    /*$di->set('session', function(){
         $session = new \Phalcon\Session\Adapter\Files();
         $session->start(); // we need to start session
         return $session;
-    });
+    });*/
 
 	$application = new Application($di);
 
