@@ -44,11 +44,9 @@ class ToolsController extends BaseController {
     }
 
     private function getItemList() {
-        $cache = new BackFile(new FrontData(['lifetime' => 86400 ]), [
-            'cacheDir' =>  "../app/compiled/"
-        ]);
-
-        $itemList = $cache->get("items.data.cache");
+        $path     = $this->getConfig()->path("core.base_path");
+        $cache    = new BackFile(new FrontData(), ['cacheDir' =>  $path.'/app/compiled/']);
+        $itemList = $cache->get("items.data.cache", 86400);
 
         if (!$itemList) {
             $itemList = $this->updateItems();
@@ -63,24 +61,35 @@ class ToolsController extends BaseController {
      * @return array|mixed
      */
     private function updateItems() {
-        $url  = "https://www.osrsbox.com/osrsbox-db/items-summary.json";
-        $data = file_get_contents($url);
+        $path = $this->getConfig()->path("core.base_path");
+        $data = $this->getFile();
 
         if (!$data) {
-            $data = file_get_contents("../resources/item-data.json");
-        } else {
-            $oldData = json_decode($data, true);
-            $data    = [];
-
-            foreach ($oldData as $key => $value) {
-                $itemId   = $value['id'];
-                $itemName = $value['name'];
-                $data[] = ['id' => $itemId, 'name' => $itemName];
-            }
-
-            file_put_contents('../resources/item-data.json', json_encode($data));
+            return json_decode(file_get_contents($path.'/resources/item-data.json'), true);
         }
+
+        $oldData = $data;
+        $data    = [];
+
+        foreach ($oldData as $key => $value) {
+            $itemId   = $value['id'];
+            $itemName = $value['name'];
+            $data[]   = ['id' => $itemId, 'name' => $itemName];
+        }
+
+        file_put_contents($path.'/resources/item-data.json', json_encode($data));
         return $data;
+    }
+
+    private function getFile() {
+        $url = 'https://www.osrsbox.com/osrsbox-db/items-summary.json';
+        $curl = curl_init();
+        curl_setopt($curl, CURLOPT_URL, $url);
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($curl, CURLOPT_HEADER, false);
+        $data = curl_exec($curl);
+        curl_close($curl);
+        return json_decode($data, true);
     }
 
 }
