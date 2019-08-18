@@ -8,7 +8,7 @@ use Phalcon\Paginator\Adapter\NativeArray;
 class ToolsController extends BaseController {
 
     public function indexAction() {
-        $this->updateItems();
+
     }
 
     public function itemsAction() {
@@ -49,36 +49,27 @@ class ToolsController extends BaseController {
         $itemList = $cache->get("items.data.cache", 86400);
 
         if (!$itemList) {
-            $itemList = $this->updateItems();
+            $path = $this->getConfig()->path("core.base_path");
+            $itemList = $this->getFile();
+
+            if (!$itemList) {
+                return json_decode(file_get_contents($path.'/resources/item-data.json'), true);
+            }
+
+            $oldData = $itemList;
+            $itemList    = [];
+
+            foreach ($oldData as $key => $value) {
+                $itemId   = $value['id'];
+                $itemName = $value['name'];
+                $itemList[]   = ['id' => $itemId, 'name' => $itemName];
+            }
+
+            file_put_contents($path.'/resources/item-data.json', json_encode($itemList));
             $cache->save("items.data.cache", $itemList);
         }
 
         return $itemList;
-    }
-
-    /**
-     * Grabs new items from OSRSBOX if the cache is expired. Falls back on the saved json file if fails.
-     * @return array|mixed
-     */
-    private function updateItems() {
-        $path = $this->getConfig()->path("core.base_path");
-        $data = $this->getFile();
-
-        if (!$data) {
-            return json_decode(file_get_contents($path.'/resources/item-data.json'), true);
-        }
-
-        $oldData = $data;
-        $data    = [];
-
-        foreach ($oldData as $key => $value) {
-            $itemId   = $value['id'];
-            $itemName = $value['name'];
-            $data[]   = ['id' => $itemId, 'name' => $itemName];
-        }
-
-        file_put_contents($path.'/resources/item-data.json', json_encode($data));
-        return $data;
     }
 
     private function getFile() {
