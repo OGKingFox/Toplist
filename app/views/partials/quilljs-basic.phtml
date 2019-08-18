@@ -3,7 +3,7 @@
 
 <script>
     var apiUrl = 'https://api.imgur.com/3/image';
-    var apiKey = '{{ constant("IMGUR_KEY") }}';
+    var apiKey = '{{ config.path("imgur.api_key") }}';
 
     var toolbarOptions = [
         ['bold', 'italic', 'underline'],
