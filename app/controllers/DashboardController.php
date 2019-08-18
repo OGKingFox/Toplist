@@ -141,7 +141,7 @@ class DashboardController extends BaseController {
         }
 
         $expires = $user->getPremiumExpires();
-        $user->setPremiumExpires(($expires ? $expires : time()) + $package->getLength());
+        $user->setPremiumExpires(($expires > time() ? $expires : time())  + $package->getLength());
 
         if ($package->id > $user->getPremiumLevel()) {
             $user->setPremiumLevel($package->id);
