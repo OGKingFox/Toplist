@@ -79,7 +79,9 @@ class DashboardController extends BaseController {
         if ($this->request->isPost() && $this->security->checkToken()) {
             $user_id = $this->request->getPost("user_id", 'string');
             $pid     = $this->request->getPost("package", "int");
-            $this->givePremium($user_id, $pid);
+            $status  = $this->givePremium($user_id, $pid);
+
+            $this->flash->message($status['success'] ? 'success' : 'error', $status['message']);
         }
 
         if ($this->request->isAjax()) {
