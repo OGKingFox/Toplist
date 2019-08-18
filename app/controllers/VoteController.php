@@ -119,8 +119,10 @@ class VoteController extends BaseController {
     }
 
     private function verifyReCaptcha($recaptchaCode){
+        global $config;
+
         $curl = curl_init("https://www.google.com/recaptcha/api/siteverify");
-        $data = ["secret" => CAPTCHA_PRIVATE, "response" => $recaptchaCode];
+        $data = ["secret" => $config->path("recaptcha.private"), "response" => $recaptchaCode];
         curl_setopt_array($curl, array(
             CURLOPT_RETURNTRANSFER => 1,
             CURLOPT_HTTPHEADER => array('Accept: application/json'),
