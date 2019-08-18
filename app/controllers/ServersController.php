@@ -122,10 +122,14 @@ class ServersController extends BaseController {
 
                     if ($sinfo->getWebsite()) {
                         $seo  = Servers::genSeoTitle($server);
+                        $title = $server->getTitle();
 
-                        $bot = new NexusBot();
-                        $bot->setMessage("{$this->getUser()->username}, has listed a new server: [{$server->getTitle()}](http://rune-nexus.com/servers/view/{$seo})");
-                        $bot->send();
+                        (new BotMessage([
+                            'channel' => '607320502268330016',
+                            'title'   => 'New Server!',
+                            'message' => "{$this->getUser()->username} has listed a new server: [{$title}](http://rune-nexus.com/servers/view/{$seo})",
+                            'is_rich' => false
+                        ]))->send();
                     }
                     return $this->response->redirect("servers/view/".$server->getSeoTitle());
                 }
