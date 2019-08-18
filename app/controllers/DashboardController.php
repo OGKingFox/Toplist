@@ -221,7 +221,7 @@ class DashboardController extends BaseController {
                 ])
                 ->conditions("UNIX_TIMESTAMP() - voted_on < $timeInSecs")
                 ->groupBy("time")
-                ->orderBy("ANY_VALUE(time) ASC")
+                ->orderBy("time ASC")
                 ->execute()->toArray();
             $cache->save('global.cache', $data);
         }
