@@ -11,7 +11,7 @@
                 <h5 class="text-white mb-0">Add Premium</h5>
             </div>
             <div class="card-body">
-                {{ form('dashboard', 'method' : 'post', 'autocomplete' : 'off', 'class' : 'form-inline') }}
+                {{ form('dashboard/users', 'method' : 'post', 'autocomplete' : 'off', 'class' : 'form-inline') }}
                 <div class="form-group mr-2">
                     {{ text_field('user_id', 'class' : 'form-control', 'placeholder' : 'User ID') }}
                 </div>
