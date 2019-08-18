@@ -30,12 +30,12 @@ class PremiumController extends BaseController {
         }
 
         $buyer   = $data['payer']['payer_info'];
-        $user_id = $this->filter->sanitize($data['transactions'][0]['custom'], 'int');
+        $user_id = $this->getUser()->id;
 
         $user = Users::getUser($user_id);
 
         if (!$user) {
-            $this->printStatus(false, "Could not find your account. You have not been charged.");
+            $this->printStatus(false, "Could not find your account - . You have not been charged.");
             return false;
         }
 
@@ -84,7 +84,7 @@ class PremiumController extends BaseController {
         $trans    = $data['transactions'][0];
         $res      = $trans['related_resources'][0]['sale'];
 
-        $user_id  = $this->filter->sanitize($trans['custom'], 'int');
+        $user_id = $this->getUser()->id;
         $user     = Users::getUser($user_id);
 
         if (!$user) {
