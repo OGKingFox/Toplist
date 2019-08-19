@@ -10,7 +10,7 @@
                             <button id="btnGroupDrop1" type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <i class="fal fa-list-alt fa-fw"></i> {{ game.title }}
                             </button>
-                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="btnGroupDrop1">
+                            <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
                                 {% for g in games %}
                                 {% set seo_title = g.id~'-'~str_replace(" ", "-", g.title|lowercase) %}
                                 {{ link_to('servers/'~seo_title, g.title, 'class' : 'dropdown-item', 'rel' : 'nofollow') }}
