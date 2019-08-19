@@ -8,8 +8,6 @@ use Phalcon\Tag;
 
 class DashboardController extends BaseController {
 
-    private $user;
-
     public function indexAction() {
         $this->view->users   = Users::count();
         $this->view->votes   = Votes::count();
