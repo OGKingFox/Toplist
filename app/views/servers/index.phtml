@@ -4,7 +4,8 @@
         <div class="card border-0 shadow-sm mb-3">
             <div class="card-body">
                 <div class="row">
-                    <div class="col-12 col-md">
+
+                    <div class="col">
                         <div class="btn-group" role="group">
                             <button id="btnGroupDrop1" type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <i class="fal fa-list-alt fa-fw"></i> {{ game.title }}
@@ -17,9 +18,9 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-12 col-md text-right">
-                        <div class="btn-group mt-1" role="group" aria-label="Basic example">
 
+                    <div class="col text-right">
+                        <div class="btn-group" role="group" aria-label="Basic example">
                             {% if user is defined %}
                             {{ link_to('profile',
                             '<i class="fal fa-server fa-fw"></i>',
@@ -31,6 +32,7 @@
                             {% endif %}
                         </div>
                     </div>
+
                 </div>
             </div>
         </div>
