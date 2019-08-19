@@ -192,7 +192,6 @@ class BaseController extends Controller {
         echo "<pre>".htmlspecialchars(json_encode($msg, JSON_PRETTY_PRINT|JSON_UNESCAPED_SLASHES))."</pre>";
     }
 
-
     /**
      * get access token from header
      */
@@ -234,6 +233,8 @@ class BaseController extends Controller {
         $controller = $this->router->getControllerName();
         $action = $this->router->getActionName() ?: $controller;
 
+        $this->logVisitor();
+
         $this->config = $this->getConfig();
 
         if (isset($this->page_meta[$controller], $this->page_meta[$controller][$action]) ) {
@@ -249,6 +250,25 @@ class BaseController extends Controller {
             }
         } else {
             $this->tag->setTitle(ucwords($action));
+        }
+    }
+
+    private function logVisitor() {
+        if ($this->request->isAjax()) {
+            return;
+        }
+
+        $ref = new Referrals([
+            'ip_address' => $this->getRealIp(),
+            'location'   => $this->router->getRewriteUri(),
+            'referrer'   => $this->request->getHTTPReferer(),
+            'date_added' => time(),
+        ]);
+
+        try {
+            $ref->save();
+        } catch (Exception $e) {
+
         }
     }
 
