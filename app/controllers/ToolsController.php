@@ -49,7 +49,6 @@ class ToolsController extends BaseController {
         $itemList = $cache->get("items.data.cache", 86400);
 
         if (!$itemList) {
-            $path = $this->getConfig()->path("core.base_path");
             $itemList = $this->getFile();
 
             if (!$itemList) {
