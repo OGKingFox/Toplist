@@ -24,10 +24,11 @@ class IndexController extends BaseController {
 
             $cache->save("home.stats.cache", $data);
         }
-        $this->view->users    = Users::count();
-        $this->view->servers  = Servers::count();
-        $this->view->votes    = Votes::count();
-        $this->view->likes    = Likes::count();
+
+        $this->view->users    = $data['users'];
+        $this->view->servers  = $data['servers'];
+        $this->view->votes    = $data['votes'];
+        $this->view->likes    = $data['likes'];
     }
 
     public function logoutAction() {
