@@ -53,7 +53,7 @@
                     <td class="text-truncate" style="max-width:250px;">
                         <p class="text-muted my-0 small text-uppercase">Server</p>
                         <h6 class="my-0 text-primary text-truncate">
-                            {{ link_to('servers/view/'~getSeoTitle(server), server.title, 'class' : 'text-primary') }}
+                            {{ link_to('servers/view/'~getSeoTitle(server), filter.sanitize(server.title, 'string'), 'class' : 'text-primary') }}
                         </h6>
                     </td>
                     <td class="d-md-none d-lg-table-cell">

@@ -234,7 +234,7 @@ class Servers extends \Phalcon\Mvc\Model {
      */
     public function getTitle()
     {
-        return $this->title;
+        return utf8_decode($this->title);
     }
 
     /**
@@ -243,7 +243,7 @@ class Servers extends \Phalcon\Mvc\Model {
      */
     public function setTitle($title)
     {
-        $this->title = $title;
+        $this->title =  $title;
         return $this;
     }
 
@@ -340,7 +340,8 @@ class Servers extends \Phalcon\Mvc\Model {
 
         $validator->add("title", new Callback([
             "callback" => function() {
-                return preg_match('/^[A-Za-z0-9 \-]+$/i', $this->title) !== false;
+                return utf8_decode($this->title) == $this->title
+                    && preg_match('/^[\w\s?]+$/si', $this->title) !== false;
             },
             "message" => "Invalid title. May only contain letters, numbers, spaces, and dashes."
         ]));
