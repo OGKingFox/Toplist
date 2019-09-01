@@ -146,23 +146,11 @@ class VoteController extends BaseController {
 
         rtrim($fields_string, '&');
 
-        $header = array(
-            'User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.132 Safari/537.36',
-            'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
-            'Accept-Language: en-us,en;q=0.5',
-            'Accept-Encoding: gzip,deflate',
-            'Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7',
-            'Keep-Alive: 115',
-            'Connection: keep-alive',
-        );
-
         $ch = curl_init();
         curl_setopt($ch,CURLOPT_URL, $url);
         curl_setopt($ch,CURLOPT_POST, count($fields));
         curl_setopt($ch,CURLOPT_POSTFIELDS, $fields_string);
         curl_setopt($ch,CURLOPT_RETURNTRANSFER,1);
-        curl_setopt($ch,CURLOPT_HTTPHEADER,$header);
-        curl_setopt($ch,CURLOPT_USERAGENT, 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.132 Safari/537.36');
 
         curl_setopt($ch, CURLOPT_TIMEOUT, 3);
 
