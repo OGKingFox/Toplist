@@ -5,7 +5,13 @@ include 'db_connect.php';
 $start = strtotime(date("Y-m-1 00:00:00"));
 $end   = strtotime(date("Y-m-t 23:59:59"));
 
-$stmt = $pdo->prepare("UPDATE servers SET votes = (SELECT COUNT(*) FROM votes WHERE votes.server_id = servers.id AND votes.voted_on-18000 BETWEEN {$start} AND {$end})");
+$month = date("m");
+
+$stmt = $pdo->prepare("UPDATE servers SET votes = (SELECT COUNT(*) 
+    FROM votes
+    WHERE votes.server_id = servers.id 
+    AND votes.voted_on >= UNIX_TIMESTAMP('2019-$month-01 00:00:00'))");
+
 $stmt->execute();
 $end = microtime(true);
 
