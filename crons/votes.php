@@ -2,9 +2,6 @@
 $start = microtime(true);
 include 'db_connect.php';
 
-$start = strtotime(date("Y-m-1 00:00:00"));
-$end   = strtotime(date("Y-m-t 23:59:59"));
-
 $month = date("m");
 
 $stmt = $pdo->prepare("UPDATE servers SET votes = (SELECT COUNT(*) 
