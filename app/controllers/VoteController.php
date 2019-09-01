@@ -113,7 +113,7 @@ class VoteController extends BaseController {
 
         $this->println([
             'success' => true,
-            'message' => 'Thank you, your vote has been recorded!'
+            'message' => $callback['http_code'].': Thank you, your vote has been recorded!'
         ]);
         return true;
     }
@@ -147,7 +147,7 @@ class VoteController extends BaseController {
         rtrim($fields_string, '&');
 
         $header = array(
-            'User-Agent: Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.9.2.12) Gecko/20101026 Firefox/3.6.12',
+            'User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.132 Safari/537.36',
             'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
             'Accept-Language: en-us,en;q=0.5',
             'Accept-Encoding: gzip,deflate',
