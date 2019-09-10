@@ -59,7 +59,8 @@ class SecurityPlugin extends Plugin {
 
         $admin = [
             'dashboard'     => [
-                'index', 'users', 'premium', 'servers', 'payments', 'reports', 'news', 'newspost', 'graph'
+                'index', 'users', 'premium', 'servers', 'payments', 'reports', 'news', 'newspost', 'graph',
+                'themes'
             ]
         ];
 

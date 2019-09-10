@@ -1,0 +1,40 @@
+<div class="row">
+    <div class="col-sm-12 col-lg-3">
+        {{ partial('dashboard/sidebar') }}
+    </div>
+
+    <div class="col-sm-12 col-lg-9">
+        {{ content() }}
+
+        <div class="card border-0 shadow-sm mb-3">
+            <div class="card-header bg-gradient-primary justify-content-between">
+                {{ link_to('', 'Add Theme', 'class' : 'btn btn-primary btn-sm float-right',
+                    'data-toggle' : 'modal', 'data-target' : '#addModal') }}
+
+                <h5 class="mb-0 text-white">Themes</h5>
+            </div>
+
+            <table class="table table-borderless table-striped mb-0">
+                <thead>
+                <tr>
+                    <th class="py-1 small">Title</th>
+                    <th class="py-1 small">Created</th>
+                    <th class="py-1 small">Last Edited</th>
+                    <th></th>
+                </tr>
+                </thead>
+                {% for theme in themes %}
+                <tr>
+                    <td>{{ theme.name }}</td>
+                    <td>{{ date("m/d/Y g:i A", theme.created) }}</td>
+                    <td>{{ theme.last_modified is -1 ? 'Never' : date("m/d/Y g:i A", theme.last_modified) }}</td>
+                    <td class="text-right">
+                        {{ link_to('dashboard/themes/?edit='~theme.id, 'Edit', 'class' : 'btn btn-primary btn-sm') }}
+                        {{ link_to('dashboard/themes/?delete='~theme.id, 'Delete', 'class' : 'btn btn-danger btn-sm') }}
+                    </td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+</div>

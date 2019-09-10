@@ -20,6 +20,34 @@ class DashboardController extends BaseController {
         $this->view->data = array_column($votes, 'total');
     }
 
+    public function themesAction() {
+        if ($this->request->hasQuery("add")) {
+            if ($this->request->isPost()) {
+                $theme = new Themes($this->request->getPost());
+                $theme->setCreated(time());
+                $theme->save();
+            }
+            $this->view->pick("dashboard/themes/add");
+            return true;
+        }
+
+        if ($this->request->hasQuery("edit")) {
+            if ($theme = Themes::getTheme($this->request->getQuery("edit", "int"))) {
+                if ($this->request->isPost()) {
+                    $theme->assign($this->request->getPost());
+                    $theme->setLastModified(time());
+                    $theme->update();
+                }
+                $this->view->theme = $theme;
+                $this->view->pick("dashboard/themes/edit");
+                return true;
+            }
+        }
+
+        $this->view->themes = Themes::getThemes();
+        return true;
+    }
+
     public function newsAction($page = 1) {
         $article = Articles::getArticles();
         $this->view->articles = $article;
