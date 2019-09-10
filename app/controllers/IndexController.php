@@ -34,10 +34,13 @@ class IndexController extends BaseController {
             $cache->save("home.stats.cache", $data);
         }
 
+        $articles = Articles::getArticles();
+
         $this->view->users    = $data['users'];
         $this->view->servers  = $data['servers'];
         $this->view->votes    = $data['votes'];
         $this->view->likes    = $data['likes'];
+        $this->view->articles = $articles;
     }
 
     public function logoutAction() {

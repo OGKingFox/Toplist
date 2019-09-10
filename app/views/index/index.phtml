@@ -15,66 +15,8 @@
     </div>
 </section>
 
-<section class="section section-lg ">
-    <div class="container">
-        <div class="row row-grid align-items-center">
-            <div class="col-md-6 order-md-2">
-                {{ image('img/promo-1.png', 'class' : 'img-fluid floating') }}
-            </div>
-            <div class="col-md-6 order-md-1">
-                <div class="pr-md-5">
-                    <div class="badge badge-circle badge-default mr-3 mb-3 p-4">
-                        <i class="fas fa-cog text-primary fa-2x"></i>
-                    </div>
 
-                    <h3 class="text-primary">Awesome features</h3>
-                    <p>Our website aims to make advertising easy, with SEO optimization and plenty of tools to know exactly
-                    how much traffic you're getting.</p>
-
-                    <ul class="list-unstyled mt-5">
-                        <li class="py-2">
-                            <div class="d-flex align-items-center">
-                                <div>
-                                    <div class="badge badge-circle badge-default mr-3">
-                                        <i class="fas fa-check text-primary"></i>
-                                    </div>
-                                </div>
-                                <div>
-                                    <h6 class="mb-0">Discord Integrated</h6>
-                                </div>
-                            </div>
-                        </li>
-                        <li class="py-2">
-                            <div class="d-flex align-items-center">
-                                <div>
-                                    <div class="badge badge-circle badge-default mr-3">
-                                        <i class="fas fa-check text-primary"></i>
-                                    </div>
-                                </div>
-                                <div>
-                                    <h6 class="mb-0">Advanced Statistics</h6>
-                                </div>
-                            </div>
-                        </li>
-                        <li class="py-2">
-                            <div class="d-flex align-items-center">
-                                <div>
-                                    <div class="badge badge-circle badge-default mr-3">
-                                        <i class="fas fa-check text-primary"></i>
-                                    </div>
-                                </div>
-                                <div>
-                                    <h6 class="mb-0">User Friendly</h6>
-                                </div>
-                            </div>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-{#<section class="section">
+<section class="section">
     <div class="container">
         <div class="row">
             <div class="col-sm-12 col-lg-9">
@@ -82,16 +24,16 @@
 
                 {% for article in articles %}
                 {% set avatar = avatar(article.user_id, article.avatar) %}
-                <div class="card shadow-sm mb-3 overflow-hidden">
+                <div class="card border-0 shadow-sm mb-3 overflow-hidden">
                     <div class="card-body p-0">
                         <div class="d-flex flex-lg-row flex-column">
-                            <div class="flex-fill text-center bg-primary py-lg-5 py-sm-3 card-author">
+                            <div class="flex-fill text-center py-lg-5 py-sm-3 card-author">
                                 {{ image(avatar, 'class' : 'rounded-circle mb-3', 'width' : '96px') }}
 
-                                <h5 class="mb-0 text-white">{{ article.username }}</h5>
-                                <p class="text-white-50 mb-0">{{ article.role }}</p>
+                                <h5 class="mb-0">{{ article.username }}</h5>
+                                <p class="text-muted mb-0">{{ article.role }}</p>
                             </div>
-                            <div class="flex-fill w-100 py-5 px-4">
+                            <div class="flex-fill w-100 py-5 px-4 card-message">
                                 {{ article.news_body }}
                                 <p class="small text-muted mb-0">
                                     {{ date("M. d, Y | g:i A", article.date_posted) }}
@@ -102,20 +44,56 @@
                 </div>
                 {% endfor %}
             </div>
+
             <div class="col-sm-12 col-lg-3">
-                <div class="card border-0 shadow-sm overflow-hidden">
-                    <a href="https://discord.gg/D5bQ4qG" target="_blank">
-                    <img src="https://discordapp.com/api/guilds/198682930338463744/widget.png?style=banner2"
-                         class="img-fluid" alt="https://discord.gg/D5bQ4qG">
-                    </a>
+                {% if user is not defined %}
+                <button type="button" class="btn btn-primary btn-block btn-lg mb-3" data-toggle="modal" data-target="#loginModal">
+                    Login
+                </button>
+                {% endif %}
+
+                <div class="card border-0 shadow-sm mb-3">
+                    <div class="card-body text-right">
+                        <i class="fal fa-user fa-lg text-white rounded-circle bg-primary stat-icon float-left"></i>
+                        <h5 class="font-weight-bold mb-0 text-primary">{{ users|number_format(0) }}</h5>
+                        <p class="text-uppercase text-muted mb-0 small">Users</p>
+                    </div>
+                </div>
+
+                <div class="card border-0 shadow-sm mb-3">
+                    <div class="card-body text-right">
+                        <i class="fal fa-server fa-lg text-white rounded-circle bg-danger stat-icon float-left"></i>
+
+                        <h5 class="font-weight-bold mb-0 text-danger">{{ servers|number_format(0) }}</h5>
+                        <p class="text-uppercase text-muted mb-0 small">Servers</p>
+                    </div>
+                </div>
+
+                <div class="card border-0 shadow-sm mb-3">
+                    <div class="card-body text-right">
+                        <i class="fal fa-vote-yea fa-lg text-white rounded-circle bg-info stat-icon float-left"></i>
+
+                        <h5 class="font-weight-bold mb-0 text-info">{{ votes|number_format(0) }}</h5>
+                        <p class="text-uppercase text-muted mb-0 small">Votes</p>
+                    </div>
+                </div>
+
+                <div class="card border-0 shadow-sm mb-3">
+                    <div class="card-body text-right">
+                        <i class="fal fa-thumbs-up fa-lg text-white rounded-circle bg-warning stat-icon float-left"></i>
+
+                        <p class="text-uppercase text-muted mb-0 small">Likes</p>
+                        <h5 class="font-weight-bold mb-0 text-warning">{{ likes|number_format(0) }}</h5>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</section>#}
+</section>
 
-<section class="section section-primary">
+<section class="section">
     <div class="container">
+        <hr>
         <div class="row row-grid justify-content-center">
             <div class="col-lg-8 text-center">
                 <h2 class="display-3">Do you like this project? <span class="text-success">Fork us on Github!</span></h2>
@@ -128,53 +106,6 @@
                     </a>
                 </div>
 
-            </div>
-        </div>
-    </div>
-</section>
-
-<section class="section bg-white section-sm">
-    <div class="container">
-        <div class="row">
-            <div class="col-sm-12 col-lg-3">
-                <div class="card mb-2 border-0">
-                    <div class="card-body text-center">
-                        <i class="fal fa-user fa-lg mt-1 text-white rounded-circle bg-primary stat-icon mb-3"></i>
-
-                        <p class="text-uppercase text-muted mb-0 small">Users</p>
-                        <h5 class="font-weight-bold mb-0 text-primary">{{ users|number_format(0) }}</h5>
-                    </div>
-                </div>
-            </div>
-            <div class="col-sm-12 col-lg-3">
-                <div class="card mb-2 border-0">
-                    <div class="card-body text-center">
-                        <i class="fal fa-server fa-lg mt-1 text-white rounded-circle bg-danger stat-icon mb-3"></i>
-
-                        <p class="text-uppercase text-muted mb-0 small">Servers</p>
-                        <h5 class="font-weight-bold mb-0 text-danger">{{ servers|number_format(0) }}</h5>
-                    </div>
-                </div>
-            </div>
-            <div class="col-sm-12 col-lg-3">
-                <div class="card mb-2 border-0">
-                    <div class="card-body text-center">
-                        <i class="fal fa-vote-yea fa-lg mt-1 text-white rounded-circle bg-info stat-icon mb-3"></i>
-
-                        <p class="text-uppercase text-muted mb-0 small">Votes</p>
-                        <h5 class="font-weight-bold mb-0 text-info">{{ votes|number_format(0) }}</h5>
-                    </div>
-                </div>
-            </div>
-            <div class="col-sm-12 col-lg-3">
-                <div class="card mb-2 border-0">
-                    <div class="card-body text-center">
-                        <i class="fal fa-thumbs-up fa-lg text-white rounded-circle bg-warning stat-icon mb-3"></i>
-
-                        <p class="text-uppercase text-muted mb-0 small">Likes</p>
-                        <h5 class="font-weight-bold mb-0 text-warning">{{ likes|number_format(0) }}</h5>
-                    </div>
-                </div>
             </div>
         </div>
     </div>
