@@ -38,7 +38,7 @@
         {{ stylesheet_link('css/themes/dark-mode.css') }}
     {% else %}
         {% if user_theme is defined %}
-            {{ stylesheet_link('css/themes/'~user_theme) }}
+            {{ stylesheet_link('css/themes/'~user_theme~'?v='~time()) }}
         {% endif %}
     {% endif %}
 
