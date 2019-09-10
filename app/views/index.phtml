@@ -34,9 +34,7 @@
     {% endif %}
 
     {% if user_theme is defined %}
-    <style>
-        {{ user_theme.content }}
-    </style>
+        {{ stylesheet_link("css/themes/"~tag.friendlyTitle(user_theme.name)~".css") }}
     {% endif %}
 
     {{ javascript_include("js/jquery-3.3.1.min.js") }}

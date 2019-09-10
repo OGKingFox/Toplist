@@ -9,7 +9,7 @@
             <div class="card-body p-2" style="height:210px;">
                 <canvas id="voteChart" height="200px"></canvas>
             </div>
-            <div class="card-footer text-center bg-white">
+            <div class="card-footer text-center">
                 {{ link_to(server.info.website, '<i class="fal fa-globe fa-fw"></i> Website', false, 'target' : '_blank',
                 'class' : 'btn btn-primary',
                 'data-toggle' : 'tooltip', 'title' : 'Visit Website') }}
@@ -26,7 +26,7 @@
         </div>
 
         <div class="card border=0 shadow-sm mb-3 overflow-hidden">
-            <div class="text-white text-center server-title bg-white p-3">
+            <div class="text-white text-center server-title p-3">
                 <h3 class="mb-0 text-primary">{{ server.title }}</h3>
             </div>
             <ul class="nav nav-tabs pl-3 pt-3 bg-gradient-primary" id="myTab" role="tablist">
