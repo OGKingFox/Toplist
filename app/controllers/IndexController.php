@@ -17,8 +17,6 @@ class IndexController extends BaseController {
             return $this->response->redirect($this->request->getHTTPReferer());
         }
 
-       // $this->view->articles = Articles::getArticles();
-
         $path  = $this->getConfig()->path("core.base_path");
         $cache = new BackFile(new FrontData(), ['cacheDir' => $path."/app/compiled/"]);
         $data  = $cache->get('home.stats.cache', 600);

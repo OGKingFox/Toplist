@@ -34,6 +34,8 @@
                                 <p class="text-muted mb-0">{{ article.role }}</p>
                             </div>
                             <div class="flex-fill w-100 py-5 px-4 card-message">
+                                <h5 class="text-primary">{{ article.title }}</h5>
+
                                 {{ article.news_body }}
                                 <p class="small text-muted mb-0">
                                     {{ date("M. d, Y | g:i A", article.date_posted) }}
