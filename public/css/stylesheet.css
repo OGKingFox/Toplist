@@ -323,12 +323,14 @@ button {
 .card-author {
     min-width: 190px;
     box-shadow: 0 0 10px rgba(0,0,0,0.3);
-    background-color: rgba(255,255,255,0.03);
-    color: #000;
+    background-color: rgba(114, 124, 245, 1) !important;
+    color: #FFF;
 }
-.card-message {
-    background: -webkit-radial-gradient(60% 200px at top, rgba(114, 124, 245, 0.1), rgba(0,0,0,0));
-    background: radial-gradient(60% 200px at top, rgba(114, 124, 245, 0.1), rgba(0,0,0,0));
+.card-author h5 {
+    color: white !important;
+}
+.card-author .text-muted {
+    color: rgba(255,255,255,0.5) !important;
 }
 @media (max-width: 996px) {
     .card-author {
