@@ -52,7 +52,7 @@ class SecurityPlugin extends Plugin {
 
         $private = [
             'logout'  => ['index'],
-            'profile' => ['index', 'add', 'edit'],
+            'profile' => ['index', 'add', 'edit', 'settings'],
             'servers' => ['add', 'edit', 'delete', 'banner', 'images', 'removeimage'],
             'premium' => ['verify', 'process', 'button']
         ];
@@ -164,6 +164,18 @@ class SecurityPlugin extends Plugin {
 
             if (!$this->session->has("user")) {
                 $this->session->set("user", $verified);
+            }
+
+            if ($user->getThemeId() != -1) {
+                $theme_id = $user->getThemeId();
+                $theme    = Themes::getTheme($theme_id);
+
+                if (!$theme) {
+                    $user->setThemeId(-1);
+                    $user->update();
+                } else {
+                    $this->view->user_theme = $theme;
+                }
             }
 
             $role = $user->getRole();

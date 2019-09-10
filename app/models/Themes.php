@@ -10,6 +10,9 @@ class Themes extends Model {
     private $last_modified;
     private $enabled;
 
+    public function getId() {
+        return $this->id;
+    }
     /**
      * @return Model\ResultsetInterface|Themes
      */

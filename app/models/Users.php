@@ -10,6 +10,7 @@ class Users extends \Phalcon\Mvc\Model {
     private $premium_expires;
     private $premium_level;
     private $email;
+    private $theme_id;
     private $avatar;
 
     /**
@@ -177,6 +178,25 @@ class Users extends \Phalcon\Mvc\Model {
         $this->avatar = $avatar;
         return $this;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getThemeId()
+    {
+        return $this->theme_id;
+    }
+
+    /**
+     * @param mixed $theme_id
+     * @return Users
+     */
+    public function setThemeId($theme_id)
+    {
+        $this->theme_id = $theme_id;
+        return $this;
+    }
+
 
 
 

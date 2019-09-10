@@ -1,0 +1,46 @@
+<div class="col-sm-12 col-lg-3">
+    <div class="card border-0 shadow-sm mb-3">
+        <div class="card-body text-center">
+            {% set avatar = avatar(user.user_id, user.avatar) %}
+
+            <div class="mb-3">{{ image(avatar, 'class' : 'rounded-circle', 'width' : '125') }}</div>
+
+            <div class="text-truncate m-auto h5 text-primary" style="max-width: 200px;">
+                {{ filter.sanitize(user.username, 'string') }}
+            </div>
+
+            <p class="small text-muted">ID: {{ user.user_id }}</p>
+            {{ role|capitalize }}
+        </div>
+
+        <div class="list-group list-group-flush">
+            <div class="list-group-item" style="line-height:1.2em;">
+                <small class="text-muted">Premium Status</small><br>
+                {% if user.premium_expires > time() %}
+                <span class="text-success">Active</span>
+                {% else %}
+                <span class="text-danger">Inactive</span>
+                {% endif %}
+            </div>
+
+            {% if user.premium_expires > time() %}
+            <div class="list-group-item" style="line-height:1.2em;">
+                <small class="text-muted">Expires</small><br>
+                {{ date('M. d, Y g:i A', user.premium_expires) }}
+            </div>
+            {% endif %}
+        </div>
+    </div>
+
+    {% set action = router.getActionName() %}
+    <div class="card border-0 shadow-sm mb-3">
+        <div class="list-group list-group-flush">
+            {{ link_to('profile', 'My Servers',
+                'class' : 'list-group-item '~(action is '' or action is 'index' ? 'active' : '')) }}
+
+            {{ link_to('profile/settings', 'Settings',
+                'class' : 'list-group-item '~(action is 'settings' ? 'active' : '')) }}
+        </div>
+    </div>
+
+</div>
