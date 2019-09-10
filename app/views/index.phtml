@@ -126,12 +126,12 @@
                     <li class="nav-item">
                         {% if user is not defined %}
                             {% if cookies.has("darkMode") %}
-                                {{ link_to('?darkMode', '<i class="fas fa-lightbulb fa-fw"></i>',
+                                {{ link_to('?darkMode', '<i class="fal fa-lightbulb-on fa-fw"></i>',
                                     'class' : 'btn btn-link text-white',
                                     'data-toggle' : 'tooltip', 'title' : 'Light Mode',
                                     'data-placement' : 'bottom') }}
                             {% else %}
-                                {{ link_to('?darkMode', '<i class="fas fa-lightbulb-slash fa-fw"></i>',
+                                {{ link_to('?darkMode', '<i class="fal fa-lightbulb-slash fa-fw"></i>',
                                     'class' : 'btn btn-link text-white',
                                     'data-toggle' : 'tooltip', 'title' : 'Dark Mode',
                                     'data-placement' : 'bottom') }}
