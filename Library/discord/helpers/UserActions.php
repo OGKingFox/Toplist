@@ -84,6 +84,37 @@ class UserActions extends NexusBot {
         ];
     }
 
+    public function delete() {
+        $user = Users::getUser($this->user->getUserId());
+
+        if (!$user) {
+            return [
+                'success' => false,
+                'message' => "User count not be found.",
+                'title'   => 'Invalid User.'
+            ];
+        }
+
+        $servers = Servers::getServersByOwner($this->user->getUserId());
+
+        /** @var Servers $server */
+        foreach ($servers as $server) {
+            $info = ServersInfo::getServerInfo($server->getId());
+            if ($info)
+                $info->delete();
+            $server->delete();
+        }
+
+        $user->delete();
+        $this->kick();
+
+        return [
+            'success' => true,
+            'message' => 'User has been deleted.',
+            'title'   => 'User Deleted'
+        ];
+    }
+
     public function kick() {
         $member = $this->getMember();
 

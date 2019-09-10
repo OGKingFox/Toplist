@@ -268,6 +268,18 @@ class DashboardController extends BaseController {
                 }
                 $this->println($kick);
                 break;
+            case "delete":
+                $delete = (new UserActions($user))->delete();
+                if ($delete['success']) {
+                    (new BotMessage([
+                        'channel' => '514876434720882688',
+                        'title'   => 'User Delete & Kicked.',
+                        'message' => "<@{$this->getUser()->id}> has kicked <@{$user->getUserId()}> from the server.",
+                        'is_rich' => true
+                    ]))->send();
+                }
+                $this->println($delete);
+                break;
         }
     }
 
