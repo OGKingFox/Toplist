@@ -39,7 +39,13 @@ class DashboardController extends BaseController {
         if ($this->request->hasQuery("edit")) {
             if ($theme = Themes::getTheme($this->request->getQuery("edit", "int"))) {
                 if ($this->request->isPost()) {
-                    $this->saveCss();
+                    if ($theme->getName() != $this->request->getPost("name", 'string')) {
+                        $this->deleteThemeFile($theme->getName());
+                        $theme->setName($this->request->getPost("name", 'string'));
+                        if ($theme->update()) {
+                            $this->saveCss();
+                        }
+                    }
                     return $this->response->redirect("dashboard/themes?edit=".$theme->getId());
                 }
                 $this->view->theme = $theme;

@@ -7,3 +7,4 @@
 **/webfonts/*
 /crons/cron.log
 /crons/db_connect.php
+/public/css/themes/
