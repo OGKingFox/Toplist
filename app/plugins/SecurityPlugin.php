@@ -160,15 +160,14 @@ class SecurityPlugin extends Plugin {
                 $this->session->set("user", $verified);
             }
 
-            if ($user->getThemeId() != -1) {
-                $theme_id = $user->getThemeId();
-                $theme    = Themes::getTheme($theme_id);
+            if ($user->getThemeId() != null) {
+                $th = ThemeHandler::getInstance();
 
-                if (!$theme) {
-                    $user->setThemeId(-1);
-                    $user->update();
+                if ($th->themeExists($user->getThemeId())) {
+                    $this->view->user_theme = $user->getThemeId();
                 } else {
-                    $this->view->user_theme = $theme;
+                    $user->setThemeId(null);
+                    $user->update();
                 }
             }
 

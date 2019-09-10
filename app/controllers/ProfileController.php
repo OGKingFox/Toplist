@@ -18,28 +18,26 @@ class ProfileController extends BaseController {
                 return false;
             }
 
-            $theme_id = $this->request->getPost("theme_id", "int");
+            $theme_id = $this->request->getPost("theme_id", "string");
 
             if ($theme_id == -1) {
-                $user->setThemeId(-1);
+                $user->setThemeId(null);
                 $user->update();
                 return $this->response->redirect("profile/settings");
             } else {
-                $theme = Themes::getTheme($theme_id);
+                $th = ThemeHandler::getInstance();
 
-                if (!$theme) {
-                    $this->flash->error("Invalid theme id.");
-                } else {
-                    $user->setThemeId($theme->getId());
+                if ($th->themeExists($theme_id)) {
+                    $user->setThemeId($theme_id);
                     $user->update();
                     return $this->response->redirect("profile/settings");
                 }
-            }
 
-            $this->debug($this->getUser());
+                $this->flash->error("Invalid theme file.");
+            }
         }
 
-        $this->view->themes = Themes::getThemes();
+        $this->view->themes = $this->getThemes();
         return true;
     }
 

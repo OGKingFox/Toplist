@@ -56,6 +56,17 @@ class BaseController extends Controller {
         return $data;
     }
 
+    /**
+     * Redirects controller to errors controller with given error #
+     * @param int $type
+     */
+    public function showError($type) {
+        $this->dispatcher->forward([
+            'controller' => 'errors',
+            'action' => "show{$type}"
+        ]);
+    }
+
     public function printData($data) {
         echo "<pre>".json_encode($data, JSON_PRETTY_PRINT, JSON_UNESCAPED_SLASHES)."</pre>";
     }
@@ -277,5 +288,33 @@ class BaseController extends Controller {
      */
     public function getConfig() {
         return $this->getDI()->get("config");
+    }
+
+    public function getThemes() {
+        $path  = $this->config->path("core.base_path");
+        $dir   = $path.'/public/css/themes/';
+        $files = array_values(array_diff(scandir($dir), array('..', '.')));
+
+        $list = [];
+
+        foreach($files as $file) {
+            $list[] = [
+                'file'     => $file,
+                'created'  => date("m/d/Y g:i A", filectime($dir.$file)),
+                'modified' => date("m/d/Y g:i A", filemtime($dir.$file))
+            ];
+        }
+
+        return $list;
+    }
+
+    public function themeExists($name) {
+        $path = $this->config->path("core.base_path");
+        return file_exists($path.'/public/css/themes/'.$name);
+    }
+
+    public function getThemeFile($name) {
+        $path = $this->config->path("core.base_path");
+        return file_get_contents($path.'/public/css/themes/'.$name);
     }
 }

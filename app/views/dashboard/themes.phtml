@@ -17,19 +17,17 @@
                 <thead>
                 <tr>
                     <th class="py-1 small">Title</th>
-                    <th class="py-1 small">Created</th>
                     <th class="py-1 small">Last Edited</th>
                     <th></th>
                 </tr>
                 </thead>
                 {% for theme in themes %}
                 <tr>
-                    <td>{{ theme.name }}</td>
-                    <td>{{ date("m/d/Y g:i A", theme.created) }}</td>
-                    <td>{{ theme.last_modified is -1 ? 'Never' : date("m/d/Y g:i A", theme.last_modified) }}</td>
+                    <td>{{ theme['file'] }}</td>
+                    <td>{{ theme['modified'] }}</td>
                     <td class="text-right">
-                        {{ link_to('dashboard/themes/?edit='~theme.id, 'Edit', 'class' : 'btn btn-primary btn-sm') }}
-                        {{ link_to('dashboard/themes/?delete='~theme.id, 'Delete', 'class' : 'btn btn-danger btn-sm') }}
+                        {{ link_to('dashboard/themes/?edit='~theme['file'], 'Edit', 'class' : 'btn btn-primary btn-sm') }}
+                        {{ link_to('dashboard/themes/?delete='~theme['file'], 'Delete', 'class' : 'btn btn-danger btn-sm') }}
                     </td>
                 </tr>
                 {% endfor %}

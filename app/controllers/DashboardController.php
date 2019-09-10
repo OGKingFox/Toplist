@@ -21,15 +21,20 @@ class DashboardController extends BaseController {
     }
 
     public function themesAction() {
+        $themes = $this->getThemes();
+        $th     = ThemeHandler::getInstance();
+
         if ($this->request->hasQuery("add")) {
             if ($this->request->isPost()) {
-                $this->saveCss();
-                $theme = new Themes([
-                    'name'    => $this->request->getPost("name", "string"),
-                    'created' => time()
-                ]);
-                $theme->setCreated(time());
-                $theme->save();
+                $title   = $this->request->getPost("name", "string");
+                $content = $this->request->getPost("content");
+
+                if (stripos(strtolower($title), strtolower(".css")) === false) {
+                    $title = Tag::friendlyTitle($title).'.css';
+                }
+
+                $th->createTheme($title, $content);
+                return $this->response->redirect("dashboard/themes/?edit=".$title);
             }
 
             $this->view->pick("dashboard/themes/add");
@@ -37,60 +42,50 @@ class DashboardController extends BaseController {
         }
 
         if ($this->request->hasQuery("edit")) {
-            if ($theme = Themes::getTheme($this->request->getQuery("edit", "int"))) {
-                if ($this->request->isPost()) {
-                    if ($theme->getName() != $this->request->getPost("name", 'string')) {
-                        $this->deleteThemeFile($theme->getName());
-                        $theme->setName($this->request->getPost("name", 'string'));
-                        if ($theme->update()) {
-                            $this->saveCss();
-                        }
-                    }
-                    return $this->response->redirect("dashboard/themes?edit=".$theme->getId());
-                }
-                $this->view->theme = $theme;
-                $this->view->contents = $this->getThemeFile($theme->getName());
-                $this->view->pick("dashboard/themes/edit");
-                return true;
+            $name = $this->request->getQuery("edit", "string");
+
+            if (!$th->themeExists($name)) {
+                $this->showError(404);
+                return false;
             }
+
+            if ($this->request->isPost()) {
+                $new_name = $this->request->getPost("name", "string");
+                $content  = $this->request->getPost("content");
+
+                if ($name != $new_name) {
+                    $th->deleteTheme($name);
+                    $th->createTheme($new_name, $content);
+                    return $this->response->redirect("dashboard/themes/?edit=".$new_name);
+                }
+
+                $th->updateTheme($name, $content);
+                return $this->response->redirect("dashboard/themes/?edit=".$name);
+            }
+
+            $content = $th->getThemeFile($name);
+
+            $this->view->name     = $name;
+            $this->view->contents = $content;
+            $this->view->pick("dashboard/themes/edit");
+            return true;
         }
 
         if ($this->request->hasQuery("delete")) {
-            if ($theme = Themes::getTheme($this->request->getQuery("delete", "int"))) {
-                $this->deleteThemeFile($theme->getName());
-                $theme->delete();
+            $name = $this->request->getQuery("delete", "string");
+
+            if (!$th->themeExists($name)) {
+                $this->showError(404);
+                return false;
+            }
+
+            if ($th->deleteTheme($name)) {
                 return $this->response->redirect("dashboard/themes");
             }
         }
 
-        $this->view->themes = Themes::getThemes();
+        $this->view->themes = $themes;
         return true;
-    }
-
-    public function getThemeFile($name) {
-        $name = Tag::friendlyTitle($name);
-        $path = $this->config->path("core.base_path");
-        return file_get_contents($path.'/public/css/themes/'.$name.'.css');
-    }
-
-    public function deleteThemeFile($name) {
-        $name = Tag::friendlyTitle($name);
-        $path = $this->config->path("core.base_path");
-        $file = $path.'/public/css/themes/'.$name.'.css';
-
-        unlink($file, fopen($file, 'w'));
-    }
-
-    public function saveCss() {
-        $title   = Tag::friendlyTitle($this->request->getPost("name", "string"));
-        $content = $this->request->getPost("content");
-
-        $path = $this->config->path("core.base_path");
-        $file = $path.'/public/css/themes/'.$title.'.css';
-
-        $fp = fopen($file, 'w');
-        fwrite($fp, $content);
-        fclose($fp);
     }
 
     public function newsAction($page = 1) {

@@ -12,8 +12,8 @@
                         <option value="-1" {{ user.theme_id is -1 ? 'selected' : '' }}>Default Theme</option>
 
                         {% for theme in themes %}
-                        {% set selected = user.theme_id is theme.id ? 'selected' : '' %}
-                        <option value="{{ theme.id }}" {{ selected }}>{{ theme.name }}</option>
+                        {% set selected = user.theme_id is theme['file'] ? 'selected' : '' %}
+                        <option value="{{ theme['file'] }}" {{ selected }}>{{ theme['file'] }}</option>
                         {% endfor %}
                     </select>
                 </div>
