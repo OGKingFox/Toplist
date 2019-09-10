@@ -33,8 +33,13 @@
     {{ javascript_include("js/aos.js") }}
     {% endif %}
 
-    {% if user_theme is defined %}
-        {{ stylesheet_link('css/themes/'~user_theme) }}
+
+    {% if cookies.has("darkMode") AND user_theme is not defined %}
+        {{ stylesheet_link('css/themes/dark-mode.css') }}
+    {% else %}
+        {% if user_theme is defined %}
+            {{ stylesheet_link('css/themes/'~user_theme) }}
+        {% endif %}
     {% endif %}
 
     {{ javascript_include("js/jquery-3.3.1.min.js") }}
@@ -117,6 +122,23 @@
                         <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#loginModal">
                             Login
                         </button>
+                    </li>
+                    <li class="nav-item">
+                        {% if user is not defined %}
+                            {% if cookies.has("darkMode") %}
+                                {{ link_to('?darkMode', '<i class="fas fa-lightbulb fa-fw"></i>',
+                                    'class' : 'btn btn-link text-white',
+                                    'data-toggle' : 'tooltip', 'title' : 'Light Mode',
+                                    'data-placement' : 'bottom') }}
+                            {% else %}
+                                {{ link_to('?darkMode', '<i class="fas fa-lightbulb-slash fa-fw"></i>',
+                                    'class' : 'btn btn-link text-white',
+                                    'data-toggle' : 'tooltip', 'title' : 'Dark Mode',
+                                    'data-placement' : 'bottom') }}
+                            {% endif %}
+
+                        {% endif %}
+
                     </li>
                     {% endif %}
                 </ul>

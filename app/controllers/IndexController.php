@@ -8,6 +8,15 @@ use Phalcon\Tag;
 class IndexController extends BaseController {
 
     public function indexAction() {
+        if ($this->request->hasQuery("darkMode")) {
+            if ($this->cookies->has("darkMode")) {
+                $this->cookies->set("darkMode", null, time() - 1000, '/');
+            } else {
+                $this->cookies->set("darkMode", 1, time() + (86400 * 30), '/');
+            }
+            return $this->response->redirect($this->request->getHTTPReferer());
+        }
+
        // $this->view->articles = Articles::getArticles();
 
         $path  = $this->getConfig()->path("core.base_path");
