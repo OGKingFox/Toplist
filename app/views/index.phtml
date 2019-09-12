@@ -33,12 +33,13 @@
     {{ javascript_include("js/aos.js") }}
     {% endif %}
 
-
-    {% if cookies.has("darkMode") AND user_theme is not defined %}
-        {{ stylesheet_link('css/themes/dark-mode.css') }}
-    {% else %}
+    {% if user is defined %}
         {% if user_theme is defined %}
             {{ stylesheet_link('css/themes/'~user_theme~'?v='~time()) }}
+        {% endif %}
+    {% else %}
+        {% if cookies.has("darkMode") %}
+            {{ stylesheet_link('css/themes/dark-mode.css') }}
         {% endif %}
     {% endif %}
 
