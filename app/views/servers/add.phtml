@@ -1,6 +1,13 @@
 <div class="row">
-    <div class="col-sm-12 col-xl-8">
+    <div class="col-sm-12 col-lg-12">
         {{ content() }}
+
+        <div class="card border-0 shadow-sm mb-0 mb-3 bg-info text-white">
+            <div class="card-body">
+                <p class="mb-0">After you've created your server, you can go to your profile to edit server ip, port, manage
+                    images and more.</p>
+            </div>
+        </div>
 
         <div class="card border-0 shadow-sm mb-3">
             <div class="card-body">
@@ -42,7 +49,9 @@
                     <p class="small text-muted">
                         Optional. Your discord server id. Click
                         <a target="_blank" href="https://support.discordapp.com/hc/en-us/articles/206346498-Where-can-I-find-my-User-Server-Message-ID-">here</a> for more info.
-                        This will enable a discord block on your listing showing members and a join link automatically. It's basically sorcery.
+                        This will enable a discord block on your listing showing members and a join link automatically.
+                        It's basically sorcery.
+                        <span class="text-danger">Discord Widget must be enabled in your server's settings.</span>
                     </p>
                     {{ numeric_field('discord_id', 'class' : 'form-control') }}
                 </div>
@@ -61,33 +70,6 @@
 
                 {{ hidden_field(security.getTokenKey(), 'value' : security.getToken()) }}
                 {{ end_form() }}
-            </div>
-        </div>
-    </div>
-
-    <div class="col-sm-12 col-xl-4">
-        <div class="card border-0 shadow-sm mb-0">
-            <div class="card-body">
-                <h5>Rules:</h5>
-                <p class="small text-muted">These must be followed to avoid your server being removed from our website. </p>
-                <ul>
-                    <li>Names must be clear. Remember, simplicity is key. clearer titles means more professional.</li>
-                    <li>False advertising will not be tolerated.</li>
-                    <li>Vulgar, hateful, or discriminatory remarks are not allowed.</li>
-                    <li>
-                        Images must be related to the listing, depicting clearly what the server has to offer. Images
-                        containing any kind of pornography is strictly not allowed, and will result in a permanent ban.
-                    </li>
-                    <li>
-                        Website links not related to the server listed will result in a permanent ban. (ie. listing is
-                        linked to another unrelated website.)
-                    </li>
-                    <li>Affiliate links are not allowed.</li>
-                    <li>
-                        Server can not already be listed, by either title or by website url. Duplicates will be removed,
-                        excessive duplicates will result in a ban.
-                    </li>
-                </ul>
             </div>
         </div>
     </div>

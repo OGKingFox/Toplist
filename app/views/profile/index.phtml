@@ -4,6 +4,13 @@
     <div class="col-sm-12 col-lg-9">
         {{ content() }}
 
+        <div class="card border-0 shadow-sm mb-3">
+            <div class="card-body">
+                {{ link_to('servers/add',
+                '<i class="fal fa-plus-circle fa-fw"></i> Add Server',
+                'class' : 'btn btn-primary') }}
+            </div>
+        </div>
         {% set chunks = servers.toArray()|array_chunk(2) %}
 
         {% for chunk in chunks %}
@@ -14,15 +21,18 @@
                     <div class="card-body text-center py-5">
                         <h5 class="mb-0">{{ server['servers'].title }}</h5>
 
-                        <p class="mb-0">
-                            {% if server['servers'].server_ip is not null and server['servers'].server_ip is not '' %}
-                            <span class="badge badge-primary">
-                                {{ server['servers'].server_ip }}:{{ server['servers'].server_port }}
-                            </span>
-                            {% endif %}
-
-                            <span class="badge badge-primary">{{ server['games'].title }}</span>
+                        <p>
+                            <span class="badge bg-primary text-white-50">{{ server['games'].title }}</span>
                         </p>
+
+                        {% if server['servers'].is_online %}
+                        <div class="status status-online mr-2"></div>
+                        <span class="text-success">Online</span>
+                        {% else %}
+                        <div class="status status-offline mr-2"></div>
+                        <span class="text-success">Offline</span>
+                        {% endif %}
+
                     </div>
                     <div class="card-footer text-center bg-transparent">
                         {{ link_to('servers/edit/'~server['servers'].id, 'Edit',
