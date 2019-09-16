@@ -99,7 +99,7 @@ class Servers extends \Phalcon\Mvc\Model {
             ])
             ->leftJoin("ServersInfo", 'info.server_id = Servers.id AND info.website != \'\'', 'info')
             ->leftJoin("Users", 'user.user_id = Servers.owner_id', 'user')
-            ->orderBy("votes DESC")
+            ->orderBy("is_online DESC, votes DESC")
             ->execute();
         return $query;
     }
