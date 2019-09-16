@@ -14,12 +14,13 @@ class Servers extends \Phalcon\Mvc\Model {
     private $title;
     private $votes;
     private $game;
+    private $server_ip;
+    private $server_port;
     private $date_created;
 
     /**
      * Like above, but doesn't join the games column so it can be updated or removed.
-     * @param $serverId
-     * @param $ownerId
+     * @param $id
      * @return bool|ModelInterface|Servers
      */
     public static function getServerById($id) {
@@ -307,6 +308,43 @@ class Servers extends \Phalcon\Mvc\Model {
     public function getSeoTitle() {
         return self::genSeoTitle($this);
     }
+
+    /**
+     * @return mixed
+     */
+    public function getServerIp()
+    {
+        return $this->server_ip;
+    }
+
+    /**
+     * @param mixed $server_ip
+     * @return Servers
+     */
+    public function setServerIp($server_ip)
+    {
+        $this->server_ip = $server_ip;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getServerPort()
+    {
+        return $this->server_port;
+    }
+
+    /**
+     * @param mixed $port
+     * @return Servers
+     */
+    public function setServerPort($port)
+    {
+        $this->server_port = $port;
+        return $this;
+    }
+
 
     /**
      * Generates an SEO friendly title

@@ -166,15 +166,21 @@ class ServersController extends BaseController {
             $this->session->remove('notice');
         }
 
+        /** @var Servers $mainInfo */
         $mainInfo = $server->servers;
+        /** @var Users $user */
         $user     = $server->user;
+
+        /** @var ServersInfo $details */
         $details  = ServersInfo::getServerInfo($mainInfo->id);
 
         if ($this->request->isPost() /*&& $this->security->checkToken()*/) {
             $owner = $this->getUser();
 
-            $mainInfo->title = $this->request->getPost("title", 'string', $mainInfo->title);
-            $mainInfo->game  = $this->request->getPost("game", "int", $mainInfo->game);
+            $mainInfo->setTitle($this->request->getPost("title", 'string', $mainInfo->getTitle()));
+            $mainInfo->setGame($this->request->getPost("game", "int", $mainInfo->getGame()));
+            $mainInfo->setServerIp($this->request->getPost("server_ip", "string", $mainInfo->getServerIp()));
+            $mainInfo->setServerPort($this->request->getPost("server_port", "int", $mainInfo->getServerPort()));
 
             if (!$mainInfo->update()) {
                 $this->flash->error($mainInfo->getMessages());
@@ -184,16 +190,16 @@ class ServersController extends BaseController {
             $infoBox = Functions::getPurifier()->purify($infoBox);
 
             $details = $details ? $details : new ServersInfo();
-            $details->server_id  = $mainInfo->id;
-            $details->website    = $this->request->getPost("website",    "url",    $details->website);
-            $details->callback   = $this->request->getPost("callback",   "url",    $details->callback);
-            $details->discord_id = $this->request->getPost("discord_id", "int",    $details->discord_id);
-            $details->meta_info  = $this->request->getPost("meta_info",  "string", $details->meta_info);
-            $details->info       = $infoBox;
+            $details->setServerId($mainInfo->id);
+            $details->setWebsite($this->request->getPost("website", "url", $details->getWebsite()));
+            $details->setCallback($this->request->getPost("callback", "url", $details->getCallback()));
+            $details->setDiscordId($this->request->getPost("discord_id", "url", $details->getDiscordId()));
+            $details->setMetaInfo($this->request->getPost("meta_info", "url", $details->getMetaInfo()));
+            $details->setInfo($infoBox);
 
             if ($this->request->hasPost("meta_tags")) {
                 $meta_tags = explode(",", $this->request->getPost("meta_tags", 'string'));
-                $details->meta_tags = json_encode($meta_tags);
+                $details->setMetaTags(json_encode($meta_tags));
             }
 
             if (!$details->save()) {

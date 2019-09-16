@@ -37,6 +37,30 @@
         </div>
         {{ end_form() }}
 
+
+
+        {{ form('servers/edit/'~server.id, 'method' : 'post', 'autocomplete' : 'off') }}
+        <div class="card border-0 shadow-sm mb-3">
+            <div class="card-body">
+                <div class="form-group">
+                    <label for="title" class="mb-0">Server IP</label>
+                    <p class="small text-muted">The Server IP. Will not be visible. Used for online status.</p>
+                    {{ text_field('server_ip', 'class' : 'form-control', 'value' : server.server_ip) }}
+                </div>
+                <div class="form-group">
+                    <label for="website" class="mb-0">Server Port</label>
+                    <p class="small text-muted">The Server Port. Will not be visible. Used for online status.</p>
+                    {{ numeric_field('server_port', 'class' : 'form-control', 'value' : server.server_port,
+                        'min' : '0', 'max' : '65535') }}
+                </div>
+                <div class="form-group mb-0">
+                    {{ submit_button('Update', 'class' : 'btn btn-outline-primary') }}
+                    {{ hidden_field(security.getTokenKey(), 'value' : security.getToken()) }}
+                </div>
+            </div>
+        </div>
+        {{ end_form() }}
+
         {{ form('servers/edit/'~server.id, 'method' : 'post', 'autocomplete' : 'off') }}
         <div class="card border-0 shadow-sm mb-3">
             <div class="card-body">
