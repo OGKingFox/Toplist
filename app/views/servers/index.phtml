@@ -47,15 +47,25 @@
                 {% set is_premium = server.user.premium_expires > time() %}
 
                 <tr class="{{ is_premium ? 'bg-primary' : '' }}">
-                    <td class="text-center px-4" style="width:120px;">
+
+
+
+                    <td class="text-center px-4" style="width:80px;">
                         <h6 class="mb-0 text-muted">{{ rank }}</h6>
                     </td>
+
+                    <td class="text-right" style="width:40px;">
+                        <div class="status status-{{ server.is_online ? 'online' : 'offline' }}"
+                            data-toggle="tooltip" title="{{ server.is_online ? 'Online' : 'Offline' }}"></div>
+                    </td>
+
                     <td class="text-truncate" style="max-width:250px;">
                         <p class="text-muted my-0 small text-uppercase">Server</p>
                         <h6 class="my-0 text-primary text-truncate">
                             {{ link_to('servers/view/'~getSeoTitle(server), filter.sanitize(server.title, 'string'), 'class' : 'text-primary') }}
                         </h6>
                     </td>
+
                     <td class="d-md-none d-lg-table-cell">
                         {% if server.info.banner_url is not null %}
                         {{  link_to('servers/view/'~getSeoTitle(server), image(server.info.banner_url, 'class' : 'server-banner')) }}
@@ -65,8 +75,9 @@
                         </div>
                         {% endif %}
                     </td>
+
                     <td class="text-center px-4" style="width:100px;">
-                        <h6 class="mb-0 text-primary">{{ server.votes }}</h6>
+                        <h6 class="mb-0 text-primary">{{ server.votes|number_format }}</h6>
                         <small class="text-muted">Vote{{ server.votes > 1 or server.votes is 0 ? 's' : '' }}</small>
                     </td>
                 </tr>
