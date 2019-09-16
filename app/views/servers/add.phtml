@@ -68,6 +68,10 @@
                     {{ submit_button('Cancel', 'class' : 'btn btn-outline-danger float-right') }}
                 </div>
 
+                <div class="form-group mb-0">
+                    <p class="mb-0">By creating a server, you agree to abide by our {{ link_to('terms', 'Terms of Service', 'target' : '_blank') }}.</p>
+                </div>
+
                 {{ hidden_field(security.getTokenKey(), 'value' : security.getToken()) }}
                 {{ end_form() }}
             </div>
