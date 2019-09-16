@@ -22,3 +22,4 @@ foreach ($servers as $server) {
 }
 
 echo 'Updated '.$updated.' statuses.';
+writeLog('Updated '.$updated.' statuses.');
