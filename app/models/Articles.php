@@ -16,7 +16,7 @@ class Articles extends Model {
             ])->execute()->getFirst();
     }
 
-    public static function getArticles() {
+    public static function getArticles($limit = 3) {
         return self::query()
             ->columns([
                 'Articles.id',
@@ -31,7 +31,7 @@ class Articles extends Model {
             ])
             ->leftJoin("Users", "user.user_id = Articles.user_id", "user")
             ->orderBy("Articles.date_posted DESC")
-            ->limit(3)
+            ->limit($limit)
             ->execute();
     }
 

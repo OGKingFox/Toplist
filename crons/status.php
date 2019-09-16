@@ -6,6 +6,8 @@ $stmt = $pdo->prepare("SELECT * FROM servers WHERE server_ip IS NOT NULL AND ser
 $stmt->execute();
 $servers = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
+$updated = 0;
+
 foreach ($servers as $server) {
     $host = $server['server_ip'];
     $port = $server['server_port'];
@@ -16,9 +18,7 @@ foreach ($servers as $server) {
     $stmt->bindParam("status", $status);
     $stmt->execute();
 
-    if (!$status) {
-        echo "Server is down.";
-    } else {
-        echo "Server is up.";
-    }
+    $updated++;
 }
+
+echo 'Updated '.$updated.' statuses.';

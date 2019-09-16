@@ -89,7 +89,7 @@ class DashboardController extends BaseController {
     }
 
     public function newsAction($page = 1) {
-        $article = Articles::getArticles();
+        $article = Articles::getArticles(10);
         $this->view->articles = $article;
     }
 
