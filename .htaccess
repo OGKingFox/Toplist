@@ -2,7 +2,7 @@ RewriteEngine on
 RewriteCond %{HTTP_HOST} ^www.rune-nexus.com$ [NC]
 RewriteRule ^(.*)$ https://rune-nexus.com/$1 [R=301,L]
 
-RewriteRule ^(api|sitemap.xml|robots.txt|resources|crons)($|/) - [L]
+RewriteRule ^(api|sitemap.xml|robots.txt|resources)($|/) - [L]
 RewriteRule ^$ public/    [L]
 RewriteRule ((?s).*) public/$1 [L]
 
