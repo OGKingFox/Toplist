@@ -183,7 +183,11 @@ class Servers extends \Phalcon\Mvc\Model {
      */
     public static function getServersByOwner($oid) {
         return self::query()
+            ->columns([
+                '*'
+            ])
             ->conditions('owner_id = :id:')
+            ->leftJoin("Games", "Games.id = Servers.game")
             ->bind([
                 'id' => $oid
             ])->execute();
@@ -376,6 +380,20 @@ class Servers extends \Phalcon\Mvc\Model {
                 return strlen($this->title) >= 4 && strlen($this->title) <= 35;
             },
             "message" => "Invalid title. Must be between 4 and 35 characters"
+        ]));
+
+        $validator->add("server_ip", new Callback([
+            "callback" => function() {
+                return filter_var($this->server_ip, FILTER_VALIDATE_IP) == true;
+            },
+            "message" => "Invalid server ip."
+        ]));
+
+        $validator->add("server_ip", new Callback([
+            "callback" => function() {
+                return is_numeric($this->server_port) && $this->server_port >= 0 && $this->server_port <= 65535;
+            },
+            "message" => "Invalid server port. Must be an integer ranging from 0 to 65535."
         ]));
 
         $validator->add("title", new Callback([

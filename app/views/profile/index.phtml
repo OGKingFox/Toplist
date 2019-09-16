@@ -4,7 +4,37 @@
     <div class="col-sm-12 col-lg-9">
         {{ content() }}
 
-        <div class="card border-0 shadow-sm mb-3">
+        {% set chunks = servers.toArray()|array_chunk(2) %}
+
+        {% for chunk in chunks %}
+        <div class="row">
+            {% for server in chunk %}
+            <div class="col-sm-12 col-lg-6">
+                <div class="card border-0 shadow-sm mb-3">
+                    <div class="card-body text-center py-5">
+                        <h5 class="mb-0">{{ server['servers'].title }}</h5>
+
+                        <p class="mb-0">
+                            <span class="badge badge-primary">{{ server['servers'].server_ip }}:{{ server['servers'].server_port }}</span>
+                            <span class="badge badge-primary">{{ server['games'].title }}</span>
+                        </p>
+                    </div>
+                    <div class="card-footer text-center bg-transparent">
+                        {{ link_to('servers/edit/'~server['servers'].id, 'Edit',
+                            'class' : 'btn btn-primary btn-sm',
+                            'style' : 'width:75px;') }}
+
+                        {{ link_to('', 'Delete',
+                            'class' : 'btn btn-danger btn-sm', 'id' : 'delete', 'data-id' : server['servers'].id,
+                            'style' : 'width:75px;') }}
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% endfor %}
+
+        {#<div class="card border-0 shadow-sm mb-3">
             <div class="card-header bg-gradient-primary" style="line-height:1em;">
                 {{ link_to('servers/add',
                     '<i class="fal fa-plus-circle fa-fw"></i> Add Server',
@@ -29,7 +59,7 @@
                 </tr>
                 {% endfor %}
             </table>
-        </div>
+        </div#}
     </div>
 </div>
 
