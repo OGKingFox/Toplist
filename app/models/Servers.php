@@ -15,6 +15,7 @@ class Servers extends \Phalcon\Mvc\Model {
     private $votes;
     private $game;
     private $server_ip;
+    private $is_online;
     private $server_port;
     private $date_created;
 
@@ -350,6 +351,25 @@ class Servers extends \Phalcon\Mvc\Model {
         $this->server_port = $port;
         return $this;
     }
+
+    /**
+     * @return mixed
+     */
+    public function isOnline()
+    {
+        return $this->is_online;
+    }
+
+    /**
+     * @param mixed $is_online
+     * @return Servers
+     */
+    public function setOnline($is_online)
+    {
+        $this->is_online = $is_online;
+        return $this;
+    }
+
 
 
     /**

@@ -12,12 +12,14 @@ foreach ($servers as $server) {
     $host = $server['server_ip'];
     $port = $server['server_port'];
 
-    $status = fsockopen($host, $port, $errno, $errstr, 1) ? 1 : 0;
+    $socket = fsockopen($host, $port, $errno, $errstr, 1);
+    $status = $socket ? 1 : 0;
 
     $stmt = $pdo->prepare("UPDATE servers SET is_online = :status WHERE id = ".$server['id']);
     $stmt->bindParam("status", $status);
     $stmt->execute();
 
+    fclose($socket);
     $updated++;
 }
 

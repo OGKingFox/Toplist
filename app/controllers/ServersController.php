@@ -104,10 +104,17 @@ class ServersController extends BaseController {
             if (count($servers->toArray()) == 5) {
                 $this->flash->error("You may only have up to 5 servers listed at a time.");
             } else {
+                $host = $this->request->getPost("server_ip", "string");
+                $port = $this->request->getPost("server_port", "string");
+
                 $server = new Servers($this->request->getPost());
                 $server->setOwnerId($this->getUser()->id);
                 $server->setOwnerTag($this->getUser()->username.'#'.$this->getUser()->discriminator);
                 $server->setDateCreated(time());
+
+                $socket = fsockopen($host, $port, $errno, $errstr, 1);
+                $server->setOnline($socket ? 1 : 0);
+                fclose($socket);
 
                 if (!$server->save()) {
                     $this->flash->error($server->getMessages());

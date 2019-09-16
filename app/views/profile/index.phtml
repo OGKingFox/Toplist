@@ -25,7 +25,7 @@
                             <span class="badge bg-primary text-white-50">{{ server['games'].title }}</span>
                         </p>
 
-                        {% if server['servers'].is_online %}
+                        {% if server['servers'].isOnline() %}
                         <div class="status status-online mr-2"></div>
                         <span class="text-success">Online</span>
                         {% else %}
