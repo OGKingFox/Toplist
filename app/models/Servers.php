@@ -398,7 +398,7 @@ class Servers extends \Phalcon\Mvc\Model {
             "message" => "Invalid server ip. Must be a valid Ipv4 address and can not be one of the following: ".implode(", ", self::$banned_ips).""
         ]));
 
-        $validator->add("server_ip", new Callback([
+        $validator->add("server_port", new Callback([
             "callback" => function() {
                 return is_numeric($this->server_port)
                     && $this->server_port >= 0
