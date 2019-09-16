@@ -15,7 +15,10 @@
                         <h5 class="mb-0">{{ server['servers'].title }}</h5>
 
                         <p class="mb-0">
+                            {% if server['servers'].ip is not null and server['servers'].ip is not '' %}
                             <span class="badge badge-primary">{{ server['servers'].server_ip }}:{{ server['servers'].server_port }}</span>
+                            {% endif %}
+
                             <span class="badge badge-primary">{{ server['games'].title }}</span>
                         </p>
                     </div>
