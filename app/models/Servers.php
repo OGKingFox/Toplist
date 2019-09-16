@@ -363,6 +363,15 @@ class Servers extends \Phalcon\Mvc\Model {
 
     }
 
+    private static $banned_ports = [
+        80, 8080, 443, 21, 22, 110, 995, 143, 993, 25, 26, 587, 3306, 2082,
+        2083, 2086, 2087, 2095, 2096, 2077, 2078
+    ];
+
+    private static $banned_ips = [
+        '127.0.0.1', 'localhost'
+    ];
+
     public function validation() {
         $validator = new Validation();
 
@@ -384,16 +393,20 @@ class Servers extends \Phalcon\Mvc\Model {
 
         $validator->add("server_ip", new Callback([
             "callback" => function() {
-                return filter_var($this->server_ip, FILTER_VALIDATE_IP) == true;
+                return $this->isValidIpv4();
             },
-            "message" => "Invalid server ip."
+            "message" => "Invalid server ip. Must be a valid Ipv4 address and can not be one of the following: ".implode(", ", self::$banned_ips).""
         ]));
 
         $validator->add("server_ip", new Callback([
             "callback" => function() {
-                return is_numeric($this->server_port) && $this->server_port >= 0 && $this->server_port <= 65535;
+                return is_numeric($this->server_port)
+                    && $this->server_port >= 0
+                    && $this->server_port <= 65535
+                    && !in_array($this->server_port, self::$banned_ports);
             },
-            "message" => "Invalid server port. Must be an integer ranging from 0 to 65535."
+            "message" => "Invalid server port. Must be an integer ranging from 0 to 65535, can not be one of the following ports:
+             ".implode(", ", self::$banned_ports).""
         ]));
 
         $validator->add("title", new Callback([
@@ -405,6 +418,29 @@ class Servers extends \Phalcon\Mvc\Model {
         ]));
 
         return $this->validate($validator) == true;
+    }
+
+    /**
+     * @return bool
+     */
+    private function isValidIpv4() {
+        $parts = explode('.', $this->server_ip);
+
+        if (count($parts) != 4) {
+            return false;
+        }
+
+        for ($i = 0; $i < count($parts); $i++) {
+            if (!is_numeric($parts[$i]) || $parts[$i] < 0 || $parts[$i] > 255) {
+                return false;
+            }
+        }
+
+        if ($this->server_ip == "127.0.0.1" || $this->server_ip == "localhost") {
+            return false;
+        }
+
+        return filter_var($this->server_ip, FILTER_VALIDATE_IP) == true;
     }
 
 }

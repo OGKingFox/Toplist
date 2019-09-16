@@ -184,32 +184,32 @@ class ServersController extends BaseController {
 
             if (!$mainInfo->update()) {
                 $this->flash->error($mainInfo->getMessages());
-            }
-
-            $infoBox = $this->request->getPost("info", null, $details->info);
-            $infoBox = Functions::getPurifier()->purify($infoBox);
-
-            $details = $details ? $details : new ServersInfo();
-            $details->setServerId($mainInfo->id);
-            $details->setWebsite($this->request->getPost("website", "url", $details->getWebsite()));
-            $details->setCallback($this->request->getPost("callback", "url", $details->getCallback()));
-            $details->setDiscordId($this->request->getPost("discord_id", "url", $details->getDiscordId()));
-            $details->setMetaInfo($this->request->getPost("meta_info", "url", $details->getMetaInfo()));
-            $details->setInfo($infoBox);
-
-            if ($this->request->hasPost("meta_tags")) {
-                $meta_tags = explode(",", $this->request->getPost("meta_tags", 'string'));
-                $details->setMetaTags(json_encode($meta_tags));
-            }
-
-            if (!$details->save()) {
-                $this->flash->error($details->getMessages());
             } else {
-                $this->session->set("notice", [
-                    'type' => 'success',
-                    'message' => 'Your server has been updated.'
-                ]);
-                return $this->response->redirect("servers/edit/".$mainInfo->id);
+                $infoBox = $this->request->getPost("info", null, $details->info);
+                $infoBox = Functions::getPurifier()->purify($infoBox);
+
+                $details = $details ? $details : new ServersInfo();
+                $details->setServerId($mainInfo->id);
+                $details->setWebsite($this->request->getPost("website", "url", $details->getWebsite()));
+                $details->setCallback($this->request->getPost("callback", "url", $details->getCallback()));
+                $details->setDiscordId($this->request->getPost("discord_id", "url", $details->getDiscordId()));
+                $details->setMetaInfo($this->request->getPost("meta_info", "url", $details->getMetaInfo()));
+                $details->setInfo($infoBox);
+
+                if ($this->request->hasPost("meta_tags")) {
+                    $meta_tags = explode(",", $this->request->getPost("meta_tags", 'string'));
+                    $details->setMetaTags(json_encode($meta_tags));
+                }
+
+                if (!$details->save()) {
+                    $this->flash->error($details->getMessages());
+                } else {
+                    $this->session->set("notice", [
+                        'type' => 'success',
+                        'message' => 'Your server has been updated.'
+                    ]);
+                    return $this->response->redirect("servers/edit/".$mainInfo->id);
+                }
             }
         }
 
