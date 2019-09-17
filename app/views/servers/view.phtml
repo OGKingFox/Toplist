@@ -25,7 +25,70 @@
             </div>
         </div>
 
-        <div class="card border=0 shadow-sm mb-3 overflow-hidden">
+        <div class="card border-0 shadow-sm mb-3">
+            <div class="card-body">
+                {{ server.info.info }}
+            </div>
+        </div>
+
+        <hr>
+
+        {% if user is defined %}
+
+        <div class="card border-0 shadow-sm mb-3">
+            <div class="card-body">
+                <div class="d-flex" id="comments">
+                    <div class="flex-fill">
+                        {% set avatar = avatar(user.user_id, user.avatar) %}
+                        {{ image(avatar, 'width' : '48px;', 'class' : 'rounded-circle mr-3') }}
+                    </div>
+                    <div class="flex-fill w-100">
+                        {{ form('servers/view/'~seo_title, 'method' : 'post', 'id' : 'comment-form', 'class' : 'form-inline') }}
+                        <div class="form-group mb-0">
+                            {{ text_field('comment', 'class' : 'form-control mr-2',
+                            'placeholder' : 'Type a comment!',
+                            'style' : 'width:300px') }}
+                        </div>
+                        {{ hidden_field('type', 'value' : 'comment') }}
+                        {{ hidden_field(security.getTokenKey(), 'value' : security.getToken()) }}
+                        <div class="form-group mb-0">
+                            <button class="btn btn-primary" type="submit">
+                                Submit
+                            </button>
+                        </div>
+                        {{ end_form() }}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {% endif %}
+
+        {% for comment in comments.items %}
+        {% set avatar = avatar(comment.user_id, comment.avatar) %}
+
+        <div class="card border-0 shadow-sm mb-3">
+            <div class="card-body">
+                <div class="d-flex">
+                    <div class="flex-fill">
+                        {{ image(avatar, 'width' : '50px;', 'class' : 'rounded-circle mr-3') }}
+                    </div>
+                    <div class="flex-fill w-100">
+                        <span class="float-right text-muted">{{ date('d.m.Y', comment.date_posted) }}</span>
+
+                        <p class="text-primary mb-0 text-uppercase">
+                            {{ filter.sanitize(comment.username, 'string') }}
+                        </p>
+
+                        <p class="my-0">{{ filter.sanitize(comment.comment, 'string') }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {% endfor %}
+
+        {#<div class="card border=0 shadow-sm mb-3 overflow-hidden">
             <div class="text-white text-center server-title p-3">
                 <h3 class="mb-0 text-primary">{{ server.title }}</h3>
             </div>
@@ -97,7 +160,6 @@
             </div>
         </div>
 
-
         {% if comments.total_pages > 0 %}
         <nav aria-label="...">
             <ul class="pagination pagination-lg justify-content-center">
@@ -130,23 +192,54 @@
         </nav>
 
         {% endif %}
+        #}
     </div>
 
     <div class="col-sm-12 col-lg-4">
+        <div class="card border-0 shadow-sm mb-3 ">
+            <div class="card-body">
+                <p class="text-uppercase text-muted mb-0 small">STATUS</p>
+                {% if server.is_online %}
+                <h6 class="mb-0 text-success">
+                    <span class="status status-online"></span>
+                    ONLINE
+                </h6>
+                {% else %}
+                <h6 class="mb-0 text-danger">
+                    <span class="status status-offline"></span>
+                    OFFLINE
+                </h6>
+                {% endif %}
+            </div>
+        </div>
+
+
         <div class="card border-0 shadow-sm mb-3">
-            <div class="list-group list-group-flush">
-                <div class="list-group-item">
-                    Added By <span class="float-right text-right">{{ server.owner_tag }}<br><small>ID: {{ server.owner_id }}</small></span>
-                </div>
-                <div class="list-group-item">
-                    Total Votes <span class="float-right">{{ server.votes }}</span>
-                </div>
-                <div class="list-group-item">
-                    Likes <span class="float-right" id="likes">{{ likes }}</span>
-                </div>
-                <div class="list-group-item">
-                    Date Created <span class="float-right">{{ date('M. j, Y', server.date_created) }}</span>
-                </div>
+            <div class="card-body">
+                <p class="text-uppercase text-muted mb-0 small">Owner</p>
+                <h6 class="mb-0">{{ server.owner_tag }}</h6>
+                <p class="small mb-0 text-muted">ID: {{ server.owner_id }}</p>
+            </div>
+        </div>
+
+        <div class="card border-0 shadow-sm mb-3">
+            <div class="card-body">
+                <p class="text-uppercase text-muted mb-0 small">Total Votes</p>
+                <h6 class="mb-0">{{ server.votes|number_format }}</h6>
+            </div>
+        </div>
+
+        <div class="card border-0 shadow-sm mb-3">
+            <div class="card-body">
+                <p class="text-uppercase text-muted mb-0 small">Likes</p>
+                <h6 class="mb-0">{{ likes|number_format }}</h6>
+            </div>
+        </div>
+
+        <div class="card border-0 shadow-sm mb-3">
+            <div class="card-body">
+                <p class="text-uppercase text-muted mb-0 small">Created</p>
+                <h6 class="mb-0">{{ date('M. j, Y', server.date_created) }}</h6>
             </div>
         </div>
 

@@ -118,6 +118,7 @@ class Servers extends \Phalcon\Mvc\Model {
                 'Servers.owner_tag',
                 'Servers.game',
                 'Servers.title',
+                'Servers.is_online',
                 'Servers.date_created',
                 'IF(user.premium_expires > :time:, Servers.votes + (user.premium_level * 100), Servers.votes) AS votes',
                 'user.*',
