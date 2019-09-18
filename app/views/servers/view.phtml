@@ -26,7 +26,7 @@
         </div>
 
         <div class="card border-0 shadow-sm mb-3">
-            <div class="card-body">
+            <div class="card-body" id="serverInfo">
                 {{ server.info.info }}
             </div>
         </div>
@@ -87,112 +87,6 @@
         </div>
 
         {% endfor %}
-
-        {#<div class="card border=0 shadow-sm mb-3 overflow-hidden">
-            <div class="text-white text-center server-title p-3">
-                <h3 class="mb-0 text-primary">{{ server.title }}</h3>
-            </div>
-            <ul class="nav nav-tabs pl-3 pt-3 bg-gradient-primary" id="myTab" role="tablist">
-                <li class="nav-item">
-                    <a class="nav-link active" id="info-tab" data-toggle="tab" href="#serverInfo" role="tab"
-                       aria-controls="info" aria-selected="true">
-                        Server Info
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" id="comments-tab" data-toggle="tab" href="#comments" role="tab"
-                       aria-controls="comments" aria-selected="false">
-                        Comments
-                    </a>
-                </li>
-            </ul>
-
-            <div class="tab-content">
-                <div class="tab-pane show active p-3" id="serverInfo" role="tabpanel" aria-labelledby="info-tab">
-                    {{ server.info.info }}
-                    <hr>
-                    {% set images = server.images|json_decode %}
-                    {% if images is not null and images is not empty %}
-                        <div class="text-center">
-                            {% for image in images %}
-                            <div class="img-holder d-inline-block mb-0" style="width:100px;height:75px;overflow: hidden;">
-                                {{ image(image, 'class' : 'img-fluid', 'id' : 'screenshot') }}
-                            </div>
-                            {% endfor %}
-                        </div>
-                    {% endif %}
-                </div>
-                <div class="tab-pane" id="comments" role="tabpanel" aria-labelledby="comments-tab">
-                    {% if user is defined %}
-                    <div class="card-body">
-                        <div class="comment-form"></div>
-                        {{ form('servers/view/'~seo_title, 'method' : 'post', 'class' : 'form-inline', 'id' : 'comment-form') }}
-                        <div class="form-group">
-                            {{ text_field('comment', 'class' : 'form-control mr-2', 'placeholder' : 'Type a comment!',
-                            'style' : 'min-width: 350px;') }}
-                        </div>
-                        {{ hidden_field('type', 'value' : 'comment') }}
-                        {{ hidden_field(security.getTokenKey(), 'value' : security.getToken()) }}
-                        <div class="form-group">
-                            <button class="btn btn-dark" type="submit"><i class="fal fa-paper-plane"></i></button>
-                        </div>
-                        {{ end_form() }}
-                    </div>
-                    {% endif %}
-                    <div class="list-group list-group-flush">
-                        {% for comment in comments.items %}
-                        {% set avatar = avatar(comment.user_id, comment.avatar) %}
-
-                        <div class="list-group-item">
-                            <div class="d-flex">
-                                <div class="flex-fill">
-                                    {{ image(avatar, 'width' : '42px;', 'class' : 'rounded-circle mr-3') }}
-                                </div>
-                                <div class="flex-fill w-100">
-                                    <p class="small my-0">{{ filter.sanitize(comment.username, 'string') }} | {{ date('m/d/Y h:i A', comment.date_posted) }}</p>
-                                    <p class="my-0">{{ filter.sanitize(comment.comment, 'string') }}</p>
-                                </div>
-                            </div>
-                        </div>
-                        {% endfor %}
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        {% if comments.total_pages > 0 %}
-        <nav aria-label="...">
-            <ul class="pagination pagination-lg justify-content-center">
-                <li class="page-item">
-                    {{ link_to('servers/view/'~seo_title~'?page='~comments.first~'#comments',
-                    '<i class="fal fa-angle-double-left"></i>',
-                    'class' : 'page-link') }}
-                </li>
-                <li class="page-item mr-3">
-                    {{ link_to('servers/view/'~seo_title~'?page='~comments.before~'#comments',
-                    '<i class="fal fa-angle-left"></i>',
-                    'class' : 'page-link') }}
-                </li>
-
-                <li class="page-item text-center text-muted" style="padding-top:12px;">
-                    Page {{ comments.current }} of {{ comments.total_pages }}
-                </li>
-
-                <li class="page-item ml-3">
-                    {{ link_to('servers/view/'~seo_title~'?page='~comments.next~'#comments',
-                    '<i class="fal fa-angle-right"></i>',
-                    'class' : 'page-link') }}
-                </li>
-                <li class="page-item">
-                    {{ link_to('servers/view/'~seo_title~'?page='~comments.last~'#comments',
-                    '<i class="fal fa-angle-double-right"></i>',
-                    'class' : 'page-link') }}
-                </li>
-            </ul>
-        </nav>
-
-        {% endif %}
-        #}
     </div>
 
     <div class="col-sm-12 col-lg-4">
