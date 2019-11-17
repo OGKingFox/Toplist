@@ -12,8 +12,8 @@ $(document).ready(function() {
         let data = new FormData($('#uploadForm')[0]);
         let size = this.files[0].size;
 
-        if (size > 3145728) {
-            status.html("File size can not exceed 3MB");
+        if (size > 5242880) {
+            status.html("File size can not exceed 5MB");
             return;
         }
 
