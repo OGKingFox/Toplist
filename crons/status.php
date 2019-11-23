@@ -19,8 +19,10 @@ foreach ($servers as $server) {
     $stmt->bindParam("status", $status);
     $stmt->execute();
 
-    fclose($socket);
-    $updated++;
+    if ($socket) {
+        fclose($socket);
+        $updated++;
+    }
 }
 
 echo 'Updated '.$updated.' statuses.';
