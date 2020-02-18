@@ -14,15 +14,15 @@ foreach ($servers as $server) {
 
     $socket = @fsockopen($host, $port, $errno, $errstr, 1);
     $status = $socket ? 1 : 0;
-
-    $stmt = $pdo->prepare("UPDATE servers SET is_online = :status WHERE id = ".$server['id']);
-    $stmt->bindParam("status", $status);
-    $stmt->execute();
-
+    
     if ($socket) {
         fclose($socket);
         $updated++;
     }
+
+    $stmt = $pdo->prepare("UPDATE servers SET is_online = :status WHERE id = ".$server['id']);
+    $stmt->bindParam("status", $status);
+    $stmt->execute();
 }
 
 echo 'Updated '.$updated.' statuses.';
