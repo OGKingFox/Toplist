@@ -20,8 +20,9 @@ foreach ($servers as $server) {
         $updated++;
     }
 
-    $stmt = $pdo->prepare("UPDATE servers SET is_online = :status WHERE id = ".$server['id']);
+    $stmt = $pdo->prepare("UPDATE servers SET is_online = :status WHERE id = :server");
     $stmt->bindParam("status", $status);
+    $stmt->bindParam("server", $server['id']);
     $stmt->execute();
 }
 
