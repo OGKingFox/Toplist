@@ -69,7 +69,7 @@ class VoteController extends BaseController {
         if ($recent) {
             $this->println([
                 'success' => false,
-                'message' => 'You have already voted within the last 12 hours! Ip: '.$this->getRealIp()
+                'message' => 'You have already voted within the last 12 hours!'
             ]);
             return true;
         }
