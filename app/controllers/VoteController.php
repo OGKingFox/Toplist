@@ -155,13 +155,21 @@ class VoteController extends BaseController {
 
         $ch = curl_init();
 
-        if ($this->hasQuery($url)) {
-        	// if no query, assume its at end of URL, and add a trailing / if needed.
-			curl_setopt($ch, CURLOPT_URL, $url.($this->endsWith($url, '/') ? '' : '/').$incentive);
+        // if url ends with an = (means it's expecting a value right after, then just append the incentive)
+        if ($this->endsWith($url, '=')) {
+        	$url = $url.$incentive;
         } else {
-        	// adds the inventive as a GET request param if it doesn't exist in servers callback url.
-        	curl_setopt($ch, CURLOPT_URL, $url.'?postback='.$incentive);
+        	$isFile = substr($url, strlen($url) - 4, strlen($url)) == ".php";
+
+        	if ($isFile) {
+        		$url = $url.'?postback=';
+        	} else {
+        		$hasSep = substr($url, strlen($url) - 1, strlen($url)) == "/";
+        		$url = $url.($hasSep ? '' : '/').$incentive;
+        	}
         }
+
+        curl_setopt($ch, CURLOPT_URL, $url);
 
         //curl_setopt($ch, CURLOPT_POST, count($fields));
         //curl_setopt($ch, CURLOPT_POSTFIELDS, $fields_string);
@@ -191,8 +199,9 @@ class VoteController extends BaseController {
 	    $length = strlen($string);
 
 	    if ($length == 0 || $search == 0) {
-	        return true;
+	        return false;
 	    }
+
 	    return substr($string, $length - 1, $length) == $search;
 	}
 }
