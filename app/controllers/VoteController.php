@@ -179,6 +179,7 @@ class VoteController extends BaseController {
 		curl_setopt($ch, CURLINFO_HEADER_OUT, true);
         curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
         curl_setopt($ch, CURLOPT_NOBODY, true);
+		curl_setopt($ch, CURLOPT_TIMEOUT, 30); //timeout in seconds
 
         $httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
         $result   = curl_exec($ch);
