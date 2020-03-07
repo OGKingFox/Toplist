@@ -154,7 +154,14 @@ class VoteController extends BaseController {
         );
 
         $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, $url.'?postback='.$incentive);
+
+        if ($this->hasQuery($url)) {
+        	// if no query, assume its at end of URL, and add a trailing / if needed.
+			curl_setopt($ch, CURLOPT_URL, $url.($this->endsWith($url, '/') ? '' : '/').$incentive);
+        } else {
+        	// adds the inventive as a GET request param if it doesn't exist in servers callback url.
+        	curl_setopt($ch, CURLOPT_URL, $url.'?postback='.$incentive);
+        }
 
         //curl_setopt($ch, CURLOPT_POST, count($fields));
         //curl_setopt($ch, CURLOPT_POSTFIELDS, $fields_string);
@@ -175,4 +182,17 @@ class VoteController extends BaseController {
             'response'  => json_decode($result, true)
         ];
     }
+
+    private function hasQuery($url) {
+    	return strpos($url, '?') !== false || strpos($url, '&') !== false;
+    }
+
+    private function endsWith($string, $search) {
+	    $length = strlen($string);
+
+	    if ($length == 0 || $search == 0) {
+	        return true;
+	    }
+	    return substr($string, $length - 1, $length) == $search;
+	}
 }
