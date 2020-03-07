@@ -60,7 +60,7 @@ class VoteController extends BaseController {
             ->conditions("server_id = :sid: AND (ip_address = :ip: OR incentive = :inc:) AND :time: - voted_on < 43000")
             ->bind([
                 'time' => time(),
-                'sid'  => $server->servers->id,
+                'sid'  => $server_id,
                 'ip'   => $this->getRealIp(),
                 'inc'  => $incentive
             ])
