@@ -154,7 +154,7 @@ class VoteController extends BaseController {
         );
 
         $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, $url.'?postback='.$inventive);
+        curl_setopt($ch, CURLOPT_URL, $url.'?postback='.$incentive);
 
         //curl_setopt($ch, CURLOPT_POST, count($fields));
         //curl_setopt($ch, CURLOPT_POSTFIELDS, $fields_string);
