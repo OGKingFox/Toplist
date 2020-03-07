@@ -157,17 +157,17 @@ class VoteController extends BaseController {
 
         // if url ends with an = (means it's expecting a value right after, then just append the incentive)
         if ($this->endsWith($url, '=')) {
-        	$url = $url.$incentive;
-        } else {
-        	$isFile = substr($url, strlen($url) - 4, strlen($url)) == ".php";
+			$url = $url.$incentive;
+	    } else {
+	    	$isFile = substr($url, strlen($url) - 4, strlen($url)) == ".php";
 
-        	if ($isFile) {
-        		$url = $url.'?postback=';
-        	} else {
-        		$hasSep = substr($url, strlen($url) - 1, strlen($url)) == "/";
-        		$url = $url.($hasSep ? '' : '/').$incentive;
-        	}
-        }
+	    	if ($isFile) {
+	    		$url = $url.'?postback='.$incentive;
+	    	} else {
+	    		$hasSep = substr($url, strlen($url) - 1, strlen($url)) == "/";
+	    		$url = $url.($hasSep ? '' : '/').$incentive;
+	    	}
+	    }
 
         curl_setopt($ch, CURLOPT_URL, $url);
 
@@ -198,7 +198,7 @@ class VoteController extends BaseController {
     private function endsWith($string, $search) {
 	    $length = strlen($string);
 
-	    if ($length == 0 || $search == 0) {
+	    if ($length == 0) {
 	        return false;
 	    }
 
