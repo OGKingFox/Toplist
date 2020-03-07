@@ -137,33 +137,33 @@ class VoteController extends BaseController {
     }
 
     public function sendIncentive($url, $incentive) {
-        $fields = ['callback' => urlencode($incentive)];
+        /*$fields = ['callback' => urlencode($incentive)];
         $fields_string = '';
 
         foreach($fields as $key=>$value) {
             $fields_string .= $key.'='.$value.'&';
         }
 
-        rtrim($fields_string, '&');
+        rtrim($fields_string, '&');*/
 
         $header = array(
-            'User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.132 Safari/537.36',
-            'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
-            'Accept-Language: en-us,en;q=0.5',
-            'Accept-Encoding: gzip,deflate',
-            'Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7',
-            'Keep-Alive: 115',
-            'Connection: keep-alive',
+        	'Upgrade-Insecure-Requests: 1',
+            'User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/76.0.3809.100 Safari/537.36',
+            'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3',
+            'Accept-Language: en-US,en;q=0.9',
         );
 
         $ch = curl_init();
-        curl_setopt($ch,CURLOPT_URL, $url);
-        curl_setopt($ch,CURLOPT_POST, count($fields));
-        curl_setopt($ch,CURLOPT_POSTFIELDS, $fields_string);
-        curl_setopt($ch,CURLOPT_RETURNTRANSFER,1);
-        curl_setopt($ch,CURLOPT_HTTPHEADER,$header);
+        curl_setopt($ch, CURLOPT_URL, $url.'?postback='.$inventive);
 
-        curl_setopt($ch, CURLOPT_TIMEOUT, 3);
+        //curl_setopt($ch, CURLOPT_POST, count($fields));
+        //curl_setopt($ch, CURLOPT_POSTFIELDS, $fields_string);
+
+        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+		curl_setopt($ch, CURLINFO_HEADER_OUT, true);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
+        curl_setopt($ch, CURLOPT_NOBODY, true);
 
         $httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
         $result   = curl_exec($ch);
