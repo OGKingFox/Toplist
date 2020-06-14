@@ -5,7 +5,7 @@ RewriteRule ^(.*)$ https://rune-nexus.com/$1 [R=301,L]
 RewriteCond %{HTTP_HOST} ^www.runenexus.com$ [NC]
 RewriteRule ^(.*)$ https://runenexus.com/$1 [R=301,L]
 
-RewriteRule ^(api|sitemap.xml|robots.txt|resources|crons)($|/) - [L]
+RewriteRule ^(api|sitemap.xml|robots.txt|resources|crons|v2)($|/) - [L]
 RewriteRule ^$ public/    [L]
 RewriteRule ((?s).*) public/$1 [L]
 
